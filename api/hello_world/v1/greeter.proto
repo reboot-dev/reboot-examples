@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package hello_world.v1;
+
+import "resemble/v1alpha1/options.proto";
+
+////////////////////////////////////////////////////////////////////////
+
+service Greeter {
+  option (resemble.v1alpha1.service).state = "GreeterState";
+
+  rpc Create(CreateRequest) returns (CreateResponse) {
+    option (resemble.v1alpha1.method).writer = {
+      constructor: true,
+    };
+  }
+
+  rpc Greet(GreetRequest) returns (GreetResponse) {
+    option (resemble.v1alpha1.method).reader = {
+    };
+  }
+}
+
+message GreeterState {
+  string greeting = 1;
+}
+
+message CreateRequest {
+  string greeting = 1;  // E.g. "Hello".
+}
+
+message CreateResponse {}
+
+message GreetRequest {
+  string name = 1;  // E.g. "World".
+}
+
+message GreetResponse {
+  string message = 1;  // E.g. "Hello, World!".
+}

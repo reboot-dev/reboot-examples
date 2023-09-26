@@ -1,0 +1,9 @@
+# The virtualenv.
+.hello-world-venv
+
+# Generated code.
+/gen/
+
+# Temporary directories produced by `pytest`.
+__pycache__/
+.pytest_cache/
