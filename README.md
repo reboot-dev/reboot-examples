@@ -61,7 +61,7 @@ TODO(benh,zakhar): change the default output directory from `gen/` to `api/`.
 -->
 
 ```shell
-rsm protoc ./api/greeter/greeter.proto
+rsm protoc ./api/hello_world/v1/greeter.proto
 ```
 
 ## Test
