@@ -24,7 +24,7 @@ requirements.
 
 ```shell
 git clone https://github.com/reboot-dev/resemble-examples.git
-cd hello-world/
+cd resemble-examples/
 ```
 
 ### Install Python requirements
@@ -42,6 +42,10 @@ pip install -r hello-world/backend/src/requirements.txt
 
 Run the Resemble `protoc` plugin to generate Resemble code for the example
 service:
+
+<!--
+TODO(benh,zakhar): change the default output directory from `gen/` to `api/`.
+-->
 
 <!-- MARKDOWN-AUTO-DOCS:START (CODE:src=./readme_test.sh&lines=55-55) -->
 <!-- The below code snippet is automatically added from ./readme_test.sh -->
@@ -69,11 +73,15 @@ Start the example using the `rsm` CLI:
 TODO: include this command in readme_test.sh.
 -->
 
+<!--
+TODO(benh,zakhar): auto-detect the PROTOPATH.
+TODO(rjh): add appropriate `--watch`es. It seems they may not work as desired right now?
+-->
+
+<!-- TODO: what does the --working-directory flag do here? -->
+
 ```shell
-# TODO(rjh): make PYTHONPATH changes a flag in `rsm`, so that they can be set
-# in an `.rsmrc`?
-# TODO(rjh): add appropriate `--watch`es. It seems they may not work as desired right now?
-PYTHONPATH="gen/" rsm dev --python src/backend/main.py
+PYTHONPATH="gen/:hello-world/backend/src" rsm dev --working-directory=. --python hello-world/backend/src/main.py
 ```
 
 <!--
