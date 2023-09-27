@@ -2,83 +2,78 @@
 
 <!--
 TODO: include a frontend in this example.
-
-TODO: use Docusaurus tools to pull the `shell` snippets from
-`tests/readme_test.sh`?
-
-ATTENTION maintainers: for now, if you change the instructions in this file,
-also change the matching steps in the CI test that mimics this document:
-  `tests/readme_test.sh`.
 -->
 
-Goal of this example: demonstrate the simplest possible Resemble application,
-without build system.
+This repository contains example applications written using Resemble. The
+examples are structured in the style of a monorepo: all proto files can be found
+in the `api/` directory, while application code is broken into subdirectories by
+application name.
+
+For example, the `hello-world` application uses code from `hello-world/` and
+protos from `api/hello-world/`.
 
 ## Setup
 
-### Prerequisites
-
-You must have the following tools installed:
-
-- Python (including `pip` and `venv`) >= 3.10
+Before setting up this example, follow the [Resemble Quick Start
+guide](../documentation/docs/quick-start.md) to set up general Resemble
+requirements.
 
 ### Get this example
 
-TODO: instructions for `git clone`.
+<!-- TODO: fetch this snippet from a test. -->
 
 ```shell
-cd resemble-examples/
+git clone https://github.com/reboot-dev/resemble-examples.git
+cd hello-world/
 ```
-
-### Create and activate a virtual environment
-
-```shell
-python -m venv ./.hello-world-venv
-source ./.hello-world-venv/bin/activate
-```
-
-### Install Resemble tooling
-
-```shell
-pip install reboot-resemble-cli
-```
-
-This installs the `rsm` CLI, the Resemble `protoc` plugin, and the
-`grpcio-tools` package that provides `protoc`.
-
-## Build
 
 ### Install Python requirements
 
-```shell
+The Python requirements for this example include the Resemble backend library, `reboot-resemble`.
+
+<!-- MARKDOWN-AUTO-DOCS:START (CODE:src=./readme_test.sh&lines=52-52) -->
+<!-- The below code snippet is automatically added from ./readme_test.sh -->
+```sh
 pip install -r hello-world/backend/src/requirements.txt
 ```
+<!-- MARKDOWN-AUTO-DOCS:END -->
 
 ### Compile protocol buffers
 
-<!--
-TODO(benh,zakhar): change the default output directory from `gen/` to `api/`.
--->
+Run the Resemble `protoc` plugin to generate Resemble code for the example
+service:
 
-```shell
+<!-- MARKDOWN-AUTO-DOCS:START (CODE:src=./readme_test.sh&lines=55-55) -->
+<!-- The below code snippet is automatically added from ./readme_test.sh -->
+```sh
 rsm protoc ./api/hello_world/v1/greeter.proto
 ```
+<!-- MARKDOWN-AUTO-DOCS:END -->
 
 ## Test
 
-```shell
+Run example tests with `pytest`:
+
+<!-- MARKDOWN-AUTO-DOCS:START (CODE:src=./readme_test.sh&lines=58-58) -->
+<!-- The below code snippet is automatically added from ./readme_test.sh -->
+```sh
 pytest hello-world/backend/
 ```
+<!-- MARKDOWN-AUTO-DOCS:END -->
 
 ## Run
 
+Start the example using the `rsm` CLI:
+
 <!--
-TODO(benh,zakhar): auto-detect the PROTOPATH.
-TODO(rjh): add appropriate `--watch`es. It seems they may not work as desired right now?
+TODO: include this command in readme_test.sh.
 -->
 
 ```shell
-PYTHONPATH="gen/:hello-world/backend/src" rsm dev --working-directory=. --python hello-world/backend/src/main.py
+# TODO(rjh): make PYTHONPATH changes a flag in `rsm`, so that they can be set
+# in an `.rsmrc`?
+# TODO(rjh): add appropriate `--watch`es. It seems they may not work as desired right now?
+PYTHONPATH="gen/" rsm dev --python src/backend/main.py
 ```
 
 <!--
