@@ -35,7 +35,7 @@ source ./.hello-world-venv/bin/activate
 # Install Resemble tooling.
 # Manually run the default value in a separate line here (with slightly odd
 # indentation) to give us a clean line to pull for the example in the README.
-if [ -z "$REBOOT_RESEMBLE_CLI_PACKAGE" ]; then
+if [ -z "${REBOOT_RESEMBLE_CLI_PACKAGE:-}" ]; then
 pip install reboot-resemble-cli
 else
 pip install ${REBOOT_RESEMBLE_CLI_PACKAGE}
