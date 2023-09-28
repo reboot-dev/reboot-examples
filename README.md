@@ -65,6 +65,12 @@ rsm protoc ./api/hello_world/v1/greeter.proto
 ```
 <!-- MARKDOWN-AUTO-DOCS:END -->
 
+The `rsm` tool will automatically pull in required Resemble proto dependencies
+like `resemble/v1alpha1/options.proto`, even though they're not found in this
+repository.
+
+<!-- TODO: link to the Resemble proto definitions once they are publicly available. -->
+
 ## Test
 
 The example code comes with example tests. To run the example tests, use  `pytest`:
