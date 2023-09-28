@@ -6,7 +6,7 @@ TODO: include a frontend in this example.
 
 This repository contains example applications written using Resemble. The
 examples are structured in the style of a monorepo: all proto files can be found
-in the `api/` directory, grouped into subdirectories by application name, while application code is broken into top-level directories by
+in the `api/` directory, grouped into subdirectories by proto package, while application code is broken into top-level directories by
 application name.
 
 For example, the `hello-world` application uses code from `hello-world/` and
