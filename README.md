@@ -97,7 +97,7 @@ TODO(rjh): add appropriate `--watch`es. It seems they may not work as desired ri
 -->
 
 ```shell
-PYTHONPATH="gen/:hello-world/backend/src" rsm dev --working-directory=. --python hello-world/backend/src/main.py
+rsm dev --env=PYTHONPATH=gen/ --working-directory=. --python hello-world/backend/src/main.py
 ```
 
 The PYTHONPATH must be explicitly set to pick up both the generated Resemble
