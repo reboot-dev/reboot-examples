@@ -52,7 +52,7 @@ pip install $REBOOT_RESEMBLE_PACKAGE
 pip install -r hello-constructors/backend/src/requirements.txt
 
 # Compile protocol buffers.
-rsm protoc ./api/hello_constructors/v1/greeter.proto
+rsm protoc
 
 # Test.
 pytest hello-constructors/backend/

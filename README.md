@@ -176,12 +176,24 @@ pip install -r hello-constructors/backend/src/requirements.txt
 
 Run the Resemble `protoc` plugin to generate Resemble code based on the protobuf
 definition of a service. The following command will generate code for the
+<<<<<<< HEAD
 `hello-constructors` application, whose sole service is defined in `greeter.proto`:
+||||||| parent of 4ca6cc1 (Use '.rsmrc')
+`HelloWorld` application, whose sole service is defined in `greeter.proto`:
+=======
+`HelloWorld` application:
+>>>>>>> 4ca6cc1 (Use '.rsmrc')
 
 <!-- MARKDOWN-AUTO-DOCS:START (CODE:src=./readme_test.sh&lines=55-55) -->
 <!-- The below code snippet is automatically added from ./readme_test.sh -->
 ```sh
+<<<<<<< HEAD
 rsm protoc ./api/hello_constructors/v1/greeter.proto
+||||||| parent of 4ca6cc1 (Use '.rsmrc')
+rsm protoc ./api/hello_world/v1/greeter.proto
+=======
+rsm protoc
+>>>>>>> 4ca6cc1 (Use '.rsmrc')
 ```
 <!-- MARKDOWN-AUTO-DOCS:END -->
 
@@ -212,24 +224,16 @@ TODO: include this command in readme_test.sh.
 -->
 
 <!--
-TODO(benh,zakhar): auto-detect the PROTOPATH.
 TODO(rjh): add appropriate `--watch`es. It seems they may not work as desired right now?
 -->
 
 ```shell
-PYTHONPATH="gen/:hello-constructors/backend/src" rsm dev \
-  --working-directory=. \
-  --python hello-constructors/backend/src/main.py
+rsm dev --config=hello-constructors
 ```
 
-The PYTHONPATH must be explicitly set to pick up both the generated Resemble
-code and the application code.
-
-`rsm dev` will then run the Python script specified by the
-`--python` flag from the directory specified by the `--working-directory` flag.
-
-The tool will automatically watch the given python script for changes. If there
-are changes, it will restart the running application to reflect the update.
+Running `rsm dev` will watch for file modifications and restart the
+running application if necessary. See the `.rsmrc` file for flags and
+arguments that get expanded when running `rsm dev --config=hello-world`.
 
 <!--
 TODO: introduce an `rsm grpcurl` (or `rsm call` or ...) that lets us explore
