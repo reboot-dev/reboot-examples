@@ -22,7 +22,6 @@ ls -l api/ hello-world/backend/src/ 2> /dev/null > /dev/null || {
 
 # Use the published Resemble pip packages by default, but allow the test system
 # to override them with a different value.
-REBOOT_RESEMBLE_CLI_PACKAGE=${REBOOT_RESEMBLE_CLI_PACKAGE:-"reboot-resemble-cli"}
 REBOOT_RESEMBLE_PACKAGE=${REBOOT_RESEMBLE_PACKAGE:-"reboot-resemble"}
 
 
@@ -34,7 +33,13 @@ python -m venv ./.hello-world-venv
 source ./.hello-world-venv/bin/activate
 
 # Install Resemble tooling.
+# Manually run the default value in a separate line here (with slightly odd
+# indentation) to give us a clean line to pull for the example in the README.
+if [ -z "${REBOOT_RESEMBLE_CLI_PACKAGE:-}" ]; then
+pip install reboot-resemble-cli
+else
 pip install ${REBOOT_RESEMBLE_CLI_PACKAGE}
+fi
 
 # Install Python requirements.
 #

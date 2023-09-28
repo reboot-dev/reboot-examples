@@ -1,76 +1,89 @@
-# Hello world example
+# Resemble Examples
 
 <!--
 TODO: include a frontend in this example.
-
-TODO: use Docusaurus tools to pull the `shell` snippets from
-`tests/readme_test.sh`?
-
-ATTENTION maintainers: for now, if you change the instructions in this file,
-also change the matching steps in the CI test that mimics this document:
-  `tests/readme_test.sh`.
 -->
 
-Goal of this example: demonstrate the simplest possible Resemble application,
-without build system.
+This repository contains example applications written using Resemble. The
+examples are structured in the style of a monorepo: all proto files can be found
+in the `api/` directory, grouped into subdirectories by proto package, while application code is broken into top-level directories by
+application name.
+
+For example, the `hello-world` application uses code from `hello-world/` and
+protos from `api/hello-world/`.
 
 ## Setup
 
-### Prerequisites
+<!-- TODO: Update the Quick Start link below once the Resemble docs are published with a more official address. -->
 
-You must have the following tools installed:
+Before running examples from this repository, follow the [Installation
+section](https://vigilant-adventure-g31v411.pages.github.io/docs/quick-start#installation)
+of the Resemble "Quick Start" guide to set up general Resemble requirements.
 
-- Python (including `pip` and `venv`) >= 3.10
+## Run an Example
 
-### Get this example
+These steps will walk you through the process of downloading and running
+examples from this repository locally on your machine.
 
-TODO: instructions for `git clone`.
+### Clone Repository
+
+<!-- TODO: fetch this snippet from a test. -->
+
+To get started with these examples, clone this repository:
 
 ```shell
+git clone https://github.com/reboot-dev/resemble-examples.git
 cd resemble-examples/
 ```
 
-### Create and activate a virtual environment
+### Install Python Requirements
 
-```shell
-python -m venv ./.hello-world-venv
-source ./.hello-world-venv/bin/activate
-```
+As with most Python applications, these examples have requirements that must be
+installed before the application code can run successfully. These Python
+requirements include the Resemble backend library, `reboot-resemble`.
 
-### Install Resemble tooling
+Requirements are specific to a particular example application. The following
+command will install requirements for the `HelloWorld` application.
 
-```shell
-pip install reboot-resemble-cli
-```
-
-This installs the `rsm` CLI, the Resemble `protoc` plugin, and the
-`grpcio-tools` package that provides `protoc`.
-
-## Build
-
-### Install Python requirements
-
-```shell
+<!-- MARKDOWN-AUTO-DOCS:START (CODE:src=./readme_test.sh&lines=52-52) -->
+<!-- The below code snippet is automatically added from ./readme_test.sh -->
+```sh
 pip install -r hello-world/backend/src/requirements.txt
 ```
+<!-- MARKDOWN-AUTO-DOCS:END -->
 
-### Compile protocol buffers
+### Compile Protocol Buffers
 
-<!--
-TODO(benh,zakhar): change the default output directory from `gen/` to `api/`.
--->
+Run the Resemble `protoc` plugin to generate Resemble code based on the protobuf
+definition of a service. The following command will generate code for the
+`HelloWorld` application, whose sole service is defined in `greeter.proto`:
 
-```shell
+<!-- MARKDOWN-AUTO-DOCS:START (CODE:src=./readme_test.sh&lines=55-55) -->
+<!-- The below code snippet is automatically added from ./readme_test.sh -->
+```sh
 rsm protoc ./api/hello_world/v1/greeter.proto
 ```
+<!-- MARKDOWN-AUTO-DOCS:END -->
 
 ## Test
 
-```shell
+The example code comes with example tests. To run the example tests, use  `pytest`:
+
+<!-- MARKDOWN-AUTO-DOCS:START (CODE:src=./readme_test.sh&lines=58-58) -->
+<!-- The below code snippet is automatically added from ./readme_test.sh -->
+```sh
 pytest hello-world/backend/
 ```
+<!-- MARKDOWN-AUTO-DOCS:END -->
 
 ## Run
+
+To start an application, use the `rsm` CLI. The following command starts the
+`HelloWorld` example.
+
+<!--
+TODO: include this command in readme_test.sh.
+-->
 
 <!--
 TODO(benh,zakhar): auto-detect the PROTOPATH.
@@ -80,6 +93,15 @@ TODO(rjh): add appropriate `--watch`es. It seems they may not work as desired ri
 ```shell
 PYTHONPATH="gen/:hello-world/backend/src" rsm dev --working-directory=. --python hello-world/backend/src/main.py
 ```
+
+The PYTHONPATH must be explicitly set to pick up both the generated Resemble
+code and the application code.
+
+`rsm dev` will then run the Python script specified by the
+`--python` flag from the directory specified by the `--working-directory` flag.
+
+The tool will automatically watch the given python script for changes. If there
+are changes, it will restart the running application to reflect the update.
 
 <!--
 TODO: introduce an `rsm grpcurl` (or `rsm call` or ...) that lets us explore
