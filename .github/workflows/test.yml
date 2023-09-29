@@ -37,8 +37,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: readme_test.sh
-        # Run the readme_test.sh script from the root of the repository.
-        # This script is used to validate the README.md file.
-        run: |
-          ./readme_test.sh
+      - name: readme_test.sh (in Dev Container)
+        uses: devcontainers/ci@v0.3
+        with:
+          # Run the readme_test.sh script from the root of the repository.
+          # This script is used to validate the README.md file.
+          runCmd: |
+            ./readme_test.sh
