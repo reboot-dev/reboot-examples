@@ -47,3 +47,21 @@ dev:hello-constructors --python
 
 # Run this application!
 dev:hello-constructors hello-constructors/backend/src/main.py
+
+# Watch for if any generated files are modified.
+dev:hello-world --watch=api/**/*.py
+
+# Watch if any of our source files are modified.
+dev:hello-world --watch=hello-world/backend/src/**/*.py
+
+# PYTHONPATH must be explicitly set to pick up generated code.
+dev:hello-world --env=PYTHONPATH=api/
+
+# Tell `rsm` that this is a Python application.
+dev:hello-world --python
+
+# Don't run chaos so we don't lose state.
+dev:hello-world --no-chaos
+
+# Run this application!
+dev:hello-world hello-world/backend/src/main.py
