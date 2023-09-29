@@ -9,8 +9,8 @@ examples are structured in the style of a monorepo: all proto files can be found
 in the `api/` directory, grouped into subdirectories by proto package, while application code is broken into top-level directories by
 application name.
 
-For example, the `hello-world` application uses code from `hello-world/` and
-protos from `api/hello-world/`.
+For example, the `hello-constructors` application uses code from `hello-constructors/` and
+protos from `api/hello_constructors/`.
 
 ## Setup in a Dev Container
 
@@ -130,13 +130,13 @@ installed before the application code can run successfully. These Python
 requirements include the Resemble backend library, `reboot-resemble`.
 
 Requirements are specific to a particular example application. The following
-command will install requirements for the `HelloWorld` application.
+command will install requirements for the `hello-constructors` application.
 
 <!-- MARKDOWN-AUTO-DOCS:START (CODE:src=./readme_test.sh&lines=52-52) -->
 <!-- The below code snippet is automatically added from ./readme_test.sh -->
 
 ```sh
-pip install -r hello-world/backend/src/requirements.txt
+pip install -r hello-constructors/backend/src/requirements.txt
 ```
 
 <!-- MARKDOWN-AUTO-DOCS:END -->
@@ -145,13 +145,13 @@ pip install -r hello-world/backend/src/requirements.txt
 
 Run the Resemble `protoc` plugin to generate Resemble code based on the protobuf
 definition of a service. The following command will generate code for the
-`HelloWorld` application, whose sole service is defined in `greeter.proto`:
+`hello-constructors` application, whose sole service is defined in `greeter.proto`:
 
 <!-- MARKDOWN-AUTO-DOCS:START (CODE:src=./readme_test.sh&lines=55-55) -->
 <!-- The below code snippet is automatically added from ./readme_test.sh -->
 
 ```sh
-rsm protoc ./api/hello_world/v1/greeter.proto
+rsm protoc ./api/hello_constructors/v1/greeter.proto
 ```
 
 <!-- MARKDOWN-AUTO-DOCS:END -->
@@ -170,7 +170,7 @@ The example code comes with example tests. To run the example tests, use `pytest
 <!-- The below code snippet is automatically added from ./readme_test.sh -->
 
 ```sh
-pytest hello-world/backend/
+pytest hello-constructors/backend/
 ```
 
 <!-- MARKDOWN-AUTO-DOCS:END -->
@@ -178,7 +178,7 @@ pytest hello-world/backend/
 ## Run
 
 To start an application, use the `rsm` CLI. The following command starts the
-`HelloWorld` example.
+`hello-constructors` example.
 
 <!--
 TODO: include this command in readme_test.sh.
@@ -190,7 +190,9 @@ TODO(rjh): add appropriate `--watch`es. It seems they may not work as desired ri
 -->
 
 ```shell
-PYTHONPATH="gen/:hello-world/backend/src" rsm dev --working-directory=. --python hello-world/backend/src/main.py
+PYTHONPATH="gen/:hello-constructors/backend/src" rsm dev \
+  --working-directory=. \
+  --python hello-constructors/backend/src/main.py
 ```
 
 The PYTHONPATH must be explicitly set to pick up both the generated Resemble
