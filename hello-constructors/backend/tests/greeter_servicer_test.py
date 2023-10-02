@@ -1,6 +1,6 @@
 import unittest
-from hello_constructors.v1.greeter_rsm import Greeter, GreetResponse
 from greeter_servicer import GreeterServicer
+from hello_constructors.v1.greeter_rsm import Greeter, GreetResponse
 from resemble.aio.tests import Resemble
 from resemble.aio.workflows import Workflow
 
@@ -25,5 +25,7 @@ class TestGreeter(unittest.IsolatedAsyncioTestCase):
         # before other methods can be called on it.
         await greeter.Create(workflow, greeting="Hello")
 
-        response: GreetResponse = await greeter.Greet(workflow, name="Constructors")
+        response: GreetResponse = await greeter.Greet(
+            workflow, name="Constructors"
+        )
         self.assertEqual(response.message, "Hello, Constructors")
