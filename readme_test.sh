@@ -14,7 +14,7 @@ set -x
 
 # Check that this script has been invoked with the right working directory, by
 # checking that the expected subdirectories exist.
-ls -l api/ hello-world/backend/src/ 2> /dev/null > /dev/null || {
+ls -l api/ hello-constructors/backend/src/ 2> /dev/null > /dev/null || {
   echo "ERROR: this script must be invoked from the root of the 'resemble-examples' repository."
   echo "Current working directory is '$(pwd)'."
   exit 1
@@ -29,8 +29,8 @@ REBOOT_RESEMBLE_PACKAGE=${REBOOT_RESEMBLE_PACKAGE:-"reboot-resemble"}
 # From here on we follow the `README.md` instructions verbatim.
 
 # Create and activate a virtual environment.
-python -m venv ./.hello-world-venv
-source ./.hello-world-venv/bin/activate
+python -m venv ./.hello-constructors-venv
+source ./.hello-constructors-venv/bin/activate
 
 # Install Resemble tooling.
 # Manually run the default value in a separate line here (with slightly odd
@@ -49,10 +49,10 @@ fi
 # skipped in favor of the version already installed.
 pip install $REBOOT_RESEMBLE_PACKAGE
 # Back to what's in the readme verbatim.
-pip install -r hello-world/backend/src/requirements.txt
+pip install -r hello-constructors/backend/src/requirements.txt
 
 # Compile protocol buffers.
-rsm protoc ./api/hello_world/v1/greeter.proto
+rsm protoc ./api/hello_constructors/v1/greeter.proto
 
 # Test.
-pytest hello-world/backend/
+pytest hello-constructors/backend/
