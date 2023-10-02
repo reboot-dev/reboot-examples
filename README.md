@@ -217,7 +217,7 @@ rsm dev --config=hello-constructors
 
 Running `rsm dev` will watch for file modifications and restart the
 running application if necessary. See the `.rsmrc` file for flags and
-arguments that get expanded when running `rsm dev --config=hello-world`.
+arguments that get expanded when running `rsm dev`.
 
 <!--
 TODO: introduce an `rsm grpcurl` (or `rsm call` or ...) that lets us explore
