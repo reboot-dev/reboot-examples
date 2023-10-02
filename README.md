@@ -134,11 +134,9 @@ command will install requirements for the `hello-constructors` application.
 
 <!-- MARKDOWN-AUTO-DOCS:START (CODE:src=./readme_test.sh&lines=52-52) -->
 <!-- The below code snippet is automatically added from ./readme_test.sh -->
-
 ```sh
 pip install -r hello-constructors/backend/src/requirements.txt
 ```
-
 <!-- MARKDOWN-AUTO-DOCS:END -->
 
 ### Compile Protocol Buffers
@@ -149,11 +147,9 @@ definition of a service. The following command will generate code for the
 
 <!-- MARKDOWN-AUTO-DOCS:START (CODE:src=./readme_test.sh&lines=55-55) -->
 <!-- The below code snippet is automatically added from ./readme_test.sh -->
-
 ```sh
 rsm protoc ./api/hello_constructors/v1/greeter.proto
 ```
-
 <!-- MARKDOWN-AUTO-DOCS:END -->
 
 The `rsm` tool will automatically pull in required Resemble proto dependencies
@@ -168,11 +164,9 @@ The example code comes with example tests. To run the example tests, use `pytest
 
 <!-- MARKDOWN-AUTO-DOCS:START (CODE:src=./readme_test.sh&lines=58-58) -->
 <!-- The below code snippet is automatically added from ./readme_test.sh -->
-
 ```sh
 pytest hello-constructors/backend/
 ```
-
 <!-- MARKDOWN-AUTO-DOCS:END -->
 
 ## Run
