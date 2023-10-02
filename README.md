@@ -12,16 +12,26 @@ application name.
 For example, the `hello-world` application uses code from `hello-world/` and
 protos from `api/hello-world/`.
 
-## Setup
+## Setup in a Dev Container
 
-You can run this example in the following ways:
+[Dev Containers](https://containers.dev/) are a convenient way to create
+reproducible development environments. Resemble provides a Dev Container that
+has everything a Resemble application needs to run. Using that Dev Container is
+normally the easiest way to start developing a Resemble application, and it can
+be personalized to support your ideal workflow as your application grows.
+
+> [!NOTE]
+> The Dev Container's configuration is found in
+> `.devcontainer/devcontainer.json`. You may expand on it to customize your
+> development environment to your liking.
 
 ### On a GitHub Codespace
 
-GitHub's Codespaces are [Dev Containers](https://containers.dev/) running on
-cloud machines.
+GitHub's Codespaces are Dev Containers running on cloud machines.
 
 To try these examples in a Codespace:
+
+<!-- TODO: screenshots to support this text? -->
 
 1. Fork this repository, so that it is owned by your own GitHub account.
 2. In GitHub's webinterface, click the green "<>" (AKA "Clone, Open, or
@@ -34,15 +44,10 @@ installed, and with the repository's code already checked out.
 
 ### In a local Dev Container
 
-[Dev Containers](https://containers.dev/) are a convenient way to create
-reproducible development environments. Resemble provides a Dev Container that
-mimics the Resemble production environment; if your application works in the Dev
-Container, it will work in production.
-
-The GitHub Codespaces discussed above are Dev Containers that run in the cloud.
-You can also choose to run the same Dev Container locally, on your own machine.
-Your filesystem will be mounted into the Dev Container, so you can develop as
-normal, just within the predictable environment of a Docker container.
+You can also choose to run the Resemble Dev Container locally, on your own
+machine. Your filesystem will be mounted into the Dev Container, so you can
+develop as normal, just within the predictable environment of a Docker
+container.
 
 > [!IMPORTANT]
 > Currently, the Resemble Dev Container only works on x86 CPU architectures.
@@ -57,11 +62,6 @@ Start by cloning this repository:
 git clone https://github.com/reboot-dev/resemble-examples.git
 cd resemble-examples/
 ```
-
-> [!NOTE]
-> The Dev Container's configuration is found in
-> `.devcontainer/devcontainer.json`. You may expand on it to customize your
-> development environment to your liking.
 
 How you access the Dev Container will likely depend on the editor/IDE you prefer.
 
@@ -78,7 +78,9 @@ inside of that container.
 
 #### Using a non-Dev-Container-aware editor
 
-If your editor does not have built-in support for Dev Containers, you can use the `devcontainer` CLI.
+If your editor does not have built-in support for Dev Containers, you can use
+[the `devcontainer`
+CLI](https://code.visualstudio.com/docs/devcontainers/devcontainer-cli).
 
 Install the CLI as follows:
 
@@ -93,7 +95,7 @@ devcontainer up --workspace-folder .
 devcontainer exec /bin/bash
 ```
 
-### Without using a Dev Container
+## Setup without a Dev Container
 
 > [!IMPORTANT]
 > Currently, Resemble backends can only run on x86 Linux machines with
@@ -132,9 +134,11 @@ command will install requirements for the `HelloWorld` application.
 
 <!-- MARKDOWN-AUTO-DOCS:START (CODE:src=./readme_test.sh&lines=52-52) -->
 <!-- The below code snippet is automatically added from ./readme_test.sh -->
+
 ```sh
 pip install -r hello-world/backend/src/requirements.txt
 ```
+
 <!-- MARKDOWN-AUTO-DOCS:END -->
 
 ### Compile Protocol Buffers
@@ -145,9 +149,11 @@ definition of a service. The following command will generate code for the
 
 <!-- MARKDOWN-AUTO-DOCS:START (CODE:src=./readme_test.sh&lines=55-55) -->
 <!-- The below code snippet is automatically added from ./readme_test.sh -->
+
 ```sh
 rsm protoc ./api/hello_world/v1/greeter.proto
 ```
+
 <!-- MARKDOWN-AUTO-DOCS:END -->
 
 The `rsm` tool will automatically pull in required Resemble proto dependencies
@@ -162,9 +168,11 @@ The example code comes with example tests. To run the example tests, use `pytest
 
 <!-- MARKDOWN-AUTO-DOCS:START (CODE:src=./readme_test.sh&lines=58-58) -->
 <!-- The below code snippet is automatically added from ./readme_test.sh -->
+
 ```sh
 pytest hello-world/backend/
 ```
+
 <!-- MARKDOWN-AUTO-DOCS:END -->
 
 ## Run
