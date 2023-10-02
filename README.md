@@ -123,8 +123,6 @@ git clone https://github.com/reboot-dev/resemble-examples.git
 cd resemble-examples/
 ```
 
-
-
 ### Create and activate a virtual environment
 
 Create a new Python virtual environment in which to install Resemble
@@ -132,10 +130,12 @@ requirements and run an application:
 
 <!-- MARKDOWN-AUTO-DOCS:START (CODE:src=./readme_test.sh&lines=32-33) -->
 <!-- The below code snippet is automatically added from ./readme_test.sh -->
+
 ```sh
 python -m venv ./.hello-world-venv
 source ./.hello-world-venv/bin/activate
 ```
+
 <!-- MARKDOWN-AUTO-DOCS:END -->
 
 To learn more about why virtual environments are a best practice for Python
@@ -149,9 +149,11 @@ Resemble definitions, and the `grpcio-tools` package that provides `protoc`.
 
 <!-- MARKDOWN-AUTO-DOCS:START (CODE:src=./readme_test.sh&lines=39-39) -->
 <!-- The below code snippet is automatically added from ./readme_test.sh -->
+
 ```sh
 pip install reboot-resemble-cli
 ```
+
 <!-- MARKDOWN-AUTO-DOCS:END -->
 
 ## Run an Example
@@ -167,9 +169,11 @@ command will install requirements for the `hello-constructors` application.
 
 <!-- MARKDOWN-AUTO-DOCS:START (CODE:src=./readme_test.sh&lines=52-52) -->
 <!-- The below code snippet is automatically added from ./readme_test.sh -->
+
 ```sh
 pip install -r hello-constructors/backend/src/requirements.txt
 ```
+
 <!-- MARKDOWN-AUTO-DOCS:END -->
 
 ### Compile Protocol Buffers
@@ -179,9 +183,11 @@ definition of a service.
 
 <!-- MARKDOWN-AUTO-DOCS:START (CODE:src=./readme_test.sh&lines=55-55) -->
 <!-- The below code snippet is automatically added from ./readme_test.sh -->
+
 ```sh
 rsm protoc
 ```
+
 <!-- MARKDOWN-AUTO-DOCS:END -->
 
 The `rsm` tool will automatically pull in required Resemble proto dependencies
@@ -197,9 +203,11 @@ use `pytest`, for example:
 
 <!-- MARKDOWN-AUTO-DOCS:START (CODE:src=./readme_test.sh&lines=58-58) -->
 <!-- The below code snippet is automatically added from ./readme_test.sh -->
+
 ```sh
 pytest hello-constructors/backend/
 ```
+
 <!-- MARKDOWN-AUTO-DOCS:END -->
 
 ## Run
