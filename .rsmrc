@@ -45,10 +45,10 @@ dev:hello-constructors --env=PYTHONPATH=api/
 # Tell `rsm` that this is a Python application.
 dev:hello-constructors --python
 
-# Run this application!
+# Run hello-constructors application!
 dev:hello-constructors hello-constructors/backend/src/main.py
 
-# Watch for if any generated files are modified.
+# Watch if any generated files are modified.
 dev:hello-world --watch=api/**/*.py
 
 # Watch if any of our source files are modified.
@@ -61,7 +61,7 @@ dev:hello-world --env=PYTHONPATH=api/
 dev:hello-world --python
 
 # Save state between chaos restarts.
-dev:hello-world --name=helloworld
+dev:hello-world --name=hello-world
 
-# Run this application!
+# Run hello-world application!
 dev:hello-world hello-world/backend/src/main.py
