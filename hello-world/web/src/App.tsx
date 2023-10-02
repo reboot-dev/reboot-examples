@@ -3,7 +3,7 @@ import css from "./App.module.css";
 import { Greeter } from "./api/hello_world/v1/greeter_rsm";
 
 // We can choose any id we want because the state will be constructed when we
-// make the first writer call.
+// make the first .writer call.
 const GREETER_ID = "greeter-hello-world";
 
 const Greeting: FC<{ text: string }> = ({ text }) => {
@@ -11,11 +11,11 @@ const Greeting: FC<{ text: string }> = ({ text }) => {
 };
 
 const App = () => {
-  const [greeting, setGreeting] = useState("");
-  const greeter = Greeter({ actorId: GREETER_ID });
-  const { useGreetings, Greet } = greeter;
+  // State of the input component.
+  const [greetingMessage, setGreetingMessage] = useState("");
 
-  const { response } = useGreetings();
+  const { useGreetings } = Greeter({ actorId: GREETER_ID });;
+  const { response, mutations: { Greet } } = useGreetings();
 
   return (
     <div className={css.greetings}>
@@ -23,9 +23,9 @@ const App = () => {
         type="text"
         placeholder="Hello, World!"
         className={css.textInput}
-        onChange={(e) => setGreeting(e.target.value)}
+        onChange={(e) => setGreetingMessage(e.target.value)}
       />
-      <button className={css.button} onClick={() => Greet({ greeting })}>
+      <button className={css.button} onClick={() => Greet({ greeting: greetingMessage })}>
         Greet
       </button>
       {response !== undefined &&
