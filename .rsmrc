@@ -1,5 +1,6 @@
-# We'll run all of the examples assuming this as the working directory
-# so that any paths that we specify below are relative to it.
+# We'll run all of the examples assuming the directory of this
+# `.rsmrc` as the working directory so that any paths that we specify
+# below are relative to it.
 protoc --working-directory=.
 dev --working-directory=.
 

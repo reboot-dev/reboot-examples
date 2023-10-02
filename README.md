@@ -223,10 +223,6 @@ To start an application, use the `rsm` CLI. The following command starts the
 TODO: include this command in readme_test.sh.
 -->
 
-<!--
-TODO(rjh): add appropriate `--watch`es. It seems they may not work as desired right now?
--->
-
 ```shell
 rsm dev --config=hello-constructors
 ```
