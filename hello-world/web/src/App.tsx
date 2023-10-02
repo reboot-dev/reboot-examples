@@ -1,11 +1,12 @@
-// Add a comment: you can choose any id because the greeter will get constructed.
-import { useState } from "react";
+import { FC, useState } from "react";
 import css from "./App.module.css";
 import { Greeter } from "./api/hello_world/v1/greeter_rsm";
 
+// We can choose any id we want because the state will be constructed when we
+// make the first writer call.
 const GREETER_ID = "greeter-hello-world";
 
-const Greeting: React.FC<{ text: string }> = ({ text }) => {
+const Greeting: FC<{ text: string }> = ({ text }) => {
   return <div className={css.greeting}>{text}</div>;
 };
 
@@ -30,7 +31,7 @@ const App = () => {
       {response !== undefined &&
         response.greetings.length > 0 &&
         response.greetings.map((greeting: string) => (
-          <Greeting text={greeting} />
+          <Greeting text={greeting} key={greeting}/>
         ))}
     </div>
   );

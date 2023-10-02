@@ -8,7 +8,7 @@ logging.basicConfig(level=logging.INFO)
 
 
 async def initialize(workflow: Workflow):
-    logging.info(f"Greeter is ready...")
+    logging.info(f"Greeter is ready... Try recording a greeting!")
 
 
 async def main():

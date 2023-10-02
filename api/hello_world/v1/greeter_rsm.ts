@@ -36,10 +36,10 @@ import { v4 as uuidv4 } from "uuid";
 // TODO: create a set of input messages AND output messages and |map ..|unique
 // over those to ensure there are no duplicates.
 import {
-GreetingsRequest, 
-GreetRequest, 
 GreetResponse, 
-GreetingsResponse,
+GreetingsRequest, 
+GreetingsResponse, 
+GreetRequest,
 } from "./greeter_pb";
 
 
