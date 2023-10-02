@@ -175,25 +175,12 @@ pip install -r hello-constructors/backend/src/requirements.txt
 ### Compile Protocol Buffers
 
 Run the Resemble `protoc` plugin to generate Resemble code based on the protobuf
-definition of a service. The following command will generate code for the
-<<<<<<< HEAD
-`hello-constructors` application, whose sole service is defined in `greeter.proto`:
-||||||| parent of 4ca6cc1 (Use '.rsmrc')
-`HelloWorld` application, whose sole service is defined in `greeter.proto`:
-=======
-`HelloWorld` application:
->>>>>>> 4ca6cc1 (Use '.rsmrc')
+definition of a service.
 
 <!-- MARKDOWN-AUTO-DOCS:START (CODE:src=./readme_test.sh&lines=55-55) -->
 <!-- The below code snippet is automatically added from ./readme_test.sh -->
 ```sh
-<<<<<<< HEAD
-rsm protoc ./api/hello_constructors/v1/greeter.proto
-||||||| parent of 4ca6cc1 (Use '.rsmrc')
-rsm protoc ./api/hello_world/v1/greeter.proto
-=======
 rsm protoc
->>>>>>> 4ca6cc1 (Use '.rsmrc')
 ```
 <!-- MARKDOWN-AUTO-DOCS:END -->
 
@@ -205,7 +192,8 @@ repository.
 
 ## Test
 
-The example code comes with example tests. To run the example tests, use `pytest`:
+The example code comes with example tests. To run the example tests,
+use `pytest`, for example:
 
 <!-- MARKDOWN-AUTO-DOCS:START (CODE:src=./readme_test.sh&lines=58-58) -->
 <!-- The below code snippet is automatically added from ./readme_test.sh -->
