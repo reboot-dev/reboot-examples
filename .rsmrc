@@ -1,0 +1,26 @@
+# We'll run all of the examples assuming the directory of this
+# `.rsmrc` as the working directory so that any paths that we specify
+# below are relative to it.
+protoc --working-directory=.
+dev --working-directory=.
+
+# Generate code from our '.proto' files in 'api/'.
+protoc --output-directory=api/
+
+# Find '.proto' files in 'api/'.
+protoc api/
+
+# Watch for if any generated files are modified.
+dev:hello-constructors --watch=api/**/*.py
+
+# Watch if any of our source files are modified.
+dev:hello-constructors --watch=hello-constructors/backend/src/**/*.py
+
+# PYTHONPATH must be explicitly set to pick up generated code.
+dev:hello-constructors --env=PYTHONPATH=api/
+
+# Tell `rsm` that this is a Python application.
+dev:hello-constructors --python
+
+# Run this application!
+dev:hello-constructors hello-constructors/backend/src/main.py
