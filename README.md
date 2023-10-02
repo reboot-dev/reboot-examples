@@ -123,8 +123,6 @@ git clone https://github.com/reboot-dev/resemble-examples.git
 cd resemble-examples/
 ```
 
-
-
 ### Create and activate a virtual environment
 
 Create a new Python virtual environment in which to install Resemble
@@ -133,8 +131,8 @@ requirements and run an application:
 <!-- MARKDOWN-AUTO-DOCS:START (CODE:src=./readme_test.sh&lines=32-33) -->
 <!-- The below code snippet is automatically added from ./readme_test.sh -->
 ```sh
-python -m venv ./.hello-world-venv
-source ./.hello-world-venv/bin/activate
+python -m venv ./.hello-constructors-venv
+source ./.hello-constructors-venv/bin/activate
 ```
 <!-- MARKDOWN-AUTO-DOCS:END -->
 
