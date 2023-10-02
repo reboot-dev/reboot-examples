@@ -12,6 +12,9 @@ application name.
 For example, the `hello-constructors` application uses code from `hello-constructors/` and
 protos from `api/hello_constructors/`.
 
+This README will walk you through the process of downloading and running
+examples from this repository locally on your machine.
+
 ## Setup in a Dev Container
 
 [Dev Containers](https://containers.dev/) are a convenient way to create
@@ -103,6 +106,14 @@ devcontainer exec /bin/bash
 > distributions). If you have a machine that doesn't fit this requirement, we
 > suggest using one of the Dev Container approaches discussed above.
 
+### Prerequisites
+
+You must have the following tools installed:
+
+- Python (including `pip` and `venv`) >= 3.10
+
+### Clone Repository
+
 Start by cloning this repository:
 
 <!-- TODO: fetch this snippet from a test. -->
@@ -112,16 +123,38 @@ git clone https://github.com/reboot-dev/resemble-examples.git
 cd resemble-examples/
 ```
 
-<!-- TODO: Update the Quick Start link below once the Resemble docs are published with a more official address. -->
 
-Next, follow the [Installation
-section](https://vigilant-adventure-g31v411.pages.github.io/docs/quick-start#installation)
-of the Resemble "Quick Start" guide to set up general Resemble requirements.
+
+### Create and activate a virtual environment
+
+Create a new Python virtual environment in which to install Resemble
+requirements and run an application:
+
+<!-- MARKDOWN-AUTO-DOCS:START (CODE:src=./readme_test.sh&lines=32-33) -->
+<!-- The below code snippet is automatically added from ./readme_test.sh -->
+```sh
+python -m venv ./.hello-world-venv
+source ./.hello-world-venv/bin/activate
+```
+<!-- MARKDOWN-AUTO-DOCS:END -->
+
+To learn more about why virtual environments are a best practice for Python
+projects, see [the Python documentation for the `venv` module.](https://docs.python.org/3/library/venv.html)
+
+### Install Resemble tooling
+
+Install the Resemble command line tool (`rsm`) via `pip`. This package includes
+the `rsm` CLI, the Resemble `protoc` plugin, the proto dependencies required for
+Resemble definitions, and the `grpcio-tools` package that provides `protoc`.
+
+<!-- MARKDOWN-AUTO-DOCS:START (CODE:src=./readme_test.sh&lines=39-39) -->
+<!-- The below code snippet is automatically added from ./readme_test.sh -->
+```sh
+pip install reboot-resemble-cli
+```
+<!-- MARKDOWN-AUTO-DOCS:END -->
 
 ## Run an Example
-
-These steps will walk you through the process of downloading and running
-examples from this repository locally on your machine.
 
 ### Install Python Requirements
 
