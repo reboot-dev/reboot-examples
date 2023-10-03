@@ -29,8 +29,8 @@ REBOOT_RESEMBLE_PACKAGE=${REBOOT_RESEMBLE_PACKAGE:-"reboot-resemble"}
 # From here on we follow the `README.md` instructions verbatim.
 
 # Create and activate a virtual environment.
-python -m venv ./.hello-constructors-venv
-source ./.hello-constructors-venv/bin/activate
+python -m venv ./.resemble-examples-venv
+source ./.resemble-examples-venv/bin/activate
 
 # Install Resemble tooling.
 # Manually run the default value in a separate line here (with slightly odd

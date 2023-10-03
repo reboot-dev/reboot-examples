@@ -39,7 +39,7 @@ To try these examples in a Codespace:
 1. Fork this repository, so that it is owned by your own GitHub account.
 2. In GitHub's webinterface, click the green "<>" (AKA "Clone, Open, or
    Download") button.
-3. Select the "Codespaces" tab
+3. Select the "Codespaces" tab.
 4. Click the "+" button.
 
 This will open a cloud-hosted VSCode editor, with all of the necessary tools
@@ -123,8 +123,6 @@ git clone https://github.com/reboot-dev/resemble-examples.git
 cd resemble-examples/
 ```
 
-
-
 ### Create and activate a virtual environment
 
 Create a new Python virtual environment in which to install Resemble
@@ -133,10 +131,13 @@ requirements and run an application:
 <!-- MARKDOWN-AUTO-DOCS:START (CODE:src=./readme_test.sh&lines=32-33) -->
 <!-- The below code snippet is automatically added from ./readme_test.sh -->
 ```sh
-python -m venv ./.hello-world-venv
-source ./.hello-world-venv/bin/activate
+python -m venv ./.resemble-examples-venv
+source ./.resemble-examples-venv/bin/activate
 ```
 <!-- MARKDOWN-AUTO-DOCS:END -->
+
+For extra environment isolation, you can make a virtual environment for each
+application you want to run.
 
 To learn more about why virtual environments are a best practice for Python
 projects, see [the Python documentation for the `venv` module.](https://docs.python.org/3/library/venv.html)
