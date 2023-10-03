@@ -4,6 +4,16 @@
 TODO: include a frontend in this example.
 -->
 
+For the impatient:
+1. Get a suitable environment:
+    * [Use a GitHub Codespace](#use-a-github-codespace)
+    * [Use VSCode](#use-vscode)
+    * [Use a Docker container](#use-a-docker-container)
+    * [Install prerequisites manually](#install-prerequisites-manually)
+2. [Run an example](#run-an-example)
+
+### Overview
+
 This repository contains example applications written using Resemble. The
 examples are structured in the style of a monorepo: all proto files can be found
 in the `api/` directory, grouped into subdirectories by proto package, while application code is broken into top-level directories by
@@ -15,90 +25,61 @@ protos from `api/hello_constructors/`.
 This README will walk you through the process of downloading and running
 examples from this repository locally on your machine.
 
-## Setup in a Dev Container
+<a id="use-a-github-codespace"></a>
+## Use a GitHub Codespace
 
-[Dev Containers](https://containers.dev/) are a convenient way to create
-reproducible development environments. Resemble provides a Dev Container that
-has everything a Resemble application needs to run. Using that Dev Container is
-normally the easiest way to start developing a Resemble application, and it can
-be personalized to support your ideal workflow as your application grows.
+GitHub's Codespaces are [Dev Containers](https://containers.dev/) that
+get hosted for you in the cloud.
 
 > [!NOTE]
 > The Dev Container's configuration is found in
-> `.devcontainer/devcontainer.json`. You may expand on it to customize your
-> development environment to your liking.
+> [`.devcontainer/devcontainer.json`](.devcontainer/devcontainer.json). You
+> may expand on it to customize your development environment to your
+> liking.
 
-### On a GitHub Codespace
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/reboot-dev/resemble-examples)
+<br>
+(Right-Click to open in new tab or window)
 
-GitHub's Codespaces are Dev Containers running on cloud machines.
+Now you're ready to [Run an example](#run-an-example)!
 
-To try these examples in a Codespace:
-
-<!-- TODO: screenshots to support this text? -->
-
-1. Fork this repository, so that it is owned by your own GitHub account.
-2. In GitHub's webinterface, click the green "<>" (AKA "Clone, Open, or
-   Download") button.
-3. Select the "Codespaces" tab.
-4. Click the "+" button.
-
-This will open a cloud-hosted VSCode editor, with all of the necessary tools
-installed, and with the repository's code already checked out.
-
-### In a local Dev Container
-
-You can also choose to run the Resemble Dev Container locally, on your own
-machine. Your filesystem will be mounted into the Dev Container, so you can
-develop as normal, just within the predictable environment of a Docker
-container.
+<a id="use-vscode"></a>
+## Use VSCode
 
 > [!IMPORTANT]
-> Currently, the Resemble Dev Container only works on x86 CPU architectures.
-> **Apple-silicon (M1/M2/...) Mac users**: we will be providing support for your
-> machines soon!
+> Currently, our Dev Container at
+> [`.devcontainer/devcontainer.json`](.devcontainer/devcontainer.json)
+> only works on x86 CPU architectures. <br>
+> **Apple-silicon (M1/M2/...) Mac users**: we will be providing support for your machines soon!
 
-Start by cloning this repository:
+VSCode has built-in support for Dev Containers.
+
+Clone this repository:
 
 <!-- TODO: fetch this snippet from a test. -->
 
 ```shell
 git clone https://github.com/reboot-dev/resemble-examples.git
-cd resemble-examples/
 ```
 
-How you access the Dev Container will likely depend on the editor/IDE you prefer.
-
-#### Using VSCode
-
-VSCode has built-in support for Dev Containers. Open your Dev Container as follows:
+Open the Dev Container:
 
 - In VSCode, open the `resemble-examples` folder you've cloned.
 - Press: Ctrl+Shift+P (Linux / Windows) or Command+Shift+P (Mac)
 - Type/Select: `Dev Containers: Reopen In Container`
 
-VSCode will now start your dev container, and restart VSCode to be running
+VSCode will now start the Dev Container, and restart VSCode to be running
 inside of that container.
 
-#### Using a non-Dev-Container-aware editor
+Now you're ready to [Run an example](#run-an-example)!
 
-If your editor does not have built-in support for Dev Containers, you can use
-[the `devcontainer`
-CLI](https://code.visualstudio.com/docs/devcontainers/devcontainer-cli).
+<a id="use-a-docker-container"></a>
+## Use a Docker container
 
-Install the CLI as follows:
+COMING SOON!
 
-```
-npm install -g @devcontainers/cli
-```
-
-Then start the Dev Container, and `exec` into it:
-
-```
-devcontainer up --workspace-folder .
-devcontainer exec /bin/bash
-```
-
-## Setup without a Dev Container
+<a id="install-prerequisites-manually"></a>
+## Install prerequisites manually
 
 > [!IMPORTANT]
 > Currently, Resemble backends can only run on x86 Linux machines with
@@ -114,7 +95,7 @@ You must have the following tools installed:
 
 ### Clone Repository
 
-Start by cloning this repository:
+Clone this repository:
 
 <!-- TODO: fetch this snippet from a test. -->
 
@@ -155,6 +136,9 @@ pip install reboot-resemble-cli
 ```
 <!-- MARKDOWN-AUTO-DOCS:END -->
 
+Now you're ready to [Run an example](#run-an-example)!
+
+<a id="run-an-example"></a>
 ## Run an Example
 
 ### Install Python Requirements
@@ -164,7 +148,7 @@ installed before the application code can run successfully. These Python
 requirements include the Resemble backend library, `reboot-resemble`.
 
 Requirements are specific to a particular example application. The following
-command will install requirements for the `hello-constructors` application.
+command will install requirements for the `hello-constructors` example.
 
 <!-- MARKDOWN-AUTO-DOCS:START (CODE:src=./readme_test.sh&lines=52-52) -->
 <!-- The below code snippet is automatically added from ./readme_test.sh -->
@@ -173,39 +157,9 @@ pip install -r hello-constructors/backend/src/requirements.txt
 ```
 <!-- MARKDOWN-AUTO-DOCS:END -->
 
-### Compile Protocol Buffers
+### `rsm dev`
 
-Run the Resemble `protoc` plugin to generate Resemble code based on the protobuf
-definition of a service.
-
-<!-- MARKDOWN-AUTO-DOCS:START (CODE:src=./readme_test.sh&lines=55-55) -->
-<!-- The below code snippet is automatically added from ./readme_test.sh -->
-```sh
-rsm protoc
-```
-<!-- MARKDOWN-AUTO-DOCS:END -->
-
-The `rsm` tool will automatically pull in required Resemble proto dependencies
-like `resemble/v1alpha1/options.proto`, even though they're not found in this
-repository.
-
-<!-- TODO: link to the Resemble proto definitions once they are publicly available. -->
-
-## Test
-
-The example code comes with example tests. To run the example tests,
-use `pytest`, for example:
-
-<!-- MARKDOWN-AUTO-DOCS:START (CODE:src=./readme_test.sh&lines=58-58) -->
-<!-- The below code snippet is automatically added from ./readme_test.sh -->
-```sh
-pytest hello-constructors/backend/
-```
-<!-- MARKDOWN-AUTO-DOCS:END -->
-
-## Run
-
-To start an application, use the `rsm` CLI. The following command starts the
+To run an example, use the `rsm` CLI. The following command starts the
 `hello-constructors` example.
 
 <!--
@@ -217,10 +171,40 @@ rsm dev --config=hello-constructors
 ```
 
 Running `rsm dev` will watch for file modifications and restart the
-running application if necessary. See the `.rsmrc` file for flags and
-arguments that get expanded when running `rsm dev`.
+running example if necessary. See the `.rsmrc` file for flags and
+arguments that get expanded when running `rsm dev --config=hello-constructors`.
 
 <!--
 TODO: introduce an `rsm grpcurl` (or `rsm call` or ...) that lets us explore
 our backend in another terminal by calling RPCs.
 -->
+
+### Tests
+
+The example code comes with tests. Before you run the tests you'll
+need to ensure you've run `rsm protoc`, which will have happened for
+you if you've already run `rsm dev` without modifying `.rsmrc`,
+otherwise, you can do it manually via:
+
+<!-- MARKDOWN-AUTO-DOCS:START (CODE:src=./readme_test.sh&lines=55-55) -->
+<!-- The below code snippet is automatically added from ./readme_test.sh -->
+```sh
+rsm protoc
+```
+<!-- MARKDOWN-AUTO-DOCS:END -->
+
+`rsm protoc` will automatically make required Resemble '.proto'
+dependencies like `resemble/v1alpha1/options.proto` available on the
+import path without you having to check them into your own repository.
+
+<!-- TODO: link to the Resemble proto definitions once they are publicly available. -->
+
+Now you can run the tests using `pytest`, for example, for the
+`hello-constructors` example:
+
+<!-- MARKDOWN-AUTO-DOCS:START (CODE:src=./readme_test.sh&lines=58-58) -->
+<!-- The below code snippet is automatically added from ./readme_test.sh -->
+```sh
+pytest hello-constructors/backend/
+```
+<!-- MARKDOWN-AUTO-DOCS:END -->
