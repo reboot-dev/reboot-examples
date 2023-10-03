@@ -9,32 +9,31 @@ import "resemble/v1alpha1/options.proto";
 service Greeter {
   option (resemble.v1alpha1.service).state = "GreeterState";
 
-  rpc Create(CreateRequest) returns (CreateResponse) {
-    option (resemble.v1alpha1.method).writer = {
-      constructor: true,
+  rpc Greetings(GreetingsRequest) returns (GreetingsResponse) {
+    option (resemble.v1alpha1.method).reader = {
     };
   }
 
   rpc Greet(GreetRequest) returns (GreetResponse) {
-    option (resemble.v1alpha1.method).reader = {
+    option (resemble.v1alpha1.method).writer = {
     };
   }
 }
 
 message GreeterState {
-  string greeting = 1;
+  repeated string greetings = 2;
 }
 
-message CreateRequest {
-  string greeting = 1;  // E.g. "Hello".
-}
+message GreetingsRequest {}
 
-message CreateResponse {}
+message GreetingsResponse {
+  repeated string greetings = 1;
+}
 
 message GreetRequest {
-  string name = 1;  // E.g. "World".
+  string greeting = 1;  // E.g. "Hello, World".
 }
 
 message GreetResponse {
-  string message = 1;  // E.g. "Hello, World!".
+  string greeting = 1;
 }
