@@ -1,7 +1,7 @@
 import asyncio
 import logging
-from hello_constructors.v1.greeter_rsm import Greeter, GreetResponse
 from greeter_servicer import GreeterServicer
+from hello_constructors.v1.greeter_rsm import Greeter, GreetResponse
 from resemble.aio.applications import Application
 from resemble.aio.workflows import Workflow
 
@@ -17,7 +17,9 @@ async def initialize(workflow: Workflow):
     await greeter.Create(workflow, greeting="Hello")
 
     # Demonstrate that we can use the actor.
-    response: GreetResponse = await greeter.Greet(workflow, name="Constructors")
+    response: GreetResponse = await greeter.Greet(
+        workflow, name="Constructors"
+    )
     logging.info(f"Received a greeting: '{response.message}'")
 
 

@@ -1,6 +1,6 @@
 import unittest
-from hello_world.v1.greeter_rsm import Greeter, GreetResponse
 from greeter_servicer import GreeterServicer
+from hello_world.v1.greeter_rsm import Greeter, GreetResponse
 from resemble.aio.tests import Resemble
 from resemble.aio.workflows import Workflow
 
