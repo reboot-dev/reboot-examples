@@ -13,7 +13,7 @@ const App = () => {
   // State of the input component.
   const [greetingMessage, setGreetingMessage] = useState("");
 
-  const { useGreetings } = Greeter({ actorId: GREETER_ID });
+  const { useGreetings } = Greeter({ id: GREETER_ID });
   const {
     response,
     mutations: { Greet },
