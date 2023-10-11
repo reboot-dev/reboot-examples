@@ -24,6 +24,9 @@ ls -l api/ hello-constructors/backend/src/ 2> /dev/null > /dev/null || {
 # to override them with a different value.
 REBOOT_RESEMBLE_PACKAGE=${REBOOT_RESEMBLE_PACKAGE:-"reboot-resemble"}
 
+# Clean up any previous virtual environment. Old virtual environments can REALLY
+# mess us up.
+rm -rf ./.resemble-examples-venv
 
 ### Start of the README.md test ###
 # From here on we follow the `README.md` instructions verbatim.
