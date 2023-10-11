@@ -1,0 +1,82 @@
+syntax = "proto3";
+
+package bank.v1;
+
+import "google/protobuf/empty.proto";
+import "resemble/v1alpha1/options.proto";
+
+import "bank/v1/errors.proto";
+
+////////////////////////////////////////////////////////////////////////
+// Service definitions.
+
+service Account {
+  option (resemble.v1alpha1.service).state = "AccountState";
+
+  rpc Open(OpenRequest) returns (google.protobuf.Empty) {
+    option (resemble.v1alpha1.method).writer = {
+      constructor: true,
+    };
+  }
+
+  rpc Balance(google.protobuf.Empty) returns (BalanceResponse) {
+    option (resemble.v1alpha1.method).reader = {
+    };
+  }
+
+  rpc Deposit(DepositRequest) returns (DepositResponse) {
+    option (resemble.v1alpha1.method).writer = {
+    };
+  }
+
+  rpc Withdraw(WithdrawRequest) returns (WithdrawResponse) {
+    option (resemble.v1alpha1.method) = {
+      writer: {},
+      errors: [ "OverdraftError" ],
+    };
+  }
+
+  // An async task to send a welcome email to the customer.
+  rpc WelcomeEmailTask(google.protobuf.Empty)
+      returns (google.protobuf.Empty) {
+    option (resemble.v1alpha1.method) = {
+      writer: {},
+      task: true,
+    };
+  }
+}
+
+////////////////////////////////////////////////////////////////////////
+// State types.
+
+message AccountState {
+  string customer_name = 1;
+  uint64 balance = 2;
+}
+
+////////////////////////////////////////////////////////////////////////
+// Request and response types.
+
+message OpenRequest {
+  string customer_name = 1;
+}
+
+message BalanceResponse {
+  uint64 balance = 1;
+}
+
+message DepositRequest {
+  uint64 amount = 1;
+}
+
+message DepositResponse {
+  uint64 updated_balance = 1;
+}
+
+message WithdrawRequest {
+  uint64 amount = 1;
+}
+
+message WithdrawResponse {
+  uint64 updated_balance = 1;
+}
