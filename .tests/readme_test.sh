@@ -59,3 +59,6 @@ rsm protoc
 
 # Test.
 pytest hello-constructors/backend/
+
+# Clean up.
+rm -rf ./.resemble-examples-venv
