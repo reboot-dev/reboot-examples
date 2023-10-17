@@ -72,6 +72,10 @@ function runPyTest () {
 
   # Test.
   pytest $pytest_folder
+
+  # We're done with this virtual environment. Deactivate it. It will get deleted
+  # when we start the next one.
+  deactivate
 }
 
 for pytest_folder in "${all_pytest_folders[@]}"; do

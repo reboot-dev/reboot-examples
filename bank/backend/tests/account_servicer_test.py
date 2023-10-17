@@ -8,6 +8,11 @@ from resemble.aio.workflows import Workflow
 from unittest.mock import patch
 
 
+def report_error_to_user(error_message: str) -> None:
+    # This is a dummy function for use in documentation code snippets.
+    pass
+
+
 class TestAccount(unittest.IsolatedAsyncioTestCase):
 
     async def asyncSetUp(self) -> None:
@@ -44,8 +49,20 @@ class TestAccount(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(response.balance, 40)
 
         # When we withdraw too much money, we should get an error.
+        # Use a try/catch here to get a code snippet for use in docs.
         with self.assertRaises(Account.WithdrawError) as e:
-            await account.Withdraw(workflow, amount=65)
+            try:
+                await account.Withdraw(workflow, amount=65)
+            except Account.WithdrawError as error:
+                if isinstance(error.detail, OverdraftError):
+                    report_error_to_user(
+                        'Your withdrawal could not be processed due to '
+                        'insufficient funds. Your account balance is less '
+                        'than the requested amount by '
+                        f'{error.detail.amount} dollars.'
+                    )
+                raise
+
         self.assertTrue(isinstance(e.exception.detail, OverdraftError))
         self.assertEqual(e.exception.detail.amount, 25)
         # ... and the balance shouldn't have changed.

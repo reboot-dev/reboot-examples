@@ -43,4 +43,4 @@ jobs:
           # Run the readme_test.sh script from the root of the repository.
           # This script is used to validate the README.md file.
           runCmd: |
-            ./readme_test.sh
+            ./.tests/readme_test.sh
