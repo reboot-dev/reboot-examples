@@ -35,15 +35,6 @@ rm -rf ./.resemble-examples-venv
 python -m venv ./.resemble-examples-venv
 source ./.resemble-examples-venv/bin/activate
 
-# Install Resemble tooling.
-# Manually run the default value in a separate line here (with slightly odd
-# indentation) to give us a clean line to pull for the example in the README.
-if [ -z "${REBOOT_RESEMBLE_CLI_PACKAGE:-}" ]; then
-pip install reboot-resemble-cli
-else
-pip install ${REBOOT_RESEMBLE_CLI_PACKAGE}
-fi
-
 # Install Python requirements.
 #
 # First an extra step to let local unit tests work: install the
@@ -59,3 +50,6 @@ rsm protoc
 
 # Test.
 pytest hello-constructors/backend/
+
+# Clean up.
+rm -rf ./.resemble-examples-venv

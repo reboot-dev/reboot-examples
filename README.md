@@ -142,18 +142,11 @@ application you want to run.
 To learn more about why virtual environments are a best practice for Python
 projects, see [the Python documentation for the `venv` module.](https://docs.python.org/3/library/venv.html)
 
-### Install Resemble tooling
+### Installing Resemble tooling
 
-Install the Resemble command line tool (`rsm`) via `pip`. This package includes
-the `rsm` CLI, the Resemble `protoc` plugin, the proto dependencies required for
-Resemble definitions, and the `grpcio-tools` package that provides `protoc`.
-
-<!-- MARKDOWN-AUTO-DOCS:START (CODE:src=./.tests/readme_test.sh&lines=42-42) -->
-<!-- The below code snippet is automatically added from ./.tests/readme_test.sh -->
-```sh
-pip install reboot-resemble-cli
-```
-<!-- MARKDOWN-AUTO-DOCS:END -->
+All of the Resemble tooling you need, most notably the `rsm` CLI, is included in
+the Python requirements of the example you're about to run - no extra install
+steps needed!
 
 ## Run an Example
 
@@ -166,7 +159,7 @@ requirements include the Resemble backend library, `reboot-resemble`.
 Requirements are specific to a particular example application. The following
 command will install requirements for the `hello-constructors` application.
 
-<!-- MARKDOWN-AUTO-DOCS:START (CODE:src=./.tests/readme_test.sh&lines=55-55) -->
+<!-- MARKDOWN-AUTO-DOCS:START (CODE:src=./.tests/readme_test.sh&lines=46-46) -->
 <!-- The below code snippet is automatically added from ./.tests/readme_test.sh -->
 ```sh
 pip install -r hello-constructors/backend/src/requirements.txt
@@ -178,7 +171,7 @@ pip install -r hello-constructors/backend/src/requirements.txt
 Run the Resemble `protoc` plugin to generate Resemble code based on the protobuf
 definition of a service.
 
-<!-- MARKDOWN-AUTO-DOCS:START (CODE:src=./.tests/readme_test.sh&lines=58-58) -->
+<!-- MARKDOWN-AUTO-DOCS:START (CODE:src=./.tests/readme_test.sh&lines=49-49) -->
 <!-- The below code snippet is automatically added from ./.tests/readme_test.sh -->
 ```sh
 rsm protoc
@@ -196,7 +189,7 @@ repository.
 The example code comes with example tests. To run the example tests,
 use `pytest`, for example:
 
-<!-- MARKDOWN-AUTO-DOCS:START (CODE:src=./.tests/readme_test.sh&lines=61-61) -->
+<!-- MARKDOWN-AUTO-DOCS:START (CODE:src=./.tests/readme_test.sh&lines=52-52) -->
 <!-- The below code snippet is automatically added from ./.tests/readme_test.sh -->
 ```sh
 pytest hello-constructors/backend/
