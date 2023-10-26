@@ -22,10 +22,9 @@ ls -l api/ hello-constructors/backend/src/ 2> /dev/null > /dev/null || {
   exit 1
 }
 
-# Use the published Resemble pip packages by default, but allow the test system
-# to override them with a different value.
-REBOOT_RESEMBLE_PACKAGE=${REBOOT_RESEMBLE_PACKAGE:-"reboot-resemble"}
-REBOOT_RESEMBLE_CLI_PACKAGE=${REBOOT_RESEMBLE_CLI_PACKAGE:-""}
+# Require `REBOOT_RESEMBLE_PACKAGE` to have been passed; all tests should be
+# explicit about what package they expect to use.
+echo "Using Resemble package '$REBOOT_RESEMBLE_PACKAGE'"
 
 # Run each of the tests, each in their own virtual environment, so that they
 # can't influence each other.
@@ -37,14 +36,6 @@ function runPyTest () {
   rm -rf ./.resemble-examples-venv
   python -m venv ./.resemble-examples-venv
   source ./.resemble-examples-venv/bin/activate
-
-  # Install the Resemble CLI only if explicitly asked; otherwise we assume the
-  # system comes with a version of `rsm` installed. Installation happens in the
-  # venv, instead of system-wide, to not pollute the system's Python
-  # environment.
-  if [ -n "$REBOOT_RESEMBLE_CLI_PACKAGE" ]; then
-    pip install ${REBOOT_RESEMBLE_CLI_PACKAGE}
-  fi
 
   # Install the `reboot-resemble` package from the specified path explicitly, so
   # that if we're testing with a local version of the package, its line in

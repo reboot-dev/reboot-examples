@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+package hello_legacy_grpc.v1;
+
+import "resemble/v1alpha1/options.proto";
+import "google/protobuf/empty.proto";
+
+////////////////////////////////////////////////////////////////////////
+// Imagine you have a stateless legacy gRPC Greeter which you're in the process
+// of replacing with a stateful Resemble Greeter. Both implement the same
+// methods. While the migration is in progress, the Resemble service
+// (ResembleGreeter) may still be calling out to the now-deprecated legacy gRPC
+// service (DeprecatedGreeter) for some of its functionality.
+
+service ResembleGreeter {
+  option (resemble.v1alpha1.service).state = "GreeterState";
+
+  rpc Greet(GreetRequest) returns (GreetResponse) {
+    option (resemble.v1alpha1.method).writer = {
+    };
+  }
+
+  rpc GetSalutation(google.protobuf.Empty) returns (GetSalutationResponse) {
+    option (resemble.v1alpha1.method).reader = {
+    };
+  }
+}
+
+service DeprecatedGreeter {
+  rpc Greet(GreetRequest) returns (GreetResponse) {
+  }
+
+  rpc GetSalutation(google.protobuf.Empty) returns (GetSalutationResponse) {
+  }
+}
+
+message GreeterState {
+  int32 num_greetings = 1;
+}
+
+message GreetRequest {
+  string name = 1;  // E.g. "legacy gRPC".
+}
+
+message GreetResponse {
+  string message = 1;  // E.g. "Hello, legacy gRPC!".
+}
+
+message GetSalutationResponse {
+  string salutation = 1;  // E.g. "Hello".
+}
