@@ -16,7 +16,7 @@ class TestGreeter(unittest.IsolatedAsyncioTestCase):
     async def test_hello_constructors(self) -> None:
         await self.rsm.up(servicers=[GreeterServicer])
 
-        workflow: Workflow = self.rsm.create_workflow(name=self.id())
+        workflow: Workflow = self.rsm.create_workflow(name=f"test-{self.id()}")
 
         greeter = Greeter("testing-greeter")
 

@@ -20,7 +20,7 @@ class TestAccount(unittest.IsolatedAsyncioTestCase):
 
     async def test_signup(self) -> None:
         await self.rsm.up(servicers=[BankServicer, AccountServicer])
-        workflow: Workflow = self.rsm.create_workflow(name=self.id())
+        workflow: Workflow = self.rsm.create_workflow(name=f"test-{self.id()}")
         bank = Bank("my-bank")
 
         # The Bank state machine doesn't have a constructor, so we can simply
@@ -39,7 +39,7 @@ class TestAccount(unittest.IsolatedAsyncioTestCase):
 
     async def test_transfer(self):
         await self.rsm.up(servicers=[BankServicer, AccountServicer])
-        workflow: Workflow = self.rsm.create_workflow(name=self.id())
+        workflow: Workflow = self.rsm.create_workflow(name=f"test-{self.id()}")
         bank = Bank("my-bank")
 
         alice: SignUpResponse = await bank.SignUp(
