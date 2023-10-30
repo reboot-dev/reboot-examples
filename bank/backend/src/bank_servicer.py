@@ -1,7 +1,7 @@
 import asyncio
 import logging
 import random
-from bank.v1.account_rsm import Account, OpenRequest
+from bank.v1.account_rsm import Account
 from bank.v1.bank_rsm import (
     Bank,
     BankState,

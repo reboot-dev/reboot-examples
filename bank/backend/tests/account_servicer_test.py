@@ -22,7 +22,7 @@ class TestAccount(unittest.IsolatedAsyncioTestCase):
         await self.rsm.down()
 
     async def test_basics(self) -> None:
-        workflow: Workflow = self.rsm.create_workflow(name=self.id())
+        workflow: Workflow = self.rsm.create_workflow(name=f"test-{self.id()}")
 
         await self.rsm.up(servicers=[AccountServicer])
 
@@ -82,7 +82,7 @@ class TestAccount(unittest.IsolatedAsyncioTestCase):
             # We MUST therefore pass `in_process=True` for `@patch` to work.
             in_process=True,
         )
-        workflow: Workflow = self.rsm.create_workflow(name=self.id())
+        workflow: Workflow = self.rsm.create_workflow(name=f"test-{self.id()}")
         account = Account("testing-account")
 
         # When we open an account, we expect the user to receive a welcome

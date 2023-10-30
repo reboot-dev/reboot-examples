@@ -21,7 +21,7 @@ class TestGreeter(unittest.IsolatedAsyncioTestCase):
             legacy_grpc_servicers=[DeprecatedGreeterServicer],
         )
 
-        workflow: Workflow = self.rsm.create_workflow(name=self.id())
+        workflow: Workflow = self.rsm.create_workflow(name=f"test-{self.id()}")
 
         # Call the Resemble greeter.
         resemble_greeter = ResembleGreeter("my-greeter")
