@@ -3,7 +3,7 @@ import unittest
 from account_servicer import AccountServicer
 from bank.v1.account_rsm import Account, BalanceResponse
 from bank.v1.bank_rsm import Bank, SignUpResponse
-from bank.v1.errors_rsm import OverdraftError
+from bank.v1.errors_pb2 import OverdraftError
 from bank_servicer import BankServicer
 from resemble.aio.tests import Resemble
 from resemble.aio.workflows import Workflow

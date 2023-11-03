@@ -10,7 +10,7 @@ from bank.v1.account_rsm import (
     WithdrawRequest,
     WithdrawResponse,
 )
-from bank.v1.errors_rsm import OverdraftError
+from bank.v1.errors_pb2 import OverdraftError
 from google.protobuf.empty_pb2 import Empty
 from resemble.aio.contexts import ReaderContext, WriterContext
 
