@@ -2,7 +2,7 @@ import asyncio
 import unittest
 from account_servicer import AccountServicer
 from bank.v1.account_rsm import Account, BalanceResponse, OpenRequest
-from bank.v1.errors_rsm import OverdraftError
+from bank.v1.errors_pb2 import OverdraftError
 from resemble.aio.tests import Resemble
 from resemble.aio.workflows import Workflow
 from unittest.mock import patch
