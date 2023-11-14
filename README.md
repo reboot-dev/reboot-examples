@@ -196,6 +196,9 @@ pytest hello-constructors/backend/
 ```
 <!-- MARKDOWN-AUTO-DOCS:END -->
 
+If you want to see output from all processes run by Resemble (including
+servicers), you can run `pytest` with the `-s` flag.
+
 ## Run
 
 To start an application, use the `rsm` CLI. The following command starts the
