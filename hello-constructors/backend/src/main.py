@@ -1,33 +1,44 @@
 import asyncio
 import logging
-from greeter_servicer import GreeterServicer
-from hello_constructors.v1.greeter_rsm import Greeter, GreetResponse
+from hello_constructors.v1.hello_rsm import Hello
+from hello_servicer import HelloServicer
 from resemble.aio.applications import Application
 from resemble.aio.workflows import Workflow
 
 logging.basicConfig(level=logging.INFO)
 
-EXAMPLE_GREETER_ID = 'my-cool-greeter'
+EXAMPLE_STATE_MACHINE_ID = 'resemble-hello'
 
 
 async def initialize(workflow: Workflow):
-    greeter = Greeter(EXAMPLE_GREETER_ID)
+    hello = Hello(EXAMPLE_STATE_MACHINE_ID)
 
-    # Create the state machine.
-    await greeter.Create(workflow, greeting="Hello")
-
-    # Demonstrate that we can use the actor.
-    response: GreetResponse = await greeter.Greet(
-        workflow, name="Constructors"
+    # Explicitly create the state machine.
+    await hello.Create(
+        workflow,
+        initial_message="Welcome! This message was sent by a constructor.",
     )
-    logging.info(f"Received a greeting: '{response.message}'")
+
+    # Send a message.
+    await hello.Send(
+        workflow, message="This message was sent after construction!"
+    )
+
+    messages_response = await hello.Messages(workflow)
+    print(
+        f"After initialization, the Hello messages are: {messages_response.messages}"
+    )
 
 
 async def main():
-    await Application(
-        servicers=[GreeterServicer],
+    application = Application(
+        servicers=[HelloServicer],
         initialize=initialize,
-    ).run()
+    )
+
+    logging.info('👋 Hello, World? Hello, Resemble! 👋')
+
+    await application.run()
 
 
 if __name__ == '__main__':
