@@ -8,9 +8,9 @@ building off it, once that example is published.
 This example builds on the basic Resemble "Hello, World" example to demonstrate
 constructors.
 
-In "Hello, Constructors" a state machine can't be asked for a greeting until
+In "Hello, Constructors" a state machine can't deliver messages until
 that state machine has been created by calling its constructor method, giving it
-the salutation to use.
+an initial message to display.
 
 <!--
 TODO: link to the user guide once it explains constructors, with a mention like:
