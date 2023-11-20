@@ -20,9 +20,9 @@ ls -l api/ hello-constructors/backend/src/ 2> /dev/null > /dev/null || {
   exit 1
 }
 
-# Use the published Resemble pip packages by default, but allow the test system
+# Use the published Resemble pip package by default, but allow the test system
 # to override them with a different value.
-REBOOT_RESEMBLE_PACKAGE=${REBOOT_RESEMBLE_PACKAGE:-"reboot-resemble"}
+REBOOT_RESEMBLE_WHL_PACKAGE=${REBOOT_RESEMBLE_WHL_PACKAGE:-"reboot-resemble"}
 
 # Clean up any previous virtual environment. Old virtual environments can REALLY
 # mess us up.
@@ -41,7 +41,7 @@ source ./.resemble-examples-venv/bin/activate
 # `reboot-resemble` package from the specified path explicitly, so that if we're
 # testing with a local version of the package, its line in `requirements.txt` is
 # skipped in favor of the version already installed.
-pip install $REBOOT_RESEMBLE_PACKAGE
+pip install $REBOOT_RESEMBLE_WHL_PACKAGE
 # Back to what's in the readme verbatim.
 pip install -r hello-constructors/backend/src/requirements.txt
 

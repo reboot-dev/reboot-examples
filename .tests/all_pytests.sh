@@ -24,7 +24,7 @@ ls -l api/ hello-constructors/backend/src/ 2> /dev/null > /dev/null || {
 
 # Require `REBOOT_RESEMBLE_PACKAGE` to have been passed; all tests should be
 # explicit about what package they expect to use.
-echo "Using Resemble package '$REBOOT_RESEMBLE_PACKAGE'"
+echo "Using Resemble package '$REBOOT_RESEMBLE_WHL_PACKAGE'"
 
 # Run each of the tests, each in their own virtual environment, so that they
 # can't influence each other.
@@ -40,7 +40,7 @@ function runPyTest () {
   # Install the `reboot-resemble` package from the specified path explicitly, so
   # that if we're testing with a local version of the package, its line in
   # `requirements.txt` is skipped in favor of the version already installed.
-  pip install $REBOOT_RESEMBLE_PACKAGE
+  pip install $REBOOT_RESEMBLE_WHL_PACKAGE
 
   # Install requirements.
   requirements_txt="$pytest_folder/src/requirements.txt"
