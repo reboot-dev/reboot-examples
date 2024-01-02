@@ -7,6 +7,7 @@ from bank.v1.account_rsm import (
     DepositRequest,
     DepositResponse,
     OpenRequest,
+    OpenResponse,
     WithdrawRequest,
     WithdrawResponse,
 )
@@ -35,7 +36,9 @@ class AccountServicer(Account.Interface):
         return Account.OpenEffects(
             state=initial_state,
             tasks=[welcome_email_task],
-            response=Empty(),
+            response=OpenResponse(
+                welcome_email_task_id=welcome_email_task.task_id
+            ),
         )
 
     async def Balance(
