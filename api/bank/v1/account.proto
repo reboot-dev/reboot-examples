@@ -4,6 +4,7 @@ package bank.v1;
 
 import "google/protobuf/empty.proto";
 import "resemble/v1alpha1/options.proto";
+import "resemble/v1alpha1/tasks.proto";
 
 import "bank/v1/errors.proto";
 
@@ -13,7 +14,7 @@ import "bank/v1/errors.proto";
 service Account {
   option (resemble.v1alpha1.service).state = "AccountState";
 
-  rpc Open(OpenRequest) returns (google.protobuf.Empty) {
+  rpc Open(OpenRequest) returns (OpenResponse) {
     option (resemble.v1alpha1.method).writer = {
       constructor: true,
     };
@@ -59,6 +60,10 @@ message AccountState {
 
 message OpenRequest {
   string customer_name = 1;
+}
+
+message OpenResponse {
+  resemble.v1alpha1.TaskId welcome_email_task_id = 1;
 }
 
 message BalanceResponse {

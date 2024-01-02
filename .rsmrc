@@ -81,3 +81,19 @@ dev:hello-tasks --python
 
 # Run the hello-tasks application!
 dev:hello-tasks hello-tasks/backend/src/main.py
+
+#### Config: `bank`.
+# Watch if any generated files are modified.
+dev:bank --watch=api/**/*.py
+
+# Watch if any of our source files are modified.
+dev:bank --watch=bank/backend/src/**/*.py
+
+# PYTHONPATH must be explicitly set to pick up generated code.
+dev:bank --env=PYTHONPATH=api/
+
+# Tell `rsm` that this is a Python application.
+dev:bank --python
+
+# Run the bank application!
+dev:bank bank/backend/src/main.py

@@ -1,7 +1,12 @@
 import asyncio
 import unittest
 from account_servicer import AccountServicer
-from bank.v1.account_rsm import Account, BalanceResponse, OpenRequest
+from bank.v1.account_rsm import (
+    Account,
+    BalanceResponse,
+    OpenRequest,
+    OpenResponse,
+)
 from bank.v1.errors_pb2 import OverdraftError
 from resemble.aio.tests import Resemble
 from resemble.aio.workflows import Workflow
@@ -87,6 +92,11 @@ class TestAccount(unittest.IsolatedAsyncioTestCase):
 
         # When we open an account, we expect the user to receive a welcome
         # email.
-        await account.Open(workflow, customer_name="Alice")
-        await asyncio.sleep(0.1)  # Give the task a chance to run.
+        open_response = await account.Open(workflow, customer_name="Alice")
+
+        # Wait for the email task to run.
+        await workflow.future_from_task_id(
+            task_id=open_response.welcome_email_task_id,
+            response_type=OpenResponse,
+        )
         mock_send_email.assert_called_once()
