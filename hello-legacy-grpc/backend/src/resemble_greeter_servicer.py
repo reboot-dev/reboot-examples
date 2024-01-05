@@ -23,7 +23,7 @@ class ResembleGreeterServicer(ResembleGreeter.Interface):
         # guarantees as Resemble calls. You must ensure that the legacy gRPC
         # service does not have inappropriate effects or side effects.
         #
-        # In this example, `DeprectatedGreeter`'s `GetSalutation` RPC
+        # In this example, `DeprecatedGreeter`'s `GetSalutation` RPC
         # is a pure function, so it is safe to access from our context.
         async with context.legacy_grpc_channel() as channel:
             # Now that we have a channel for our legacy servicer, we can call
@@ -53,7 +53,8 @@ class ResembleGreeterServicer(ResembleGreeter.Interface):
             state=state,
             response=GreetResponse(
                 message=f"{salutation}, {request.name}! "
-                f"{state.num_greetings} {pluralized_phrase} been greeted today."
+                f"{state.num_greetings} {pluralized_phrase} been greeted today "
+                f"by the Resemble service."
             )
         )
 
