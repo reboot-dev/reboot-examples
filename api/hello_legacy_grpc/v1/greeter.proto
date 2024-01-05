@@ -10,27 +10,30 @@ import "google/protobuf/empty.proto";
 // of replacing with a stateful Resemble Greeter. Both implement the same
 // methods. While the migration is in progress, the Resemble service
 // (ResembleGreeter) may still be calling out to the now-deprecated legacy gRPC
-// service (DeprecatedGreeter) for some of its functionality.
+// service (DeprecatedGreeter) for some of its functionality. A proxy service
+// (ProxyGreeter) routes incoming requests to one of the two services, allowing
+// a gradual migration from one to the other.
 
 service ResembleGreeter {
   option (resemble.v1alpha1.service).state = "GreeterState";
-
   rpc Greet(GreetRequest) returns (GreetResponse) {
     option (resemble.v1alpha1.method).writer = {
     };
   }
-
   rpc GetSalutation(google.protobuf.Empty) returns (GetSalutationResponse) {
     option (resemble.v1alpha1.method).reader = {
     };
   }
 }
-
 service DeprecatedGreeter {
   rpc Greet(GreetRequest) returns (GreetResponse) {
   }
-
   rpc GetSalutation(google.protobuf.Empty) returns (GetSalutationResponse) {
+  }
+}
+
+service ProxyGreeter {
+  rpc Greet(GreetRequest) returns (GreetResponse) {
   }
 }
 

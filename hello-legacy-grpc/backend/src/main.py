@@ -3,6 +3,7 @@ import logging
 from deprecated_greeter_servicer import DeprecatedGreeterServicer
 from hello_legacy_grpc.v1 import greeter_pb2, greeter_pb2_grpc
 from hello_legacy_grpc.v1.greeter_rsm import GreetResponse, ResembleGreeter
+from proxy_greeter_servicer import ProxyGreeterServicer
 from resemble.aio.applications import Application
 from resemble.aio.workflows import Workflow
 from resemble_greeter_servicer import ResembleGreeterServicer
@@ -11,23 +12,12 @@ logging.basicConfig(level=logging.INFO)
 
 
 async def initialize(workflow: Workflow):
-    # Call the ResembleGreeter service for some greetings.
-    resemble_greeter = ResembleGreeter("my-greeter")
-    for i in range(5):
-        greet_response = await resemble_greeter.Greet(
-            workflow, name="legacy gRPC"
-        )
-        logging.info(f"Received a greeting: '{greet_response.message}'")
-
-    # Now call the DeprecatedGreeter service for a few greetings, to demonstrate
-    # that it still works.
+    # Call the ProxyGreeter service for a few greetings.
     async with workflow.legacy_grpc_channel() as channel:
-        deprecated_greeter_stub = greeter_pb2_grpc.DeprecatedGreeterStub(
-            channel
-        )
+        proxy_greeter_stub = greeter_pb2_grpc.ProxyGreeterStub(channel)
 
-        for i in range(5):
-            greet_response = await deprecated_greeter_stub.Greet(
+        for i in range(10):
+            greet_response = await proxy_greeter_stub.Greet(
                 greeter_pb2.GreetRequest(name="legacy gRPC")
             )
             logging.info(f"Received a greeting: '{greet_response.message}'")
@@ -36,7 +26,9 @@ async def initialize(workflow: Workflow):
 async def main():
     await Application(
         servicers=[ResembleGreeterServicer],
-        legacy_grpc_servicers=[DeprecatedGreeterServicer],
+        legacy_grpc_servicers=[
+            DeprecatedGreeterServicer, ProxyGreeterServicer
+        ],
         initialize=initialize,
     ).run()
 
