@@ -1,4 +1,3 @@
-import asyncio
 import logging
 from bank.v1.account_rsm import (
     Account,

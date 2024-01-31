@@ -1,4 +1,3 @@
-import asyncio
 import unittest
 from account_servicer import AccountServicer
 from bank.v1.account_rsm import Account, BalanceResponse
@@ -7,7 +6,6 @@ from bank.v1.errors_pb2 import OverdraftError
 from bank_servicer import BankServicer
 from resemble.aio.tests import Resemble
 from resemble.aio.workflows import Workflow
-from unittest.mock import patch
 
 
 class TestAccount(unittest.IsolatedAsyncioTestCase):

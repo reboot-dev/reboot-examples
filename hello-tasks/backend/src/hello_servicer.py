@@ -1,4 +1,3 @@
-import asyncio
 import uuid
 from datetime import timedelta
 from hello_tasks.v1.hello_rsm import (

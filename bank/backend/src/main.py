@@ -13,7 +13,7 @@ EXAMPLE_STATE_MACHINE_ID = 'resemble-bank'
 
 async def initialize(workflow: Workflow):
     bank = Bank(EXAMPLE_STATE_MACHINE_ID)
-    response = await bank.SignUp(workflow, customer_name="Initial User")
+    await bank.SignUp(workflow, customer_name="Initial User")
 
 
 async def main():

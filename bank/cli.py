@@ -4,6 +4,7 @@ import sys
 
 sys.path.append("../api/")
 
+# ruff: noqa: E402
 import argparse
 import asyncio
 import uuid

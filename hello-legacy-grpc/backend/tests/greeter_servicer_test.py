@@ -1,7 +1,7 @@
 import unittest
 from deprecated_greeter_servicer import DeprecatedGreeterServicer
 from hello_legacy_grpc.v1 import greeter_pb2, greeter_pb2_grpc
-from hello_legacy_grpc.v1.greeter_rsm import GreetResponse, ResembleGreeter
+from hello_legacy_grpc.v1.greeter_rsm import ResembleGreeter
 from proxy_greeter_servicer import ProxyGreeterServicer
 from resemble.aio.tests import Resemble
 from resemble.aio.workflows import Workflow
