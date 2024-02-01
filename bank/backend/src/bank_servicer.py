@@ -1,4 +1,3 @@
-import asyncio
 import logging
 import random
 from bank.v1.account_rsm import Account
@@ -9,7 +8,6 @@ from bank.v1.bank_rsm import (
     SignUpResponse,
     TransferRequest,
 )
-from bank.v1.errors_pb2 import OverdraftError
 from google.protobuf.empty_pb2 import Empty
 from resemble.aio.contexts import TransactionContext, WriterContext
 

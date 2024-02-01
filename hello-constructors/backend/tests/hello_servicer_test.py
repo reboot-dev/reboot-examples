@@ -1,5 +1,5 @@
 import unittest
-from hello_constructors.v1.hello_rsm import Hello, MessagesResponse
+from hello_constructors.v1.hello_rsm import Hello
 from hello_servicer import HelloServicer
 from resemble.aio.tests import Resemble
 from resemble.aio.workflows import Workflow

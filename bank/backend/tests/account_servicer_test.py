@@ -1,12 +1,6 @@
-import asyncio
 import unittest
 from account_servicer import AccountServicer
-from bank.v1.account_rsm import (
-    Account,
-    BalanceResponse,
-    OpenRequest,
-    OpenResponse,
-)
+from bank.v1.account_rsm import Account, BalanceResponse, OpenResponse
 from bank.v1.errors_pb2 import OverdraftError
 from resemble.aio.tests import Resemble
 from resemble.aio.workflows import Workflow

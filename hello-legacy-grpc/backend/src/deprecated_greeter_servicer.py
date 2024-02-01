@@ -1,9 +1,5 @@
-import asyncio
 import grpc.aio
-import logging
 import random
-from collections import defaultdict
-from dataclasses import dataclass
 from google.protobuf.empty_pb2 import Empty
 from hello_legacy_grpc.v1 import greeter_pb2, greeter_pb2_grpc
 
