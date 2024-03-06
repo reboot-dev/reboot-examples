@@ -114,17 +114,16 @@ async def run_action(args: argparse.Namespace) -> int:
                 amount=args.amount
             )
             print("Transfer successful!")
-        except Bank.TransferError as error:
-            if isinstance(error.detail, OverdraftError):
-                print(
-                    "Transfer unsuccessful due to insufficient funds. "
-                    "Your account balance is less than the requested "
-                    f"amount by: {error.detail.amount}"
-                )
-            else:
-                print(
-                    f"Unexpected error during transfer: '{type(error.detail)}'"
-                )
+        except Bank.TransferAborted as aborted:
+            match aborted.error:
+                case OverdraftError(amount=amount):
+                    print(
+                        "Transfer unsuccessful due to insufficient funds. "
+                        "Your account balance is less than the requested "
+                        f"amount by: {amount}"
+                    )
+                case _:
+                    print(f"Unexpected error during transfer: {aborted}")
     else:
         # These commands talk directly to the Account state machine.
         account = Account(args.account_id)
@@ -139,17 +138,16 @@ async def run_action(args: argparse.Namespace) -> int:
                 print(
                     f"Withdrawal successful! Your account balance is now: {response.updated_balance}"
                 )
-            except Account.WithdrawError as error:
-                if isinstance(error.detail, OverdraftError):
-                    print(
-                        "Withdrawal unsuccessful due to insufficient funds. "
-                        "Your account balance is less than the requested "
-                        f"amount by: {error.detail.amount}"
-                    )
-                else:
-                    print(
-                        f"Unexpected error during transfer: '{type(error.detail)}'"
-                    )
+            except Account.WithdrawAborted as aborted:
+                match aborted.error:
+                    case OverdraftError(amount=amount):
+                        print(
+                            "Withdrawal unsuccessful due to insufficient funds. "
+                            "Your account balance is less than the requested "
+                            f"amount by: {amount}"
+                        )
+                    case _:
+                        print(f"Unexpected error during withdraw: {aborted}")
         elif args.subcommand == "balance":
             response = await account.Balance(workflow)
             print(f"Your account balance is: {response.balance}")

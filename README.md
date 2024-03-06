@@ -54,7 +54,8 @@ container.
 
 > [!IMPORTANT]
 > Currently, the Resemble Dev Container only works on x86 CPU architectures.
-> **Apple-silicon (M1/M2/...) Mac users**: can experience local development.
+> **Apple-silicon (M1/M2/...) Mac users**: we will be providing support for your
+> machines soon!
 
 Start by cloning this repository:
 
@@ -100,10 +101,10 @@ devcontainer exec /bin/bash
 ## Setup without a Dev Container
 
 > [!IMPORTANT]
-> Resemble backends currently can run **on x86_64 Linux** machines with
+> Currently, Resemble backends can only run on x86 Linux machines with
 > `glibc>=2.35` (Ubuntu Jammy and other equivalent-generation Linux
-> distributions), and **on arm64/x86_64 MacOS**, where `MacOS>=13.0` and `Xcode>=14.3`. If you have a machine that doesn't fit this requirement, we
-> suggest using one of the approaches discussed above.
+> distributions). If you have a machine that doesn't fit this requirement, we
+> suggest using one of the Dev Container approaches discussed above.
 
 ### Prerequisites
 
