@@ -1,10 +1,11 @@
 #!/bin/bash
 #
-# This script will run all of the tests in this repository.
-# Here is the list of all the tests that it runs:
+# This script will run all of the tests in the following directories:
 all_pytest_folders=(
   "hello-constructors/backend"
   "bank/backend"
+  "hello-legacy-grpc/backend"
+  "hello-tasks/backend"
 )
 
 # In case of any errors, this test has failed. Fail immediately.
@@ -22,9 +23,9 @@ ls -l api/ hello-constructors/backend/src/ 2> /dev/null > /dev/null || {
   exit 1
 }
 
-# Require `REBOOT_RESEMBLE_PACKAGE` to have been passed; all tests should be
-# explicit about what package they expect to use.
-echo "Using Resemble package '$REBOOT_RESEMBLE_WHL_PACKAGE'"
+# Require `REBOOT_RESEMBLE_WHL_FILE` to have been passed; all tests calling this
+# file should be explicit about a specific Resemble wheel file they've built.
+echo "Using Resemble package '$REBOOT_RESEMBLE_WHL_FILE'"
 
 # Run each of the tests, each in their own virtual environment, so that they
 # can't influence each other.
@@ -40,7 +41,12 @@ function runPyTest () {
   # Install the `reboot-resemble` package from the specified path explicitly, so
   # that if we're testing with a local version of the package, its line in
   # `requirements.txt` is skipped in favor of the version already installed.
-  pip install $REBOOT_RESEMBLE_WHL_PACKAGE
+  pip install $REBOOT_RESEMBLE_WHL_FILE
+
+  # Save the pip show info on the package so that we can compare it after
+  # installing the rest of the requirements, to check that our custom whl hasn't
+  # been overwritten.
+  resemble_info=$(pip show reboot-resemble)
 
   # Install requirements.
   requirements_txt="$pytest_folder/src/requirements.txt"
@@ -55,7 +61,15 @@ function runPyTest () {
     echo "ERROR: 'reboot-resemble' is not in '$requirements_txt'"
     exit 1
   fi
+
   pip install -r "$requirements_txt"
+
+  # Double check that we haven't reinstalled another version of the
+  # reboot-resemble package.
+  if [ "$resemble_info" != "$(pip show reboot-resemble)" ]; then
+    echo "ERROR: reboot-resemble whl overwritten by pip install. Are the package versions out of sync?"
+    exit 1
+  fi
 
   # Compile protocol buffers.
   # TODO: how do we ensure that we're working with a clean slate here?

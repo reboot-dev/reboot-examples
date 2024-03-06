@@ -1,3 +1,4 @@
+import sys
 import unittest
 from deprecated_greeter_servicer import DeprecatedGreeterServicer
 from hello_legacy_grpc.v1 import greeter_pb2, greeter_pb2_grpc
@@ -60,6 +61,10 @@ class TestGreeter(unittest.IsolatedAsyncioTestCase):
             )
             self.assertIn(", legacy gRPC", greet_response.message)
 
+    @unittest.skipIf(
+        sys.platform == "darwin", "This test requires Docker for "
+        "the LocalEnvoy, which is unavailable on the MacOS GitHub Runner."
+    )
     async def test_proxy_greeter(self) -> None:
         await self.rsm.up(
             servicers=[ResembleGreeterServicer],

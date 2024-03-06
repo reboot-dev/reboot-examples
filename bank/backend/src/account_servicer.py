@@ -68,7 +68,7 @@ class AccountServicer(Account.Interface):
     ) -> Account.WithdrawEffects:
         updated_balance = state.balance - request.amount
         if updated_balance < 0:
-            raise Account.WithdrawError(
+            raise Account.WithdrawAborted(
                 OverdraftError(amount=-updated_balance)
             )
         return Account.WithdrawEffects(

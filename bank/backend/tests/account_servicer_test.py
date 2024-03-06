@@ -49,22 +49,25 @@ class TestAccount(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(response.balance, 40)
 
         # When we withdraw too much money, we should get an error.
-        # Use a try/catch here to get a code snippet for use in docs.
-        with self.assertRaises(Account.WithdrawError) as e:
+        # Use a helper function here to get a code snippet for use in docs.
+        async def withdraw():
             try:
                 await account.Withdraw(workflow, amount=65)
-            except Account.WithdrawError as error:
-                if isinstance(error.detail, OverdraftError):
-                    report_error_to_user(
-                        'Your withdrawal could not be processed due to '
-                        'insufficient funds. Your account balance is less '
-                        'than the requested amount by '
-                        f'{error.detail.amount} dollars.'
-                    )
+            except Account.WithdrawAborted as aborted:
+                match aborted.error:
+                    case OverdraftError(amount=amount):
+                        report_error_to_user(
+                            'Your withdrawal could not be processed due to '
+                            'insufficient funds. Your account balance is less '
+                            f'than the requested amount by {amount} dollars.'
+                        )
                 raise
 
-        self.assertTrue(isinstance(e.exception.detail, OverdraftError))
-        self.assertEqual(e.exception.detail.amount, 25)
+        with self.assertRaises(Account.WithdrawAborted) as aborted:
+            await withdraw()
+
+        self.assertTrue(isinstance(aborted.exception.error, OverdraftError))
+        self.assertEqual(aborted.exception.error.amount, 25)
         # ... and the balance shouldn't have changed.
         response = await account.Balance(workflow)
         self.assertEqual(response.balance, 40)

@@ -70,12 +70,12 @@ class TestAccount(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(response.balance, 40)
 
         # Bob tries to transfer too much money back to Alice.
-        with self.assertRaises(Bank.TransferError) as e:
+        with self.assertRaises(Bank.TransferAborted) as aborted:
             await bank.Transfer(
                 workflow,
                 from_account_id=bob.account_id,
                 to_account_id=alice.account_id,
                 amount=50,
             )
-        self.assertTrue(isinstance(e.exception.detail, OverdraftError))
-        self.assertEqual(e.exception.detail.amount, 10)
+        self.assertTrue(isinstance(aborted.exception.error, OverdraftError))
+        self.assertEqual(aborted.exception.error.amount, 10)
