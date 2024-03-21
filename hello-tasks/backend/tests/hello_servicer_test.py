@@ -1,11 +1,7 @@
 import hello_servicer
 import unittest
 from hello_servicer import HelloServicer
-from hello_tasks.v1.hello_rsm import (
-    EraseTaskResponse,
-    Hello,
-    WarningTaskResponse,
-)
+from hello_tasks.v1.hello_rsm import Hello
 from resemble.aio.tests import Resemble
 from resemble.aio.workflows import Workflow
 
@@ -44,13 +40,13 @@ class TestHello(unittest.IsolatedAsyncioTestCase):
         send_response = await hello.Send(workflow, message="Hello, World!")
 
         # Wait for the message to be erased.
-        warning_response = await workflow.future_from_task_id(
+        warning_response = await Hello.WarningTaskFuture(
+            workflow,
             task_id=send_response.task_id,
-            response_type=WarningTaskResponse,
         )
-        await workflow.future_from_task_id(
+        await Hello.EraseTaskFuture(
+            workflow,
             task_id=warning_response.task_id,
-            response_type=EraseTaskResponse,
         )
 
         # Check that the current list of messages reflects the erasure.

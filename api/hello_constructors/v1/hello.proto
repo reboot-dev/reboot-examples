@@ -12,7 +12,7 @@ service Hello {
   // Creates a Hello instance.
   rpc Create(CreateRequest) returns (CreateResponse) {
     option (resemble.v1alpha1.method).writer = {
-      constructor: true,
+      constructor: {},
     };
   }
 

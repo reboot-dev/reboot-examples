@@ -43,13 +43,16 @@ source ./.resemble-examples-venv/bin/activate
 # skipped in favor of the version already installed.
 pip install $REBOOT_RESEMBLE_PACKAGE
 # Back to what's in the readme verbatim.
-pip install -r hello-constructors/backend/src/requirements.txt
+
+cd hello-constructors
+
+pip install -r backend/src/requirements.txt
 
 # Compile protocol buffers.
 rsm protoc
 
 # Test.
-pytest hello-constructors/backend/
+pytest backend/
 
 # Clean up.
 rm -rf ./.resemble-examples-venv

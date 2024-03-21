@@ -1,0 +1,52 @@
+########################################################################
+# To expand flags or positional arguments for a specific subcommand    #
+# you can include a line such as:                                      #
+#                                                                      #
+# subcommand --flag1 --flag2=value argument                            #
+#                                                                      #
+# You can also include one flag or argument per line:                  #
+#                                                                      #
+# subcommand --flag1                                                   #
+# subcommand --flag2=value                                             #
+# subcommand argument                                                  #
+#                                                                      #
+# To only expand flags or arguments if a specific config is used with  #
+# a subcommand include lines that include 'subcommand:config', for     #
+# example:                                                             #
+#                                                                      #
+# subcommand:use-foo --flag3=foo                                       #
+#                                                                      #
+# Then you can expand that config on the command line via:             #
+#                                                                      #
+# rsm subcommand --config=use-foo`                                     #
+########################################################################
+
+# We'll run all of the examples assuming the directory of this
+# `.rsmrc` as the working directory so that any paths that we specify
+# below are relative to it.
+protoc --working-directory=.
+dev --working-directory=.
+dev --protoc-watch
+
+# Generated code will be used by our backend.
+protoc --output-directory=backend/api/
+
+# This example does not have a frontend, so we only generate the Python code
+# that the backend needs.
+protoc --generate=python
+
+# Since this repository is a monorepo, the `.proto` files are shared between all
+# applications in a single, top-level `api` directory.
+protoc ../api/
+
+# Watch if any of our source files are modified.
+dev --watch=backend/**/*.py
+
+# PYTHONPATH must be explicitly set to pick up generated code.
+dev --env=PYTHONPATH=backend/api/
+
+# Tell `rsm` that this is a Python application.
+dev --python
+
+# Run the application!
+dev backend/src/main.py
