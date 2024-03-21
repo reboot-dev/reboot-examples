@@ -1,6 +1,6 @@
 import unittest
 from account_servicer import AccountServicer
-from bank.v1.account_rsm import Account, BalanceResponse, OpenResponse
+from bank.v1.account_rsm import Account, BalanceResponse
 from bank.v1.errors_pb2 import OverdraftError
 from resemble.aio.tests import Resemble
 from resemble.aio.workflows import Workflow
@@ -93,8 +93,8 @@ class TestAccount(unittest.IsolatedAsyncioTestCase):
         open_response = await account.Open(workflow, customer_name="Alice")
 
         # Wait for the email task to run.
-        await workflow.future_from_task_id(
+        await Account.WelcomeEmailTaskFuture(
+            workflow,
             task_id=open_response.welcome_email_task_id,
-            response_type=OpenResponse,
         )
         mock_send_email.assert_called_once()

@@ -1,11 +1,11 @@
 #!/bin/bash
 #
 # This script will run all of the tests in the following directories:
-all_pytest_folders=(
-  "hello-constructors/backend"
-  "bank/backend"
-  "hello-legacy-grpc/backend"
-  "hello-tasks/backend"
+all_application_folders=(
+  "hello-constructors"
+  "bank"
+  "hello-legacy-grpc"
+  "hello-tasks"
 )
 
 # In case of any errors, this test has failed. Fail immediately.
@@ -30,8 +30,8 @@ echo "Using Resemble package '$REBOOT_RESEMBLE_WHL_FILE'"
 # Run each of the tests, each in their own virtual environment, so that they
 # can't influence each other.
 function runPyTest () {
-  pytest_folder=$1
-  echo "######################### $pytest_folder #########################"
+  application_folder=$1
+  echo "######################### $application_folder #########################"
 
   # Create and activate a virtual environment.
   rm -rf ./.resemble-examples-venv
@@ -49,7 +49,7 @@ function runPyTest () {
   resemble_info=$(pip show reboot-resemble)
 
   # Install requirements.
-  requirements_txt="$pytest_folder/src/requirements.txt"
+  requirements_txt="$application_folder/backend/src/requirements.txt"
   if [ ! -f "$requirements_txt" ]; then
     echo "ERROR: no requirements.txt file found at $requirements_txt"
     exit 1
@@ -71,20 +71,24 @@ function runPyTest () {
     exit 1
   fi
 
+  pushd $application_folder
+
   # Compile protocol buffers.
   # TODO: how do we ensure that we're working with a clean slate here?
   rsm protoc
 
   # Test.
-  pytest $pytest_folder
+  pytest backend/
+
+  popd
 
   # We're done with this virtual environment. Deactivate it. It will get deleted
   # when we start the next one.
   deactivate
 }
 
-for pytest_folder in "${all_pytest_folders[@]}"; do
-  runPyTest $pytest_folder
+for application_folder in "${all_application_folders[@]}"; do
+  runPyTest $application_folder
 done
 
 # TODO: when relevant, add additional non-pytest tests here.

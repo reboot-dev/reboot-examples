@@ -28,72 +28,25 @@ protoc --working-directory=.
 dev --working-directory=.
 dev --protoc-watch
 
-# Generate code from our '.proto' files in 'api/'.
-protoc --output-directory=api/
+# Generated code will be used by our backend.
+protoc --output-directory=backend/api
 
-# Find '.proto' files in 'api/'.
-protoc api/
+# This example does not have a frontend, so we only generate the Python code
+# that the backend needs.
+protoc --generate=python
 
-#### Config: `hello-constructors`.
-# Watch if any generated files are modified.
-dev:hello-constructors --watch=api/**/*.py
-
-# Watch if any of our source files are modified.
-dev:hello-constructors --watch=hello-constructors/backend/src/**/*.py
-
-# PYTHONPATH must be explicitly set to pick up generated code.
-dev:hello-constructors --env=PYTHONPATH=api/
-
-# Tell `rsm` that this is a Python application.
-dev:hello-constructors --python
-
-# Run the hello-constructors application!
-dev:hello-constructors hello-constructors/backend/src/main.py
-
-#### Config: `hello-legacy-grpc`.
-# Watch if any generated files are modified.
-dev:hello-legacy-grpc --watch=api/**/*.py
+# Since this repository is a monorepo, the `.proto` files are shared between all
+# applications in a single, top-level `api` directory.
+protoc ../api/
 
 # Watch if any of our source files are modified.
-dev:hello-legacy-grpc --watch=hello-legacy-grpc/backend/src/**/*.py
+dev --watch=backend/**/*.py
 
 # PYTHONPATH must be explicitly set to pick up generated code.
-dev:hello-legacy-grpc --env=PYTHONPATH=api/
+dev --env=PYTHONPATH=backend/api/
 
 # Tell `rsm` that this is a Python application.
-dev:hello-legacy-grpc --python
+dev --python
 
-# Run the hello-legacy-grpc application!
-dev:hello-legacy-grpc hello-legacy-grpc/backend/src/main.py
-
-#### Config: `hello-tasks`.
-# Watch if any generated files are modified.
-dev:hello-tasks --watch=api/**/*.py
-
-# Watch if any of our source files are modified.
-dev:hello-tasks --watch=hello-tasks/backend/src/**/*.py
-
-# PYTHONPATH must be explicitly set to pick up generated code.
-dev:hello-tasks --env=PYTHONPATH=api/
-
-# Tell `rsm` that this is a Python application.
-dev:hello-tasks --python
-
-# Run the hello-tasks application!
-dev:hello-tasks hello-tasks/backend/src/main.py
-
-#### Config: `bank`.
-# Watch if any generated files are modified.
-dev:bank --watch=api/**/*.py
-
-# Watch if any of our source files are modified.
-dev:bank --watch=bank/backend/src/**/*.py
-
-# PYTHONPATH must be explicitly set to pick up generated code.
-dev:bank --env=PYTHONPATH=api/
-
-# Tell `rsm` that this is a Python application.
-dev:bank --python
-
-# Run the bank application!
-dev:bank bank/backend/src/main.py
+# Run the application!
+dev backend/src/main.py

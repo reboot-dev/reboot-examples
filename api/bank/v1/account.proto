@@ -16,7 +16,7 @@ service Account {
 
   rpc Open(OpenRequest) returns (OpenResponse) {
     option (resemble.v1alpha1.method).writer = {
-      constructor: true,
+      constructor: {},
     };
   }
 
@@ -42,7 +42,7 @@ service Account {
       returns (google.protobuf.Empty) {
     option (resemble.v1alpha1.method) = {
       writer: {},
-      task: true,
+      task: {},
     };
   }
 }

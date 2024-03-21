@@ -1,11 +1,7 @@
 import asyncio
 import logging
 from hello_servicer import HelloServicer
-from hello_tasks.v1.hello_rsm import (
-    EraseTaskResponse,
-    Hello,
-    WarningTaskResponse,
-)
+from hello_tasks.v1.hello_rsm import Hello
 from resemble.aio.applications import Application
 from resemble.aio.workflows import Workflow
 
@@ -21,15 +17,15 @@ async def initialize(workflow: Workflow):
     send_response = await hello.Send(workflow, message="Hello, World!")
     logging.info("💌 Message sent!")
 
-    warning_response = await workflow.future_from_task_id(
+    warning_response = await Hello.WarningTaskFuture(
+        workflow,
         task_id=send_response.task_id,
-        response_type=WarningTaskResponse,
     )
     logging.info("⏱ Message will be erased soon...")
 
-    await workflow.future_from_task_id(
+    await Hello.EraseTaskFuture(
+        workflow,
         task_id=warning_response.task_id,
-        response_type=EraseTaskResponse,
     )
     logging.info("🗑 Message erased.")
 
