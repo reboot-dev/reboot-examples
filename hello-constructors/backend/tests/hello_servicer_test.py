@@ -19,12 +19,14 @@ class TestHello(unittest.IsolatedAsyncioTestCase):
 
         workflow: Workflow = self.rsm.create_workflow(name=f"test-{self.id()}")
 
-        hello = Hello("testing-hello")
-
         # Create the state machine by calling its constructor. The fact that the
         # state machine _has_ a constructor means that this step is required
         # before other methods can be called on it.
-        await hello.Create(workflow, initial_message="first message")
+        hello, _ = await Hello.Create(
+            "testing-hello",
+            workflow,
+            initial_message="first message",
+        )
 
         # Send another message.
         await hello.Send(workflow, message="second message")

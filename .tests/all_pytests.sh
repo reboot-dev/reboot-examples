@@ -33,44 +33,6 @@ function runPyTest () {
   application_folder=$1
   echo "######################### $application_folder #########################"
 
-  # Create and activate a virtual environment.
-  rm -rf ./.resemble-examples-venv
-  python -m venv ./.resemble-examples-venv
-  source ./.resemble-examples-venv/bin/activate
-
-  # Install the `reboot-resemble` package from the specified path explicitly, so
-  # that if we're testing with a local version of the package, its line in
-  # `requirements.txt` is skipped in favor of the version already installed.
-  pip install $REBOOT_RESEMBLE_WHL_FILE
-
-  # Save the pip show info on the package so that we can compare it after
-  # installing the rest of the requirements, to check that our custom whl hasn't
-  # been overwritten.
-  resemble_info=$(pip show reboot-resemble)
-
-  # Install requirements.
-  requirements_txt="$application_folder/backend/src/requirements.txt"
-  if [ ! -f "$requirements_txt" ]; then
-    echo "ERROR: no requirements.txt file found at $requirements_txt"
-    exit 1
-  fi
-  # Sanity check: is `reboot-resemble` in the requirements.txt? We need to
-  # check this explicitly, since we've already installed it explicitly above, we
-  # could miss that it's not in the requirements.txt.
-  if ! grep -q "^reboot-resemble" "$requirements_txt"; then
-    echo "ERROR: 'reboot-resemble' is not in '$requirements_txt'"
-    exit 1
-  fi
-
-  pip install -r "$requirements_txt"
-
-  # Double check that we haven't reinstalled another version of the
-  # reboot-resemble package.
-  if [ "$resemble_info" != "$(pip show reboot-resemble)" ]; then
-    echo "ERROR: reboot-resemble whl overwritten by pip install. Are the package versions out of sync?"
-    exit 1
-  fi
-
   pushd $application_folder
 
   # Compile protocol buffers.
@@ -81,11 +43,24 @@ function runPyTest () {
   pytest backend/
 
   popd
-
-  # We're done with this virtual environment. Deactivate it. It will get deleted
-  # when we start the next one.
-  deactivate
 }
+
+# Convert symlinks to files that we need to mutate into copies.
+for file in "requirements.lock" "requirements-dev.lock" "pyproject.toml"; do
+  cp "$file" "${file}.tmp"
+  rm "$file"
+  mv "${file}.tmp" "$file"
+done
+
+# Install the `reboot-resemble` package from the specified path explicitly, over-
+# writing the version from `pyproject.toml`.
+rye remove --no-sync reboot-resemble
+rye remove --no-sync --dev reboot-resemble
+rye add --dev reboot-resemble --absolute --path=$REBOOT_RESEMBLE_WHL_FILE
+
+# Create and activate a virtual environment.
+rye sync --no-lock
+source .venv/bin/activate
 
 for application_folder in "${all_application_folders[@]}"; do
   runPyTest $application_folder

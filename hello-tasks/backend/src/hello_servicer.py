@@ -53,7 +53,7 @@ class HelloServicer(Hello.Interface):
         # The warning task will then schedule a follow-up task to erase the
         # message.
         warning_task: TaskEffect = self.schedule(
-            timedelta(seconds=SECS_UNTIL_WARNING)
+            when=timedelta(seconds=SECS_UNTIL_WARNING)
         ).WarningTask(
             context,
             message_id=message.id,
@@ -96,7 +96,7 @@ class HelloServicer(Hello.Interface):
 
         # Schedule the task to be fully erased.
         erase_task: TaskEffect = self.schedule(
-            timedelta(seconds=ADDITIONAL_SECS_UNTIL_ERASE),
+            when=timedelta(seconds=ADDITIONAL_SECS_UNTIL_ERASE),
         ).EraseTask(
             context,
             message_id=request.message_id,

@@ -1,8 +1,8 @@
-# Any virtualenv directories.
-.venv/
+# Directories created from using the 'rsm' CLI tool in project directories.
+.rsm/
 
-# Directory created from using the 'rsm' CLI tool.
-.rsm
+# The recommended virtualenv directory.
+/.venv/
 
 # Generated code.
 bank/backend/api

@@ -34,7 +34,7 @@ class TestHello(unittest.IsolatedAsyncioTestCase):
 
         workflow: Workflow = self.rsm.create_workflow(name=f"test-{self.id()}")
 
-        hello = Hello("testing-hello")
+        hello = Hello.lookup("testing-hello")
 
         # Send a message.
         send_response = await hello.Send(workflow, message="Hello, World!")

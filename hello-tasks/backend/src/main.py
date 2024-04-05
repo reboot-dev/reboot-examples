@@ -11,7 +11,7 @@ EXAMPLE_STATE_MACHINE_ID = 'resemble-hello'
 
 
 async def initialize(workflow: Workflow):
-    hello = Hello(EXAMPLE_STATE_MACHINE_ID)
+    hello = Hello.lookup(EXAMPLE_STATE_MACHINE_ID)
 
     logging.info("📬 Sending an initial message...")
     send_response = await hello.Send(workflow, message="Hello, World!")

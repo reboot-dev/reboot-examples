@@ -4,7 +4,7 @@ from bank.v1.account_rsm import Account, BalanceResponse
 from bank.v1.errors_pb2 import OverdraftError
 from resemble.aio.tests import Resemble
 from resemble.aio.workflows import Workflow
-from unittest.mock import patch
+from unittest import mock
 
 
 def report_error_to_user(error_message: str) -> None:
@@ -26,12 +26,14 @@ class TestAccount(unittest.IsolatedAsyncioTestCase):
 
         await self.rsm.up(servicers=[AccountServicer])
 
-        account = Account("testing-account")
-
         # Create the state machine by calling its constructor. The fact that the
         # state machine _has_ a constructor means that this step is required
         # before other methods can be called on it.
-        await account.Open(workflow, customer_name="Alice")
+        account, _ = await Account.Open(
+            "testing-account",
+            workflow,
+            customer_name="Alice",
+        )
 
         # We can now call methods on the state machine. It should have a balance
         # of 0.
@@ -72,7 +74,7 @@ class TestAccount(unittest.IsolatedAsyncioTestCase):
         response = await account.Balance(workflow)
         self.assertEqual(response.balance, 40)
 
-    @patch("account_servicer.send_email")
+    @mock.patch("account_servicer.send_email")
     async def test_send_welcome_email(self, mock_send_email) -> None:
         await self.rsm.up(
             servicers=[AccountServicer],
@@ -86,15 +88,21 @@ class TestAccount(unittest.IsolatedAsyncioTestCase):
             in_process=True,
         )
         workflow: Workflow = self.rsm.create_workflow(name=f"test-{self.id()}")
-        account = Account("testing-account")
 
         # When we open an account, we expect the user to receive a welcome
         # email.
-        open_response = await account.Open(workflow, customer_name="Alice")
+        account, open_response = await Account.Open(
+            "testing-account",
+            workflow,
+            customer_name="Alice",
+        )
 
         # Wait for the email task to run.
         await Account.WelcomeEmailTaskFuture(
             workflow,
             task_id=open_response.welcome_email_task_id,
         )
-        mock_send_email.assert_called_once()
+        # We can expect two attempts to send the email, because Resemble always
+        # re-runs methods twice in development mode in order to validate that
+        # calls are idempotent.
+        self.assertEquals(mock_send_email.call_count, 2)

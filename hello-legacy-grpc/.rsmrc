@@ -25,8 +25,8 @@
 # `.rsmrc` as the working directory so that any paths that we specify
 # below are relative to it.
 protoc --working-directory=.
-dev --working-directory=.
-dev --protoc-watch
+dev run --working-directory=.
+dev run --protoc-watch
 
 # Generated code will be used by our backend.
 protoc --output-directory=backend/api/
@@ -40,13 +40,13 @@ protoc --generate=python
 protoc ../api/
 
 # Watch if any of our source files are modified.
-dev --watch=backend/**/*.py
+dev run --watch=backend/**/*.py
 
 # PYTHONPATH must be explicitly set to pick up generated code.
-dev --env=PYTHONPATH=backend/api/
+dev run --env=PYTHONPATH=backend/api/
 
 # Tell `rsm` that this is a Python application.
-dev --python
+dev run --python
 
 # Run the application!
-dev backend/src/main.py
+dev run backend/src/main.py

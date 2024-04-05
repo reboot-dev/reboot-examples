@@ -18,7 +18,7 @@ class ProxyGreeterServicer(greeter_pb2_grpc.ProxyGreeterServicer):
         workflow = context.workflow(name=self.Greet.__name__)
         if random.random() < 0.5:
             # Route to ResembleGreeter.
-            resemble_greeter = ResembleGreeter("my-greeter")
+            resemble_greeter = ResembleGreeter.lookup("my-greeter")
             return await resemble_greeter.Greet(workflow, name=request.name)
         else:
             # Route to DeprecatedGreeter.

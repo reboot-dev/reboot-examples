@@ -11,10 +11,9 @@ EXAMPLE_STATE_MACHINE_ID = 'resemble-hello'
 
 
 async def initialize(workflow: Workflow):
-    hello = Hello(EXAMPLE_STATE_MACHINE_ID)
-
     # Explicitly create the state machine.
-    await hello.Create(
+    hello, _ = await Hello.Create(
+        EXAMPLE_STATE_MACHINE_ID,
         workflow,
         initial_message="Welcome! This message was sent by a constructor.",
     )
