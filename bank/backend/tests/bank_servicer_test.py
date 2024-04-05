@@ -20,7 +20,7 @@ class TestAccount(unittest.IsolatedAsyncioTestCase):
     async def test_signup(self) -> None:
         await self.rsm.up(servicers=[BankServicer, AccountServicer])
         workflow: Workflow = self.rsm.create_workflow(name=f"test-{self.id()}")
-        bank = Bank("my-bank")
+        bank = Bank.lookup("my-bank")
 
         # The Bank state machine doesn't have a constructor, so we can simply
         # start calling methods on it.
@@ -32,25 +32,25 @@ class TestAccount(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(len(response.account_id), 7)
 
         # SignUp will have created an Account we can call.
-        account = Account(response.account_id)
+        account = Account.lookup(response.account_id)
         response = await account.Balance(workflow)
         self.assertEqual(response.balance, 0)
 
     async def test_transfer(self):
         await self.rsm.up(servicers=[BankServicer, AccountServicer])
         workflow: Workflow = self.rsm.create_workflow(name=f"test-{self.id()}")
-        bank = Bank("my-bank")
+        bank = Bank.lookup("my-bank")
 
         alice: SignUpResponse = await bank.SignUp(
             workflow,
             customer_name="Alice",
         )
-        alice_account = Account(alice.account_id)
+        alice_account = Account.lookup(alice.account_id)
         bob: SignUpResponse = await bank.SignUp(
             workflow,
             customer_name="Bob",
         )
-        bob_account = Account(bob.account_id)
+        bob_account = Account.lookup(bob.account_id)
 
         # Alice deposits some money.
         await alice_account.Deposit(workflow, amount=100)

@@ -19,8 +19,9 @@ class ResembleGreeterServicer(ResembleGreeter.Interface):
         # same channel.
         #
         # WARNING: Calls to legacy gRPC services will not get the same safety
-        # guarantees as Resemble calls. You must ensure that the legacy gRPC
-        # service does not have inappropriate effects or side effects.
+        # guarantees as Resemble calls. Calls from Resemble services to legacy
+        # services should be wrapped in Tasks if they represent side-effects.
+        # See https://docs.reboot.dev/docs/model/side_effects.
         #
         # In this example, `DeprecatedGreeter`'s `GetSalutation` RPC
         # is a pure function, so it is safe to access from our context.

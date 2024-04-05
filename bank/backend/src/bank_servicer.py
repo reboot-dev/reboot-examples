@@ -53,8 +53,11 @@ class BankServicer(Bank.Interface):
         await self.write(context, add_account)
 
         # Let's go create the account.
-        account = Account(new_account_id)
-        await account.Open(context, customer_name=request.customer_name)
+        account, _ = await Account.Open(
+            new_account_id,
+            context,
+            customer_name=request.customer_name,
+        )
 
         return SignUpResponse(account_id=new_account_id)
 
@@ -63,8 +66,8 @@ class BankServicer(Bank.Interface):
         context: TransactionContext,
         request: TransferRequest,
     ) -> Empty:
-        from_account = Account(request.from_account_id)
-        to_account = Account(request.to_account_id)
+        from_account = Account.lookup(request.from_account_id)
+        to_account = Account.lookup(request.to_account_id)
         await from_account.Withdraw(context, amount=request.amount)
         await to_account.Deposit(context, amount=request.amount)
         return Empty()
