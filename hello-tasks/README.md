@@ -7,5 +7,5 @@ tasks.
 In "Hello, Tasks," all messages saved in a Hello state machine will disappear
 after 10 seconds, with a warning displayed after 7 seconds.
 
-Read more about async tasks in the [Resemble documentation](https://reboot-dev.github.io/respect/docs/concepts/async_tasks).
+Read more about async tasks in the [Resemble documentation](https://docs.reboot.dev/docs/model/async_tasks).
 

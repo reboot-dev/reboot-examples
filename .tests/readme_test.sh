@@ -7,8 +7,6 @@
 
 # In case of any errors, this test has failed. Fail immediately.
 set -e
-# In case of undefined variables, there must be a bug. Fail immediately.
-set -u
 # Show us the commands we're executing, to aid in debugging.
 set -x
 
@@ -29,7 +27,7 @@ done
 
 # Use the published Resemble pip package by default, but allow the test system
 # to override them with a different value.
-if [ -v REBOOT_RESEMBLE_WHL_FILE ]; then
+if [ -n "$REBOOT_RESEMBLE_WHL_FILE" ]; then
   # Install the `reboot-resemble` package from the specified path explicitly, over-
   # writing the version from `pyproject.toml`.
   rye remove --no-sync reboot-resemble

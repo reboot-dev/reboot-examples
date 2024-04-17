@@ -61,7 +61,7 @@ way of keeping the options you have to type (and remember!) to a minimum. We
 provide a different `.rsmrc` for every application in this repository, and by
 selecting an application directory you select the `.rsmrc` that will be used:
 
-<!-- MARKDOWN-AUTO-DOCS:START (CODE:src=./.tests/readme_test.sh&lines=47-47) -->
+<!-- MARKDOWN-AUTO-DOCS:START (CODE:src=./.tests/readme_test.sh&lines=45-45) -->
 <!-- The below code snippet is automatically added from ./.tests/readme_test.sh -->
 ```sh
 cd hello-constructors
