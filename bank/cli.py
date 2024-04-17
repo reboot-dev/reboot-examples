@@ -19,7 +19,7 @@ def configure_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--gateway_address",
         type=str,
-        default="localhost.direct:9991",
+        default="dev.localhost.direct:9991",
     )
     parser.add_argument(
         "--bank_id",

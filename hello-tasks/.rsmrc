@@ -21,13 +21,6 @@
 # rsm subcommand --config=use-foo`                                     #
 ########################################################################
 
-# We'll run all of the examples assuming the directory of this
-# `.rsmrc` as the working directory so that any paths that we specify
-# below are relative to it.
-protoc --working-directory=.
-dev run --working-directory=.
-dev run --protoc-watch
-
 # Generated code will be used by our backend.
 protoc --output-directory=backend/api
 
@@ -41,6 +34,7 @@ protoc ../api/
 
 # Watch if any of our source files are modified.
 dev run --watch=backend/**/*.py
+dev run --protoc-watch
 
 # PYTHONPATH must be explicitly set to pick up generated code.
 dev run --env=PYTHONPATH=backend/api/
