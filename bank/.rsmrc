@@ -24,17 +24,12 @@
 # Generated code will be used by our backend.
 protoc --output-directory=backend/api/
 
-# This example does not have a frontend, so we only generate the Python code
-# that the backend needs.
-protoc --generate=python
-
 # Since this repository is a monorepo, the `.proto` files are shared between all
 # applications in a single, top-level `api` directory.
 protoc ../api/
 
 # Watch if any of our source files are modified.
 dev run --watch=backend/**/*.py
-dev run --protoc-watch
 
 # PYTHONPATH must be explicitly set to pick up generated code.
 dev run --env=PYTHONPATH=backend/api/
