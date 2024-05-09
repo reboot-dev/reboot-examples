@@ -27,6 +27,7 @@ service Hello {
       returns (WarningTaskResponse) {
     option (resemble.v1alpha1.method) = {
       writer: {},
+      task: {},
     };
   }
 
@@ -34,6 +35,7 @@ service Hello {
   rpc EraseTask(EraseTaskRequest) returns (EraseTaskResponse) {
     option (resemble.v1alpha1.method) = {
       writer: {},
+      task: {},
     };
   }
 }
