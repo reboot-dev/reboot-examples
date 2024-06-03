@@ -54,7 +54,20 @@ Now you're ready to [run the application](#run-the-application)!
 <a id="run-the-application"></a>
 ## Run the application
 
-### Pick your application directory
+### Backend via `rsm`
+
+Our backend is implemented in Python and we must install its dependencies before
+running it. The most notable of those dependencies is the `reboot-resemble` PyPI
+distribution, which contains both the Resemble CLI (`rsm`) and the `resemble`
+Python package.
+
+Using `rye`, we can create and activate a virtualenv containing this project's dependencies (as well as fetch an appropriate Python version) using:
+```sh
+rye sync --no-lock
+source .venv/bin/activate
+```
+
+#### Pick your application directory
 
 The `rsm` tool can load its flags from an `.rsmrc` file, which is a convenient
 way of keeping the options you have to type (and remember!) to a minimum. We
@@ -68,18 +81,7 @@ cd hello-constructors
 ```
 <!-- MARKDOWN-AUTO-DOCS:END -->
 
-### Backend via `rsm dev run`
-
-Our backend is implemented in Python and we must install its dependencies before
-running it. The most notable of those dependencies is the `reboot-resemble` PyPI
-distribution, which contains both the Resemble CLI (`rsm`) and the `resemble`
-Python package.
-
-Using `rye`, we can create and activate a virtualenv containing this project's dependencies (as well as fetch an appropriate Python version) using:
-```sh
-rye sync --no-lock
-source .venv/bin/activate
-```
+#### Run the backend
 
 Then, to run the application, you can use the Resemble CLI `rsm` (present in the active virtualenv):
 ```shell
