@@ -13,7 +13,11 @@ EXAMPLE_STATE_MACHINE_ID = 'resemble-bank'
 
 async def initialize(workflow: Workflow):
     bank = Bank.lookup(EXAMPLE_STATE_MACHINE_ID)
-    await bank.SignUp(workflow, customer_name="Initial User")
+
+    await bank.idempotently("sign up initial user").SignUp(
+        workflow,
+        customer_name="Initial User",
+    )
 
 
 async def main():

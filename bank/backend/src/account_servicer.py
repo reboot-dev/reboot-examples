@@ -1,7 +1,6 @@
 import logging
 from bank.v1.account_rsm import (
     Account,
-    AccountState,
     BalanceResponse,
     DepositRequest,
     DepositResponse,
@@ -26,7 +25,7 @@ class AccountServicer(Account.Interface):
     ) -> Account.OpenEffects:
         # Since this is a constructor, we are setting the initial state of the
         # state machine.
-        initial_state = AccountState(customer_name=request.customer_name)
+        initial_state = Account.State(customer_name=request.customer_name)
 
         # We'd like to send the new customer a welcome email, but that can be
         # done asynchronously, so we schedule it as a task.
@@ -43,7 +42,7 @@ class AccountServicer(Account.Interface):
     async def Balance(
         self,
         context: ReaderContext,
-        state: AccountState,
+        state: Account.State,
         request: Empty,
     ) -> BalanceResponse:
         return BalanceResponse(balance=state.balance)
@@ -51,19 +50,19 @@ class AccountServicer(Account.Interface):
     async def Deposit(
         self,
         context: WriterContext,
-        state: AccountState,
+        state: Account.State,
         request: DepositRequest,
     ) -> Account.DepositEffects:
         updated_balance = state.balance + request.amount
         return Account.DepositEffects(
-            state=AccountState(balance=updated_balance),
+            state=Account.State(balance=updated_balance),
             response=DepositResponse(updated_balance=updated_balance),
         )
 
     async def Withdraw(
         self,
         context: WriterContext,
-        state: AccountState,
+        state: Account.State,
         request: WithdrawRequest,
     ) -> Account.WithdrawEffects:
         updated_balance = state.balance - request.amount
@@ -72,14 +71,14 @@ class AccountServicer(Account.Interface):
                 OverdraftError(amount=-updated_balance)
             )
         return Account.WithdrawEffects(
-            state=AccountState(balance=updated_balance),
+            state=Account.State(balance=updated_balance),
             response=WithdrawResponse(updated_balance=updated_balance),
         )
 
     async def WelcomeEmailTask(
         self,
         context: WriterContext,
-        state: AccountState,
+        state: Account.State,
         request: Empty,
     ) -> Account.WelcomeEmailTaskEffects:
         message_body = (

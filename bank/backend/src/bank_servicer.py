@@ -3,7 +3,6 @@ import random
 from bank.v1.account_rsm import Account
 from bank.v1.bank_rsm import (
     Bank,
-    BankState,
     SignUpRequest,
     SignUpResponse,
     TransferRequest,
@@ -45,7 +44,7 @@ class BankServicer(Bank.Interface):
         #    defined in.
         async def add_account(
             context: WriterContext,
-            state: BankState,
+            state: Bank.State,
         ) -> Bank.Effects:
             state.account_ids.append(new_account_id)
             return Bank.Effects(state=state)

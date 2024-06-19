@@ -22,7 +22,7 @@
 ########################################################################
 
 # Generated code will be used by our backend.
-protoc --output-directory=backend/api/
+protoc --python=backend/api/
 
 # Since this repository is a monorepo, the `.proto` files are shared between all
 # applications in a single, top-level `api` directory.
