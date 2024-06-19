@@ -1,13 +1,20 @@
+import logging
 from google.protobuf.empty_pb2 import Empty
-from hello_legacy_grpc.v1 import greeter_pb2_grpc
+from hello_legacy_grpc.v1 import greeter_pb2, greeter_pb2_grpc
 from hello_legacy_grpc.v1.greeter_rsm import (
     GetSalutationResponse,
-    GreeterState,
     GreetRequest,
     GreetResponse,
     ResembleGreeter,
 )
-from resemble.aio.contexts import Context, ReaderContext, WriterContext
+from resemble.aio.contexts import (
+    Context,
+    ReaderContext,
+    WorkflowContext,
+    WriterContext,
+)
+
+logging.basicConfig(level=logging.INFO)
 
 
 class ResembleGreeterServicer(ResembleGreeter.Interface):
@@ -19,9 +26,9 @@ class ResembleGreeterServicer(ResembleGreeter.Interface):
         # same channel.
         #
         # WARNING: Calls to legacy gRPC services will not get the same safety
-        # guarantees as Resemble calls. Calls from Resemble services to legacy
-        # services should be wrapped in Tasks if they represent side-effects.
-        # See https://docs.reboot.dev/docs/model/side_effects.
+        # guarantees as Resemble calls. Calls from Resemble state machines to
+        # legacy services should be wrapped in Tasks if they represent
+        # side-effects. See https://docs.reboot.dev/docs/model/side_effects.
         #
         # In this example, `DeprecatedGreeter`'s `GetSalutation` RPC
         # is a pure function, so it is safe to access from our context.
@@ -40,7 +47,7 @@ class ResembleGreeterServicer(ResembleGreeter.Interface):
     async def Greet(
         self,
         context: WriterContext,
-        state: GreeterState,
+        state: ResembleGreeter.State,
         request: GreetRequest,
     ) -> ResembleGreeter.GreetEffects:
         salutation = await self._get_deprecated_salutation(context)
@@ -61,10 +68,35 @@ class ResembleGreeterServicer(ResembleGreeter.Interface):
     async def GetSalutation(
         self,
         context: ReaderContext,
-        state: GreeterState,
+        state: ResembleGreeter.State,
         request: Empty,
     ) -> GetSalutationResponse:
         # Imagine that this method is not yet implemented in this servicer!
         # It can call out to the deprecated gRPC servicer instead.
         salutation = await self._get_deprecated_salutation(context)
         return GetSalutationResponse(salutation=salutation)
+
+    async def Initialize(
+        self,
+        context: WorkflowContext,
+        request: Empty,
+    ):
+        # Call the ProxyGreeter service for a few greetings.
+        #
+        # NOTE: we don't currently have a way to call legacy gRPC
+        # _idempotently_ (that's one of the reasons for Resemble!), so
+        # for now we assume/hope that this workflow won't get retried
+        # due to a failure but it's totally possible and if it happens
+        # we might perform extra greets!
+        async with context.legacy_grpc_channel() as channel:
+            proxy_greeter_stub = greeter_pb2_grpc.ProxyGreeterStub(channel)
+
+            for i in range(10):
+                greet_response = await proxy_greeter_stub.Greet(
+                    greeter_pb2.GreetRequest(name="legacy gRPC")
+                )
+                logging.info(
+                    f"Received a greeting: '{greet_response.message}'"
+                )
+
+        return Empty()

@@ -9,11 +9,16 @@ import "resemble/v1alpha1/tasks.proto";
 import "bank/v1/errors.proto";
 
 ////////////////////////////////////////////////////////////////////////
-// Service definitions.
+// State machine definition.
 
-service Account {
-  option (resemble.v1alpha1.service).state = "AccountState";
+message Account {
+  option (.resemble.v1alpha1.state) = {
+  };
+  string customer_name = 1;
+  uint64 balance = 2;
+}
 
+service AccountInterface {
   rpc Open(OpenRequest) returns (OpenResponse) {
     option (resemble.v1alpha1.method).writer = {
       constructor: {},
@@ -44,14 +49,6 @@ service Account {
       writer: {},
     };
   }
-}
-
-////////////////////////////////////////////////////////////////////////
-// State types.
-
-message AccountState {
-  string customer_name = 1;
-  uint64 balance = 2;
 }
 
 ////////////////////////////////////////////////////////////////////////

@@ -14,19 +14,26 @@ async def initialize(workflow: Workflow):
     hello = Hello.lookup(EXAMPLE_STATE_MACHINE_ID)
 
     logging.info("📬 Sending an initial message...")
-    send_response = await hello.Send(workflow, message="Hello, World!")
+
+    send_response = await hello.idempotently("send initial message").Send(
+        workflow,
+        message="Hello, World!",
+    )
+
     logging.info("💌 Message sent!")
 
     warning_response = await Hello.WarningTaskFuture(
         workflow,
         task_id=send_response.task_id,
     )
+
     logging.info("⏱ Message will be erased soon...")
 
     await Hello.EraseTaskFuture(
         workflow,
         task_id=warning_response.task_id,
     )
+
     logging.info("🗑 Message erased.")
 
 

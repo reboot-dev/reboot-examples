@@ -1,25 +1,26 @@
 import asyncio
-import logging
 from deprecated_greeter_servicer import DeprecatedGreeterServicer
-from hello_legacy_grpc.v1 import greeter_pb2, greeter_pb2_grpc
+from hello_legacy_grpc.v1.greeter_rsm import ResembleGreeter
 from proxy_greeter_servicer import ProxyGreeterServicer
 from resemble.aio.applications import Application
 from resemble.aio.workflows import Workflow
 from resemble_greeter_servicer import ResembleGreeterServicer
 
-logging.basicConfig(level=logging.INFO)
-
 
 async def initialize(workflow: Workflow):
-    # Call the ProxyGreeter service for a few greetings.
-    async with workflow.legacy_grpc_channel() as channel:
-        proxy_greeter_stub = greeter_pb2_grpc.ProxyGreeterStub(channel)
-
-        for i in range(10):
-            greet_response = await proxy_greeter_stub.Greet(
-                greeter_pb2.GreetRequest(name="legacy gRPC")
-            )
-            logging.info(f"Received a greeting: '{greet_response.message}'")
+    # Schedule initialize on `ResembleGreeter` so that it only happens
+    # once via idempotency (but see caveats in
+    # `ResembleGreeterServicer.Initialize`).
+    #
+    # NOTE: we use `schedule()` because `Initialize()` is a `workflow`
+    # method and those are not (yet) synchronously callable from a
+    # `Workflow`. Because `initialize()` (this function) gets called
+    # asynchronously with respect to other calls being made that fact
+    # that we schedule here is semantically no different.
+    await (
+        ResembleGreeter.lookup("my-greeter").idempotently("initialize").
+        schedule().Initialize(workflow)
+    )
 
 
 async def main():

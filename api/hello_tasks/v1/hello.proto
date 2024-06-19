@@ -7,9 +7,7 @@ import "resemble/v1alpha1/tasks.proto";
 
 ////////////////////////////////////////////////////////////////////////
 
-service Hello {
-  option (resemble.v1alpha1.service).state = "HelloState";
-
+service HelloInterface {
   // Returns the current list of recorded messages.
   rpc Messages(MessagesRequest) returns (MessagesResponse) {
     option (resemble.v1alpha1.method).reader = {
@@ -43,7 +41,9 @@ message Message {
   string text = 2;
 }
 
-message HelloState {
+message Hello {
+  option (.resemble.v1alpha1.state) = {
+  };
   repeated Message messages = 1;
   int32 num_erased_messages = 2;
 }

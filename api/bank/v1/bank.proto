@@ -9,9 +9,7 @@ import "bank/v1/errors.proto";
 
 ////////////////////////////////////////////////////////////////////////
 
-service Bank {
-  option (resemble.v1alpha1.service).state = "BankState";
-
+service BankInterface {
   rpc SignUp(SignUpRequest) returns (SignUpResponse) {
     option (resemble.v1alpha1.method).transaction = {
     };
@@ -27,7 +25,9 @@ service Bank {
 
 ////////////////////////////////////////////////////////////////////////
 
-message BankState {
+message Bank {
+  option (.resemble.v1alpha1.state) = {
+  };
   repeated string account_ids = 1;
 }
 

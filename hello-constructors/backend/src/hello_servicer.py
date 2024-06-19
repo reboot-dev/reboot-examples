@@ -2,7 +2,6 @@ from hello_constructors.v1.hello_rsm import (
     CreateRequest,
     CreateResponse,
     Hello,
-    HelloState,
     MessagesRequest,
     MessagesResponse,
     SendRequest,
@@ -19,14 +18,14 @@ class HelloServicer(Hello.Interface):
         request: CreateRequest,
     ) -> Hello.CreateEffects:
         return Hello.CreateEffects(
-            state=HelloState(messages=[request.initial_message]),
+            state=Hello.State(messages=[request.initial_message]),
             response=CreateResponse()
         )
 
     async def Messages(
         self,
         context: ReaderContext,
-        state: HelloState,
+        state: Hello.State,
         request: MessagesRequest,
     ) -> MessagesResponse:
         return MessagesResponse(messages=state.messages)
@@ -34,7 +33,7 @@ class HelloServicer(Hello.Interface):
     async def Send(
         self,
         context: WriterContext,
-        state: HelloState,
+        state: Hello.State,
         request: SendRequest,
     ) -> Hello.SendEffects:
         message = request.message

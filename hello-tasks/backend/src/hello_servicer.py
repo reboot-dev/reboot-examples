@@ -4,7 +4,6 @@ from hello_tasks.v1.hello_rsm import (
     EraseTaskRequest,
     EraseTaskResponse,
     Hello,
-    HelloState,
     Message,
     MessagesRequest,
     MessagesResponse,
@@ -25,7 +24,7 @@ class HelloServicer(Hello.Interface):
     async def Messages(
         self,
         context: ReaderContext,
-        state: HelloState,
+        state: Hello.State,
         request: MessagesRequest,
     ) -> MessagesResponse:
         # Prepend a message saying how many other messages have been erased so
@@ -42,7 +41,7 @@ class HelloServicer(Hello.Interface):
     async def Send(
         self,
         context: WriterContext,
-        state: HelloState,
+        state: Hello.State,
         request: SendRequest,
     ) -> Hello.SendEffects:
         # Create an ID and store the new message.
@@ -68,7 +67,7 @@ class HelloServicer(Hello.Interface):
     async def WarningTask(
         self,
         context: WriterContext,
-        state: HelloState,
+        state: Hello.State,
         request: WarningTaskRequest,
     ) -> Hello.WarningTaskEffects:
         # Find the message in question and update its text with a warning.
@@ -111,7 +110,7 @@ class HelloServicer(Hello.Interface):
     async def EraseTask(
         self,
         context: WriterContext,
-        state: HelloState,
+        state: Hello.State,
         request: EraseTaskRequest,
     ) -> Hello.EraseTaskEffects:
         # Find the message in question and remove it.

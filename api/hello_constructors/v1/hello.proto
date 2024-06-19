@@ -6,9 +6,7 @@ import "resemble/v1alpha1/options.proto";
 
 ////////////////////////////////////////////////////////////////////////
 
-service Hello {
-  option (resemble.v1alpha1.service).state = "HelloState";
-
+service HelloInterface {
   // Creates a Hello instance.
   rpc Create(CreateRequest) returns (CreateResponse) {
     option (resemble.v1alpha1.method).writer = {
@@ -29,7 +27,9 @@ service Hello {
   }
 }
 
-message HelloState {
+message Hello {
+  option (.resemble.v1alpha1.state) = {
+  };
   repeated string messages = 2;
 }
 
