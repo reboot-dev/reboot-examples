@@ -21,23 +21,18 @@ class AccountServicer(Account.Interface):
     async def Open(
         self,
         context: WriterContext,
+        state: Account.State,
         request: OpenRequest,
-    ) -> Account.OpenEffects:
+    ) -> OpenResponse:
         # Since this is a constructor, we are setting the initial state of the
         # state machine.
-        initial_state = Account.State(customer_name=request.customer_name)
+        state.customer_name = request.customer_name
 
         # We'd like to send the new customer a welcome email, but that can be
         # done asynchronously, so we schedule it as a task.
-        welcome_email_task = self.schedule().WelcomeEmailTask(context)
+        task = await self.lookup().schedule().WelcomeEmailTask(context)
 
-        return Account.OpenEffects(
-            state=initial_state,
-            tasks=[welcome_email_task],
-            response=OpenResponse(
-                welcome_email_task_id=welcome_email_task.task_id
-            ),
-        )
+        return OpenResponse(welcome_email_task_id=task.task_id)
 
     async def Balance(
         self,
@@ -52,35 +47,30 @@ class AccountServicer(Account.Interface):
         context: WriterContext,
         state: Account.State,
         request: DepositRequest,
-    ) -> Account.DepositEffects:
-        updated_balance = state.balance + request.amount
-        return Account.DepositEffects(
-            state=Account.State(balance=updated_balance),
-            response=DepositResponse(updated_balance=updated_balance),
-        )
+    ) -> DepositResponse:
+        state.balance += request.amount
+        return DepositResponse(updated_balance=state.balance)
 
     async def Withdraw(
         self,
         context: WriterContext,
         state: Account.State,
         request: WithdrawRequest,
-    ) -> Account.WithdrawEffects:
+    ) -> WithdrawResponse:
         updated_balance = state.balance - request.amount
         if updated_balance < 0:
             raise Account.WithdrawAborted(
                 OverdraftError(amount=-updated_balance)
             )
-        return Account.WithdrawEffects(
-            state=Account.State(balance=updated_balance),
-            response=WithdrawResponse(updated_balance=updated_balance),
-        )
+        state.balance = updated_balance
+        return WithdrawResponse(updated_balance=updated_balance)
 
     async def WelcomeEmailTask(
         self,
         context: WriterContext,
         state: Account.State,
         request: Empty,
-    ) -> Account.WelcomeEmailTaskEffects:
+    ) -> Empty:
         message_body = (
             f"Hello {state.customer_name},\n"
             "\n"
@@ -93,10 +83,7 @@ class AccountServicer(Account.Interface):
 
         await send_email(message_body)
 
-        return Account.WelcomeEmailTaskEffects(
-            state=state,
-            response=Empty(),
-        )
+        return Empty()
 
 
 async def send_email(message_body: str):

@@ -15,12 +15,11 @@ class HelloServicer(Hello.Interface):
     async def Create(
         self,
         context: WriterContext,
+        state: Hello.State,
         request: CreateRequest,
-    ) -> Hello.CreateEffects:
-        return Hello.CreateEffects(
-            state=Hello.State(messages=[request.initial_message]),
-            response=CreateResponse()
-        )
+    ) -> CreateResponse:
+        state.messages.extend([request.initial_message])
+        return CreateResponse()
 
     async def Messages(
         self,
@@ -35,7 +34,7 @@ class HelloServicer(Hello.Interface):
         context: WriterContext,
         state: Hello.State,
         request: SendRequest,
-    ) -> Hello.SendEffects:
+    ) -> SendResponse:
         message = request.message
         state.messages.extend([message])
-        return Hello.SendEffects(state=state, response=SendResponse())
+        return SendResponse()

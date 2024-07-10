@@ -13,28 +13,28 @@ EXAMPLE_STATE_MACHINE_ID = 'resemble-hello'
 async def initialize(workflow: Workflow):
     hello = Hello.lookup(EXAMPLE_STATE_MACHINE_ID)
 
-    logging.info("📬 Sending an initial message...")
+    logging.info("📬 Sending initial message if it isn't already...")
 
-    send_response = await hello.idempotently("send initial message").Send(
+    send_response = await hello.idempotently().Send(
         workflow,
         message="Hello, World!",
     )
 
-    logging.info("💌 Message sent!")
+    logging.info("💌 Ensuring initial message was sent!")
 
     warning_response = await Hello.WarningTaskFuture(
         workflow,
         task_id=send_response.task_id,
     )
 
-    logging.info("⏱ Message will be erased soon...")
+    logging.info("⏱ Ensuring initial message was erased...")
 
     await Hello.EraseTaskFuture(
         workflow,
         task_id=warning_response.task_id,
     )
 
-    logging.info("🗑 Message erased.")
+    logging.info("🗑 Confirmed message erased.")
 
 
 async def main():

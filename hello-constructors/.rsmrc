@@ -31,9 +31,6 @@ protoc ../api/
 # Watch if any of our source files are modified.
 dev run --watch=backend/**/*.py
 
-# PYTHONPATH must be explicitly set to pick up generated code.
-dev run --env=PYTHONPATH=backend/api/
-
 # Tell `rsm` that this is a Python application.
 dev run --python
 

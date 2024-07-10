@@ -12,14 +12,14 @@ EXAMPLE_STATE_MACHINE_ID = 'resemble-hello'
 
 async def initialize(workflow: Workflow):
     # Explicitly create the state machine.
-    hello, _ = await Hello.idempotently("initialize").Create(
+    hello, _ = await Hello.idempotently().Create(
         EXAMPLE_STATE_MACHINE_ID,
         workflow,
         initial_message="Welcome! This message was sent by a constructor.",
     )
 
     # Send a message.
-    await hello.idempotently("send a message").Send(
+    await hello.idempotently().Send(
         workflow, message="This message was sent after construction!"
     )
 
