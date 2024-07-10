@@ -17,10 +17,9 @@ async def initialize(workflow: Workflow):
     # `Workflow`. Because `initialize()` (this function) gets called
     # asynchronously with respect to other calls being made that fact
     # that we schedule here is semantically no different.
-    await (
-        ResembleGreeter.lookup("my-greeter").idempotently("initialize").
-        schedule().Initialize(workflow)
-    )
+    await ResembleGreeter.lookup(
+        "my-greeter",
+    ).idempotently().schedule().Initialize(workflow)
 
 
 async def main():

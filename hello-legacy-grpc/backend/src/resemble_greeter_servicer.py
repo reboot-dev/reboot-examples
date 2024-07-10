@@ -49,20 +49,17 @@ class ResembleGreeterServicer(ResembleGreeter.Interface):
         context: WriterContext,
         state: ResembleGreeter.State,
         request: GreetRequest,
-    ) -> ResembleGreeter.GreetEffects:
+    ) -> GreetResponse:
         salutation = await self._get_deprecated_salutation(context)
         state.num_greetings += 1
 
         pluralized_phrase = (
             "person has" if state.num_greetings == 1 else "people have"
         )
-        return ResembleGreeter.GreetEffects(
-            state=state,
-            response=GreetResponse(
-                message=f"{salutation}, {request.name}! "
-                f"{state.num_greetings} {pluralized_phrase} been greeted today "
-                f"by the Resemble service."
-            )
+        return GreetResponse(
+            message=f"{salutation}, {request.name}! "
+            f"{state.num_greetings} {pluralized_phrase} been greeted today "
+            f"by the Resemble service."
         )
 
     async def GetSalutation(

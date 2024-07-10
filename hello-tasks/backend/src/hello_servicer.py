@@ -43,7 +43,7 @@ class HelloServicer(Hello.Interface):
         context: WriterContext,
         state: Hello.State,
         request: SendRequest,
-    ) -> Hello.SendEffects:
+    ) -> SendResponse:
         # Create an ID and store the new message.
         message = Message(id=str(uuid.uuid4()), text=request.message)
         state.messages.append(message)
@@ -51,25 +51,21 @@ class HelloServicer(Hello.Interface):
         # Schedule the message to get a warning message added.
         # The warning task will then schedule a follow-up task to erase the
         # message.
-        warning_task: TaskEffect = self.schedule(
+        warning_task: TaskEffect = await self.lookup().schedule(
             when=timedelta(seconds=SECS_UNTIL_WARNING)
         ).WarningTask(
             context,
             message_id=message.id,
         )
 
-        return Hello.SendEffects(
-            state=state,
-            tasks=[warning_task],
-            response=SendResponse(task_id=warning_task.task_id),
-        )
+        return SendResponse(task_id=warning_task.task_id)
 
     async def WarningTask(
         self,
         context: WriterContext,
         state: Hello.State,
         request: WarningTaskRequest,
-    ) -> Hello.WarningTaskEffects:
+    ) -> WarningTaskResponse:
         # Find the message in question and update its text with a warning.
         warn_index = -1
         for i in range(len(state.messages)):
@@ -94,25 +90,21 @@ class HelloServicer(Hello.Interface):
         state.messages[warn_index].text += " (Disappearing soon!)"
 
         # Schedule the task to be fully erased.
-        erase_task: TaskEffect = self.schedule(
+        erase_task: TaskEffect = await self.lookup().schedule(
             when=timedelta(seconds=ADDITIONAL_SECS_UNTIL_ERASE),
         ).EraseTask(
             context,
             message_id=request.message_id,
         )
 
-        return Hello.WarningTaskEffects(
-            state=state,
-            tasks=[erase_task],
-            response=WarningTaskResponse(task_id=erase_task.task_id),
-        )
+        return WarningTaskResponse(task_id=erase_task.task_id)
 
     async def EraseTask(
         self,
         context: WriterContext,
         state: Hello.State,
         request: EraseTaskRequest,
-    ) -> Hello.EraseTaskEffects:
+    ) -> EraseTaskResponse:
         # Find the message in question and remove it.
         delete_index = -1
         for i in range(len(state.messages)):
@@ -137,7 +129,4 @@ class HelloServicer(Hello.Interface):
         state.messages.pop(delete_index)
         state.num_erased_messages += 1
 
-        return Hello.EraseTaskEffects(
-            state=state,
-            response=EraseTaskResponse(),
-        )
+        return EraseTaskResponse()
