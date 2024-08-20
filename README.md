@@ -13,7 +13,7 @@ examples are structured in the style of a monorepo: all proto files can be found
 in the `api/` directory, grouped into subdirectories by proto package, while
 application code is broken into top-level directories by application name.
 
-The [Resemble '.proto' definition](https://docs.reboot.dev/docs/model/overview#generated-code)
+The [Resemble '.proto' definition](https://docs.reboot.dev/docs/learn/overview#generated-code)
 can be found in the `api/` directory, grouped into
 subdirectories by proto package, while backend specific code can be
 found in top-level directories by application name.
@@ -117,39 +117,6 @@ Now you can run the tests using `pytest`:
 pytest backend/
 ```
 
-### Running on the Reboot Cloud
-
-Pick a public Docker registry you can push images to. Determine the name you'd
-like the image to have in that registry. For example:
-`ghcr.io/your-github-username/resemble-examples`.
-
-Then, run the following to build and push your `resemble-examples` container:
-```shell
-export IMAGE_NAME=<the name you picked>
-./build.sh --push $IMAGE_NAME
-```
-
-The `build.sh` script, when used with `--push`, will print an appropriate `rsm
-cloud up` command. For example:
-```
-Push complete!
-
-To run your image on the Resemble Cloud, run:
-
-  rsm cloud up --image-name=ghcr.io/your-github-username/resemble-examples@sha256:ed9b9ffe98abcdef9371aa6e01baa6e1c80fff07085fdb14a25767746558818e --api-key=YOUR_API_KEY
-```
-
-Execute that `rsm cloud up` command to have your pushed Resemble container run
-on the Resemble Cloud! 🎉
-
-To make calls to the application that just started, get the endpoint URL from
-message output to the console.
-
-```sh
-Application starting; your application will be available at:
-
-<application_id>.prod1.resemble.cloud:9991
-```
 
 
 <!--

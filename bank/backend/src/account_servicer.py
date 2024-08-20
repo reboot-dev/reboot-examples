@@ -1,16 +1,18 @@
 import logging
 from bank.v1.account_rsm import (
     Account,
+    BalanceRequest,
     BalanceResponse,
     DepositRequest,
     DepositResponse,
     OpenRequest,
     OpenResponse,
+    WelcomeEmailTaskRequest,
+    WelcomeEmailTaskResponse,
     WithdrawRequest,
     WithdrawResponse,
 )
 from bank.v1.errors_pb2 import OverdraftError
-from google.protobuf.empty_pb2 import Empty
 from resemble.aio.contexts import ReaderContext, WriterContext
 
 logging.basicConfig(level=logging.INFO)
@@ -38,7 +40,7 @@ class AccountServicer(Account.Interface):
         self,
         context: ReaderContext,
         state: Account.State,
-        request: Empty,
+        request: BalanceRequest,
     ) -> BalanceResponse:
         return BalanceResponse(balance=state.balance)
 
@@ -69,13 +71,13 @@ class AccountServicer(Account.Interface):
         self,
         context: WriterContext,
         state: Account.State,
-        request: Empty,
-    ) -> Empty:
+        request: WelcomeEmailTaskRequest,
+    ) -> WelcomeEmailTaskResponse:
         message_body = (
             f"Hello {state.customer_name},\n"
             "\n"
             "We are delighted to welcome you as a customer.\n"
-            f"Your new account has been opened, and has ID '{context.actor_id}'.\n"
+            f"Your new account has been opened, and has ID '{context.state_id}'.\n"
             "\n"
             "Best regards,\n"
             "Your Bank"
@@ -83,7 +85,7 @@ class AccountServicer(Account.Interface):
 
         await send_email(message_body)
 
-        return Empty()
+        return WelcomeEmailTaskResponse()
 
 
 async def send_email(message_body: str):

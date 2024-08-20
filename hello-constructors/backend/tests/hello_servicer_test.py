@@ -2,7 +2,6 @@ import unittest
 from hello_constructors.v1.hello_rsm import Hello
 from hello_servicer import HelloServicer
 from resemble.aio.tests import Resemble
-from resemble.aio.workflows import Workflow
 
 
 class TestHello(unittest.IsolatedAsyncioTestCase):
@@ -17,21 +16,20 @@ class TestHello(unittest.IsolatedAsyncioTestCase):
     async def test_hello_constructors(self) -> None:
         await self.rsm.up(servicers=[HelloServicer])
 
-        workflow: Workflow = self.rsm.create_workflow(name=f"test-{self.id()}")
+        context = self.rsm.create_external_context(name=f"test-{self.id()}")
 
         # Create the state machine by calling its constructor. The fact that the
         # state machine _has_ a constructor means that this step is required
         # before other methods can be called on it.
-        hello, _ = await Hello.Create(
-            "testing-hello",
-            workflow,
+        hello, _ = await Hello.construct().Create(
+            context,
             initial_message="first message",
         )
 
         # Send another message.
-        await hello.Send(workflow, message="second message")
+        await hello.Send(context, message="second message")
 
-        messages_response = await hello.Messages(workflow)
+        messages_response = await hello.Messages(context)
         self.assertEqual(
             messages_response.messages, [
                 "first message",

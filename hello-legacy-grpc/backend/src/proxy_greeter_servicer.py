@@ -9,20 +9,20 @@ class ProxyGreeterServicer(greeter_pb2_grpc.ProxyGreeterServicer):
     async def Greet(
         self,
         request: greeter_pb2.GreetRequest,
-        context: LegacyGrpcContext,
+        legacy_context: LegacyGrpcContext,
     ) -> greeter_pb2.GreetResponse:
         # As part of a migration, one may want to slowly ramp up traffic to the
         # new Resemble service. This proxy servicer will forward traffic to
         # either the ResembleGreeter or the DeprecatedGreeter with a 50/50
         # ratio.
-        workflow = context.workflow(name=self.Greet.__name__)
+        context = legacy_context.external_context(name=self.Greet.__name__)
         if random.random() < 0.5:
             # Route to ResembleGreeter.
             resemble_greeter = ResembleGreeter.lookup("my-greeter")
-            return await resemble_greeter.Greet(workflow, name=request.name)
+            return await resemble_greeter.Greet(context, name=request.name)
         else:
             # Route to DeprecatedGreeter.
-            async with workflow.legacy_grpc_channel() as channel:
+            async with context.legacy_grpc_channel() as channel:
                 deprecated_greeter_stub = greeter_pb2_grpc.DeprecatedGreeterStub(
                     channel
                 )

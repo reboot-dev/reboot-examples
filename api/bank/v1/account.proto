@@ -2,7 +2,6 @@ syntax = "proto3";
 
 package bank.v1;
 
-import "google/protobuf/empty.proto";
 import "resemble/v1alpha1/options.proto";
 import "resemble/v1alpha1/tasks.proto";
 
@@ -25,7 +24,7 @@ service AccountInterface {
     };
   }
 
-  rpc Balance(google.protobuf.Empty) returns (BalanceResponse) {
+  rpc Balance(BalanceRequest) returns (BalanceResponse) {
     option (resemble.v1alpha1.method).reader = {
     };
   }
@@ -43,8 +42,8 @@ service AccountInterface {
   }
 
   // An async task to send a welcome email to the customer.
-  rpc WelcomeEmailTask(google.protobuf.Empty)
-      returns (google.protobuf.Empty) {
+  rpc WelcomeEmailTask(WelcomeEmailTaskRequest)
+      returns (WelcomeEmailTaskResponse) {
     option (resemble.v1alpha1.method) = {
       writer: {},
     };
@@ -61,6 +60,8 @@ message OpenRequest {
 message OpenResponse {
   resemble.v1alpha1.TaskId welcome_email_task_id = 1;
 }
+
+message BalanceRequest {}
 
 message BalanceResponse {
   uint64 balance = 1;
@@ -81,3 +82,7 @@ message WithdrawRequest {
 message WithdrawResponse {
   uint64 updated_balance = 1;
 }
+
+message WelcomeEmailTaskRequest {}
+
+message WelcomeEmailTaskResponse {}
