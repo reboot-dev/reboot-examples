@@ -66,4 +66,8 @@ for application_folder in "${all_application_folders[@]}"; do
   runPyTest $application_folder
 done
 
+# Deactivate the virtual environment, since we can run a test which may require
+# another virtual environment (currently we do that only in `all_tests.sh`).
+deactivate
+
 # TODO: when relevant, add additional non-pytest tests here.

@@ -2,7 +2,6 @@ syntax = "proto3";
 
 package bank.v1;
 
-import "google/protobuf/empty.proto";
 import "resemble/v1alpha1/options.proto";
 
 import "bank/v1/errors.proto";
@@ -15,7 +14,7 @@ service BankInterface {
     };
   }
 
-  rpc Transfer(TransferRequest) returns (google.protobuf.Empty) {
+  rpc Transfer(TransferRequest) returns (TransferResponse) {
     option (resemble.v1alpha1.method) = {
       transaction: {},
       errors: [ "OverdraftError" ],
@@ -47,3 +46,5 @@ message TransferRequest {
   string to_account_id = 2;
   int64 amount = 3;
 }
+
+message TransferResponse {}

@@ -3,7 +3,6 @@ import unittest
 from hello_servicer import HelloServicer
 from hello_tasks.v1.hello_rsm import Hello
 from resemble.aio.tests import Resemble
-from resemble.aio.workflows import Workflow
 
 
 class TestHello(unittest.IsolatedAsyncioTestCase):
@@ -32,25 +31,25 @@ class TestHello(unittest.IsolatedAsyncioTestCase):
             in_process=True,
         )
 
-        workflow: Workflow = self.rsm.create_workflow(name=f"test-{self.id()}")
+        context = self.rsm.create_external_context(name=f"test-{self.id()}")
 
         hello = Hello.lookup("testing-hello")
 
         # Send a message.
-        send_response = await hello.Send(workflow, message="Hello, World!")
+        send_response = await hello.Send(context, message="Hello, World!")
 
         # Wait for the message to be erased.
         warning_response = await Hello.WarningTaskFuture(
-            workflow,
+            context,
             task_id=send_response.task_id,
         )
         await Hello.EraseTaskFuture(
-            workflow,
+            context,
             task_id=warning_response.task_id,
         )
 
         # Check that the current list of messages reflects the erasure.
-        messages_response = await hello.Messages(workflow)
+        messages_response = await hello.Messages(context)
         self.assertEqual(len(messages_response.messages), 1)
         self.assertEqual(
             messages_response.messages[0],

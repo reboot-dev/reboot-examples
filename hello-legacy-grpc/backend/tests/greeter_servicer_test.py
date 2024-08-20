@@ -5,7 +5,6 @@ from hello_legacy_grpc.v1 import greeter_pb2, greeter_pb2_grpc
 from hello_legacy_grpc.v1.greeter_rsm import ResembleGreeter
 from proxy_greeter_servicer import ProxyGreeterServicer
 from resemble.aio.tests import Resemble
-from resemble.aio.workflows import Workflow
 from resemble_greeter_servicer import ResembleGreeterServicer
 
 
@@ -24,12 +23,12 @@ class TestGreeter(unittest.IsolatedAsyncioTestCase):
             legacy_grpc_servicers=[DeprecatedGreeterServicer],
         )
 
-        workflow: Workflow = self.rsm.create_workflow(name=f"test-{self.id()}")
+        context = self.rsm.create_external_context(name=f"test-{self.id()}")
 
         # Call the Resemble greeter.
         resemble_greeter = ResembleGreeter.lookup("my-greeter")
         greet_response = await resemble_greeter.Greet(
-            workflow, name="legacy gRPC"
+            context, name="legacy gRPC"
         )
         self.assertIn(", legacy gRPC", greet_response.message)
         self.assertIn(
@@ -39,7 +38,7 @@ class TestGreeter(unittest.IsolatedAsyncioTestCase):
         # Call the Resemble greeter again to check that the count of greetings
         # issued has gone up.
         greet_response = await resemble_greeter.Greet(
-            workflow, name="someone else"
+            context, name="someone else"
         )
         self.assertIn(", someone else", greet_response.message)
         self.assertIn(
@@ -49,10 +48,10 @@ class TestGreeter(unittest.IsolatedAsyncioTestCase):
     async def test_deprecated_greeter(self) -> None:
         await self.rsm.up(legacy_grpc_servicers=[DeprecatedGreeterServicer])
 
-        workflow: Workflow = self.rsm.create_workflow(name=f"test-{self.id()}")
+        context = self.rsm.create_external_context(name=f"test-{self.id()}")
 
         # Call the DeprecatedGreeter service.
-        async with workflow.legacy_grpc_channel() as channel:
+        async with context.legacy_grpc_channel() as channel:
             deprecated_greeter_stub = greeter_pb2_grpc.DeprecatedGreeterStub(
                 channel
             )
@@ -74,14 +73,14 @@ class TestGreeter(unittest.IsolatedAsyncioTestCase):
             local_envoy=True,
         )
 
-        workflow: Workflow = self.rsm.create_workflow(name=f"test-{self.id()}")
+        context = self.rsm.create_external_context(name=f"test-{self.id()}")
 
         # Make sure the proxy eventually hits both services.
         # If not, the test will hang and eventually time out.
         resemble_hit = False
         deprecated_hit = False
 
-        async with workflow.legacy_grpc_channel() as channel:
+        async with context.legacy_grpc_channel() as channel:
             proxy_greeter_stub = greeter_pb2_grpc.ProxyGreeterStub(channel)
             while not (resemble_hit and deprecated_hit):
                 greet_response = await proxy_greeter_stub.Greet(

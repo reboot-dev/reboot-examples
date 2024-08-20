@@ -49,3 +49,7 @@ rsm protoc
 
 # Test.
 pytest backend/
+
+# Deactivate the virtual environment, since we can run a test which may require
+# another virtual environment (currently we do that only in `all_tests.sh`).
+deactivate

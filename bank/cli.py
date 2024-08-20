@@ -11,7 +11,7 @@ import uuid
 from bank.v1.account_rsm import Account
 from bank.v1.bank_rsm import Bank
 from bank.v1.errors_pb2 import OverdraftError
-from resemble.aio.workflows import Workflow
+from resemble.aio.external import ExternalContext
 
 
 def configure_parser() -> argparse.ArgumentParser:
@@ -92,26 +92,24 @@ def configure_parser() -> argparse.ArgumentParser:
 
 
 async def run_action(args: argparse.Namespace) -> int:
-    workflow = Workflow(
+    context = ExternalContext(
         name=f"bank-cli-action-{str(uuid.uuid4())}",
         gateway=args.gateway_address,
     )
 
     bank = Bank.lookup(args.bank_id)
     if args.subcommand == "signup":
-        response = await bank.SignUp(
-            workflow, customer_name=args.customer_name
-        )
+        response = await bank.SignUp(context, customer_name=args.customer_name)
         print(
             f"Signup successful! Your new account id is {response.account_id}"
         )
     elif args.subcommand == "transfer":
         try:
             response = await bank.Transfer(
-                workflow,
+                context,
                 from_account_id=args.from_account_id,
                 to_account_id=args.to_account_id,
-                amount=args.amount
+                amount=args.amount,
             )
             print("Transfer successful!")
         except Bank.TransferAborted as aborted:
@@ -128,13 +126,13 @@ async def run_action(args: argparse.Namespace) -> int:
         # These commands talk directly to the Account state machine.
         account = Account.lookup(args.account_id)
         if args.subcommand == "deposit":
-            response = await account.Deposit(workflow, amount=args.amount)
+            response = await account.Deposit(context, amount=args.amount)
             print(
                 f"Deposit successful! Your account balance is now: {response.updated_balance}"
             )
         elif args.subcommand == "withdraw":
             try:
-                response = await account.Withdraw(workflow, amount=args.amount)
+                response = await account.Withdraw(context, amount=args.amount)
                 print(
                     f"Withdrawal successful! Your account balance is now: {response.updated_balance}"
                 )
@@ -149,7 +147,7 @@ async def run_action(args: argparse.Namespace) -> int:
                     case _:
                         print(f"Unexpected error during withdraw: {aborted}")
         elif args.subcommand == "balance":
-            response = await account.Balance(workflow)
+            response = await account.Balance(context)
             print(f"Your account balance is: {response.balance}")
 
 

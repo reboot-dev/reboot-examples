@@ -4,18 +4,18 @@ from account_servicer import AccountServicer
 from bank.v1.bank_rsm import Bank
 from bank_servicer import BankServicer
 from resemble.aio.applications import Application
-from resemble.aio.workflows import Workflow
+from resemble.aio.external import ExternalContext
 
 logging.basicConfig(level=logging.INFO)
 
 EXAMPLE_STATE_MACHINE_ID = 'resemble-bank'
 
 
-async def initialize(workflow: Workflow):
+async def initialize(context: ExternalContext):
     bank = Bank.lookup(EXAMPLE_STATE_MACHINE_ID)
 
     await bank.idempotently().SignUp(
-        workflow,
+        context,
         customer_name="Initial User",
     )
 

@@ -3,7 +3,6 @@ from account_servicer import AccountServicer
 from bank.v1.account_rsm import Account, BalanceResponse
 from bank.v1.errors_pb2 import OverdraftError
 from resemble.aio.tests import Resemble
-from resemble.aio.workflows import Workflow
 from unittest import mock
 
 
@@ -22,39 +21,38 @@ class TestAccount(unittest.IsolatedAsyncioTestCase):
         await self.rsm.stop()
 
     async def test_basics(self) -> None:
-        workflow: Workflow = self.rsm.create_workflow(name=f"test-{self.id()}")
+        context = self.rsm.create_external_context(name=f"test-{self.id()}")
 
         await self.rsm.up(servicers=[AccountServicer])
 
         # Create the state machine by calling its constructor. The fact that the
         # state machine _has_ a constructor means that this step is required
         # before other methods can be called on it.
-        account, _ = await Account.Open(
-            "testing-account",
-            workflow,
+        account, _ = await Account.construct().Open(
+            context,
             customer_name="Alice",
         )
 
         # We can now call methods on the state machine. It should have a balance
         # of 0.
-        response: BalanceResponse = await account.Balance(workflow)
+        response: BalanceResponse = await account.Balance(context)
         self.assertEqual(response.balance, 0)
 
         # When we deposit money, the balance should go up.
-        await account.Deposit(workflow, amount=100)
-        response = await account.Balance(workflow)
+        await account.Deposit(context, amount=100)
+        response = await account.Balance(context)
         self.assertEqual(response.balance, 100)
 
         # When we withdraw money, the balance should go down.
-        await account.Withdraw(workflow, amount=60)
-        response = await account.Balance(workflow)
+        await account.Withdraw(context, amount=60)
+        response = await account.Balance(context)
         self.assertEqual(response.balance, 40)
 
         # When we withdraw too much money, we should get an error.
         # Use a helper function here to get a code snippet for use in docs.
         async def withdraw():
             try:
-                await account.Withdraw(workflow, amount=65)
+                await account.Withdraw(context, amount=65)
             except Account.WithdrawAborted as aborted:
                 match aborted.error:
                     case OverdraftError(amount=amount):
@@ -71,7 +69,7 @@ class TestAccount(unittest.IsolatedAsyncioTestCase):
         self.assertTrue(isinstance(aborted.exception.error, OverdraftError))
         self.assertEqual(aborted.exception.error.amount, 25)
         # ... and the balance shouldn't have changed.
-        response = await account.Balance(workflow)
+        response = await account.Balance(context)
         self.assertEqual(response.balance, 40)
 
     @mock.patch("account_servicer.send_email")
@@ -87,19 +85,18 @@ class TestAccount(unittest.IsolatedAsyncioTestCase):
             # We MUST therefore pass `in_process=True` for `@patch` to work.
             in_process=True,
         )
-        workflow: Workflow = self.rsm.create_workflow(name=f"test-{self.id()}")
+        context = self.rsm.create_external_context(name=f"test-{self.id()}")
 
         # When we open an account, we expect the user to receive a welcome
         # email.
-        account, open_response = await Account.Open(
-            "testing-account",
-            workflow,
+        account, open_response = await Account.construct().Open(
+            context,
             customer_name="Alice",
         )
 
         # Wait for the email task to run.
         await Account.WelcomeEmailTaskFuture(
-            workflow,
+            context,
             task_id=open_response.welcome_email_task_id,
         )
         # We can expect two attempts to send the email, because Resemble always

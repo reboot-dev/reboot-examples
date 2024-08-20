@@ -3,27 +3,27 @@ import logging
 from hello_constructors.v1.hello_rsm import Hello
 from hello_servicer import HelloServicer
 from resemble.aio.applications import Application
-from resemble.aio.workflows import Workflow
+from resemble.aio.external import ExternalContext
 
 logging.basicConfig(level=logging.INFO)
 
 EXAMPLE_STATE_MACHINE_ID = 'resemble-hello'
 
 
-async def initialize(workflow: Workflow):
+async def initialize(context: ExternalContext):
     # Explicitly create the state machine.
-    hello, _ = await Hello.idempotently().Create(
+    hello, _ = await Hello.construct().idempotently().Create(
         EXAMPLE_STATE_MACHINE_ID,
-        workflow,
+        context,
         initial_message="Welcome! This message was sent by a constructor.",
     )
 
     # Send a message.
     await hello.idempotently().Send(
-        workflow, message="This message was sent after construction!"
+        context, message="This message was sent after construction!"
     )
 
-    messages_response = await hello.Messages(workflow)
+    messages_response = await hello.Messages(context)
     print(
         f"After initialization, the Hello messages are: {messages_response.messages}"
     )
