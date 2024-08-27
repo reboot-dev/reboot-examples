@@ -13,12 +13,12 @@ examples are structured in the style of a monorepo: all proto files can be found
 in the `api/` directory, grouped into subdirectories by proto package, while
 application code is broken into top-level directories by application name.
 
-The [Resemble '.proto' definition](https://docs.reboot.dev/docs/learn/overview#generated-code)
+The [Resemble '.proto' definition](https://docs.reboot.dev/develop/schema#code-generation)
 can be found in the `api/` directory, grouped into
 subdirectories by proto package, while backend specific code can be
 found in top-level directories by application name.
 
-_For more information on all of the Resemble examples, please [see the docs](https://docs.reboot.dev/docs/get_started/examples)._
+_For more information on all of the Resemble examples, please [see the docs](https://docs.reboot.dev/get_started/examples)._
 
 ## Prepare an environment by...
 

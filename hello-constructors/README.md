@@ -8,4 +8,4 @@ In "Hello, Constructors" a state machine can't deliver messages until
 that state machine has been created by calling its constructor method, giving it
 an initial message to display.
 
-Read more about constructors in the [Resemble documentation](https://docs.reboot.dev/docs/model/methods#constructors).
+Read more about constructors in the [Resemble documentation](https://docs.reboot.dev/develop/servicers#constructors).
