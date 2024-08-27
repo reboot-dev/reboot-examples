@@ -18,6 +18,8 @@ can be found in the `api/` directory, grouped into
 subdirectories by proto package, while backend specific code can be
 found in top-level directories by application name.
 
+_For more information on all of the Resemble examples, please [see the docs](https://docs.reboot.dev/docs/get_started/examples)._
+
 ## Prepare an environment by...
 
 <a id="using-vscode-connected-to-a-github-codespace"></a>
@@ -42,8 +44,8 @@ Running directly on a host requires:
 - A platform of either:
    - `x86_64 Linux` with `glibc>=2.35` (Ubuntu Jammy and other equivalent-generation Linux distributions)
    - `arm64 or x86_64 MacOS` with `MacOS>=13.0` and `Xcode>=14.3`
-- [Rye](https://rye-up.com/)
-    - A tool to manage `python`, `pip`, and `venv`. If you are already familiar with Python [virtual environments](https://docs.python.org/3/library/venv.html), feel free to use your tool of choice with [`pyproject.toml`](./pyproject.toml). Python>=3.10 is required.
+- [Rye](https://rye-up.com/) - A tool to manage `python`, `pip`, and `venv`.
+   - If you are already familiar with Python [virtual environments](https://docs.python.org/3/library/venv.html), feel free to use your tool of choice with [`pyproject.toml`](./pyproject.toml). Python==3.10 is required.
 - Docker
     - Note: the example does not run "inside of" Docker, but Docker is used to host a native support service for local development.
 
@@ -54,7 +56,7 @@ Now you're ready to [run the application](#run-the-application)!
 <a id="run-the-application"></a>
 ## Run the application
 
-### Backend via `rsm`
+### Backend
 
 Our backend is implemented in Python and we must install its dependencies before
 running it. The most notable of those dependencies is the `reboot-resemble` PyPI
@@ -92,7 +94,6 @@ Running `rsm dev run` will watch for file modifications and restart the
 application if necessary. See the `.rsmrc` file for flags and
 arguments that get expanded when running `rsm dev run`.
 
-
 ### Tests
 
 The application comes with backend tests.
@@ -116,10 +117,3 @@ Now you can run the tests using `pytest`:
 ```sh
 pytest backend/
 ```
-
-
-
-<!--
-TODO: introduce an `rsm grpcurl` (or `rsm call` or ...) that lets us explore
-our backend in another terminal by calling RPCs.
--->
