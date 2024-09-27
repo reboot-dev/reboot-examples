@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package bank.v1;
 
-import "resemble/v1alpha1/options.proto";
+import "rbt/v1alpha1/options.proto";
 
 import "bank/v1/errors.proto";
 
@@ -10,12 +10,12 @@ import "bank/v1/errors.proto";
 
 service BankInterface {
   rpc SignUp(SignUpRequest) returns (SignUpResponse) {
-    option (resemble.v1alpha1.method).transaction = {
+    option (rbt.v1alpha1.method).transaction = {
     };
   }
 
   rpc Transfer(TransferRequest) returns (TransferResponse) {
-    option (resemble.v1alpha1.method) = {
+    option (rbt.v1alpha1.method) = {
       transaction: {},
       errors: [ "OverdraftError" ],
     };
@@ -25,7 +25,7 @@ service BankInterface {
 ////////////////////////////////////////////////////////////////////////
 
 message Bank {
-  option (.resemble.v1alpha1.state) = {
+  option (.rbt.v1alpha1.state) = {
   };
   repeated string account_ids = 1;
 }

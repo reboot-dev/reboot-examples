@@ -1,18 +1,18 @@
 import asyncio
 import logging
 from account_servicer import AccountServicer
-from bank.v1.bank_rsm import Bank
+from bank.v1.bank_rbt import Bank
 from bank_servicer import BankServicer
-from resemble.aio.applications import Application
-from resemble.aio.external import ExternalContext
+from reboot.aio.applications import Application
+from reboot.aio.external import ExternalContext
 
 logging.basicConfig(level=logging.INFO)
 
-EXAMPLE_STATE_MACHINE_ID = 'resemble-bank'
+SINGLETON_BANK_ID = 'reboot-bank'
 
 
 async def initialize(context: ExternalContext):
-    bank = Bank.lookup(EXAMPLE_STATE_MACHINE_ID)
+    bank = Bank.lookup(SINGLETON_BANK_ID)
 
     await bank.idempotently().SignUp(
         context,
@@ -26,7 +26,7 @@ async def main():
         initialize=initialize,
     )
 
-    logging.info('The Resemble Bank is open for business! 🏦')
+    logging.info('The Reboot Bank is open for business! 🏦')
 
     await application.run()
 

@@ -2,8 +2,8 @@ syntax = "proto3";
 
 package bank.v1;
 
-import "resemble/v1alpha1/options.proto";
-import "resemble/v1alpha1/tasks.proto";
+import "rbt/v1alpha1/options.proto";
+import "rbt/v1alpha1/tasks.proto";
 
 import "bank/v1/errors.proto";
 
@@ -11,7 +11,7 @@ import "bank/v1/errors.proto";
 // State machine definition.
 
 message Account {
-  option (.resemble.v1alpha1.state) = {
+  option (.rbt.v1alpha1.state) = {
   };
   string customer_name = 1;
   uint64 balance = 2;
@@ -19,23 +19,23 @@ message Account {
 
 service AccountInterface {
   rpc Open(OpenRequest) returns (OpenResponse) {
-    option (resemble.v1alpha1.method).writer = {
+    option (rbt.v1alpha1.method).writer = {
       constructor: {},
     };
   }
 
   rpc Balance(BalanceRequest) returns (BalanceResponse) {
-    option (resemble.v1alpha1.method).reader = {
+    option (rbt.v1alpha1.method).reader = {
     };
   }
 
   rpc Deposit(DepositRequest) returns (DepositResponse) {
-    option (resemble.v1alpha1.method).writer = {
+    option (rbt.v1alpha1.method).writer = {
     };
   }
 
   rpc Withdraw(WithdrawRequest) returns (WithdrawResponse) {
-    option (resemble.v1alpha1.method) = {
+    option (rbt.v1alpha1.method) = {
       writer: {},
       errors: [ "OverdraftError" ],
     };
@@ -44,7 +44,7 @@ service AccountInterface {
   // An async task to send a welcome email to the customer.
   rpc WelcomeEmailTask(WelcomeEmailTaskRequest)
       returns (WelcomeEmailTaskResponse) {
-    option (resemble.v1alpha1.method) = {
+    option (rbt.v1alpha1.method) = {
       writer: {},
     };
   }
@@ -58,7 +58,7 @@ message OpenRequest {
 }
 
 message OpenResponse {
-  resemble.v1alpha1.TaskId welcome_email_task_id = 1;
+  rbt.v1alpha1.TaskId welcome_email_task_id = 1;
 }
 
 message BalanceRequest {}

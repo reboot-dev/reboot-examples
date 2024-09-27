@@ -1,4 +1,4 @@
-# Before importing classes from generated Resemble code, we must update the
+# Before importing classes from generated Reboot code, we must update the
 # Python path to include the directory into which the code is generated.
 import sys
 
@@ -8,10 +8,10 @@ sys.path.append("../api/")
 import argparse
 import asyncio
 import uuid
-from bank.v1.account_rsm import Account
-from bank.v1.bank_rsm import Bank
+from bank.v1.account_rbt import Account
+from bank.v1.bank_rbt import Bank
 from bank.v1.errors_pb2 import OverdraftError
-from resemble.aio.external import ExternalContext
+from reboot.aio.external import ExternalContext
 
 
 def configure_parser() -> argparse.ArgumentParser:
@@ -24,7 +24,7 @@ def configure_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--bank_id",
         type=str,
-        default="resemble-bank",
+        default="reboot-bank",
     )
     subparsers = parser.add_subparsers(dest='subcommand', required=True)
 

@@ -1,24 +1,24 @@
 import unittest
 from account_servicer import AccountServicer
-from bank.v1.account_rsm import Account, BalanceResponse
-from bank.v1.bank_rsm import Bank, SignUpResponse
+from bank.v1.account_rbt import Account, BalanceResponse
+from bank.v1.bank_rbt import Bank, SignUpResponse
 from bank.v1.errors_pb2 import OverdraftError
 from bank_servicer import BankServicer
-from resemble.aio.tests import Resemble
+from reboot.aio.tests import Reboot
 
 
 class TestAccount(unittest.IsolatedAsyncioTestCase):
 
     async def asyncSetUp(self) -> None:
-        self.rsm = Resemble()
-        await self.rsm.start()
+        self.rbt = Reboot()
+        await self.rbt.start()
 
     async def asyncTearDown(self) -> None:
-        await self.rsm.stop()
+        await self.rbt.stop()
 
     async def test_signup(self) -> None:
-        await self.rsm.up(servicers=[BankServicer, AccountServicer])
-        context = self.rsm.create_external_context(name=f"test-{self.id()}")
+        await self.rbt.up(servicers=[BankServicer, AccountServicer])
+        context = self.rbt.create_external_context(name=f"test-{self.id()}")
         bank = Bank.lookup("my-bank")
 
         # The Bank state machine doesn't have a constructor, so we can simply
@@ -34,8 +34,8 @@ class TestAccount(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(response.balance, 0)
 
     async def test_transfer(self):
-        await self.rsm.up(servicers=[BankServicer, AccountServicer])
-        context = self.rsm.create_external_context(name=f"test-{self.id()}")
+        await self.rbt.up(servicers=[BankServicer, AccountServicer])
+        context = self.rbt.create_external_context(name=f"test-{self.id()}")
         bank = Bank.lookup("my-bank")
 
         alice: SignUpResponse = await bank.SignUp(

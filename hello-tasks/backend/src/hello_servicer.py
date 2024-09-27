@@ -1,6 +1,6 @@
 import uuid
 from datetime import timedelta
-from hello_tasks.v1.hello_rsm import (
+from hello_tasks.v1.hello_rbt import (
     EraseTaskRequest,
     EraseTaskResponse,
     Hello,
@@ -12,8 +12,8 @@ from hello_tasks.v1.hello_rsm import (
     WarningTaskRequest,
     WarningTaskResponse,
 )
-from resemble.aio.contexts import ReaderContext, WriterContext
-from resemble.aio.tasks import TaskEffect
+from reboot.aio.contexts import ReaderContext, WriterContext
+from reboot.aio.tasks import TaskEffect
 
 SECS_UNTIL_WARNING = 7
 ADDITIONAL_SECS_UNTIL_ERASE = 3

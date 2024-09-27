@@ -1,5 +1,5 @@
 import logging
-from bank.v1.account_rsm import (
+from bank.v1.account_rbt import (
     Account,
     BalanceRequest,
     BalanceResponse,
@@ -13,7 +13,7 @@ from bank.v1.account_rsm import (
     WithdrawResponse,
 )
 from bank.v1.errors_pb2 import OverdraftError
-from resemble.aio.contexts import ReaderContext, WriterContext
+from reboot.aio.contexts import ReaderContext, WriterContext
 
 logging.basicConfig(level=logging.INFO)
 
