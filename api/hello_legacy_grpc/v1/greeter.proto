@@ -2,29 +2,29 @@ syntax = "proto3";
 
 package hello_legacy_grpc.v1;
 
-import "resemble/v1alpha1/options.proto";
+import "rbt/v1alpha1/options.proto";
 import "google/protobuf/empty.proto";
 
 ////////////////////////////////////////////////////////////////////////
 // Imagine you have a stateless legacy gRPC Greeter which you're in the process
-// of replacing with a stateful Resemble Greeter. Both implement the same
-// methods. While the migration is in progress, the Resemble service
-// (ResembleGreeter) may still be calling out to the now-deprecated legacy gRPC
+// of replacing with a stateful Reboot Greeter. Both implement the same
+// methods. While the migration is in progress, the Reboot service
+// (RebootGreeter) may still be calling out to the now-deprecated legacy gRPC
 // service (DeprecatedGreeter) for some of its functionality. A proxy service
 // (ProxyGreeter) routes incoming requests to one of the two services, allowing
 // a gradual migration from one to the other.
 
-service ResembleGreeterInterface {
+service RebootGreeterInterface {
   rpc Initialize(google.protobuf.Empty) returns (google.protobuf.Empty) {
-    option (resemble.v1alpha1.method).workflow = {
+    option (rbt.v1alpha1.method).workflow = {
     };
   }
   rpc Greet(GreetRequest) returns (GreetResponse) {
-    option (resemble.v1alpha1.method).writer = {
+    option (rbt.v1alpha1.method).writer = {
     };
   }
   rpc GetSalutation(google.protobuf.Empty) returns (GetSalutationResponse) {
-    option (resemble.v1alpha1.method).reader = {
+    option (rbt.v1alpha1.method).reader = {
     };
   }
 }
@@ -40,8 +40,8 @@ service ProxyGreeter {
   }
 }
 
-message ResembleGreeter {
-  option (.resemble.v1alpha1.state) = {
+message RebootGreeter {
+  option (.rbt.v1alpha1.state) = {
   };
   int32 num_greetings = 1;
 }

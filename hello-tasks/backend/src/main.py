@@ -1,13 +1,13 @@
 import asyncio
 import logging
 from hello_servicer import HelloServicer
-from hello_tasks.v1.hello_rsm import Hello
-from resemble.aio.applications import Application
-from resemble.aio.external import ExternalContext
+from hello_tasks.v1.hello_rbt import Hello
+from reboot.aio.applications import Application
+from reboot.aio.external import ExternalContext
 
 logging.basicConfig(level=logging.INFO)
 
-EXAMPLE_STATE_MACHINE_ID = 'resemble-hello'
+EXAMPLE_STATE_MACHINE_ID = 'reboot-hello'
 
 
 async def initialize(context: ExternalContext):

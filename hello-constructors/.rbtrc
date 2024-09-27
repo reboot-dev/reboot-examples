@@ -18,7 +18,7 @@
 #                                                                      #
 # Then you can expand that config on the command line via:             #
 #                                                                      #
-# rsm subcommand --config=use-foo`                                     #
+# rbt subcommand --config=use-foo`                                     #
 ########################################################################
 
 # Generated code will be used by our backend.
@@ -31,7 +31,7 @@ protoc ../api/
 # Watch if any of our source files are modified.
 dev run --watch=backend/**/*.py
 
-# Tell `rsm` that this is a Python application.
+# Tell `rbt` that this is a Python application.
 dev run --python
 
 # Run the application!

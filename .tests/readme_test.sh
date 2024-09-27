@@ -13,7 +13,7 @@ set -x
 # Check that this script has been invoked with the right working directory, by
 # checking that the expected subdirectories exist.
 ls -l api/ hello-constructors/backend/src/ 2> /dev/null > /dev/null || {
-  echo "ERROR: this script must be invoked from the root of the 'resemble-examples' repository."
+  echo "ERROR: this script must be invoked from the root of the 'reboot-examples' repository."
   echo "Current working directory is '$(pwd)'."
   exit 1
 }
@@ -25,14 +25,14 @@ for file in "requirements.lock" "requirements-dev.lock" "pyproject.toml"; do
   mv "${file}.tmp" "$file"
 done
 
-# Use the published Resemble pip package by default, but allow the test system
+# Use the published Reboot pip package by default, but allow the test system
 # to override them with a different value.
-if [ -n "$REBOOT_RESEMBLE_WHL_FILE" ]; then
-  # Install the `reboot-resemble` package from the specified path explicitly, over-
+if [ -n "$REBOOT_WHL_FILE" ]; then
+  # Install the `reboot` package from the specified path explicitly, over-
   # writing the version from `pyproject.toml`.
-  rye remove --no-sync reboot-resemble
-  rye remove --no-sync --dev reboot-resemble
-  rye add --dev reboot-resemble --absolute --path=$REBOOT_RESEMBLE_WHL_FILE
+  rye remove --no-sync reboot
+  rye remove --no-sync --dev reboot
+  rye add --dev reboot --absolute --path=$REBOOT_WHL_FILE
 fi
 
 ### Start of the README.md test ###
@@ -45,7 +45,7 @@ source .venv/bin/activate
 cd hello-constructors
 
 # Compile protocol buffers.
-rsm protoc
+rbt protoc
 
 # Test.
 pytest backend/

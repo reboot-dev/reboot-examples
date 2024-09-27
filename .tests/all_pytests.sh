@@ -18,14 +18,14 @@ set -x
 # Check that this script has been invoked with the right working directory, by
 # checking that the expected subdirectories exist.
 ls -l api/ hello-constructors/backend/src/ 2> /dev/null > /dev/null || {
-  echo "ERROR: this script must be invoked from the root of the 'resemble-examples' repository."
+  echo "ERROR: this script must be invoked from the root of the 'reboot-examples' repository."
   echo "Current working directory is '$(pwd)'."
   exit 1
 }
 
-# Require `REBOOT_RESEMBLE_WHL_FILE` to have been passed; all tests calling this
-# file should be explicit about a specific Resemble wheel file they've built.
-echo "Using Resemble package '$REBOOT_RESEMBLE_WHL_FILE'"
+# Require `REBOOT_WHL_FILE` to have been passed; all tests calling this
+# file should be explicit about a specific Reboot wheel file they've built.
+echo "Using Reboot package '$REBOOT_WHL_FILE'"
 
 # Run each of the tests, each in their own virtual environment, so that they
 # can't influence each other.
@@ -37,7 +37,7 @@ function runPyTest () {
 
   # Compile protocol buffers.
   # TODO: how do we ensure that we're working with a clean slate here?
-  rsm protoc
+  rbt protoc
 
   # Test.
   pytest backend/
@@ -52,11 +52,11 @@ for file in "requirements.lock" "requirements-dev.lock" "pyproject.toml"; do
   mv "${file}.tmp" "$file"
 done
 
-# Install the `reboot-resemble` package from the specified path explicitly, over-
+# Install the `reboot` package from the specified path explicitly, over-
 # writing the version from `pyproject.toml`.
-rye remove --no-sync reboot-resemble
-rye remove --no-sync --dev reboot-resemble
-rye add --dev reboot-resemble --absolute --path=$REBOOT_RESEMBLE_WHL_FILE
+rye remove --no-sync reboot
+rye remove --no-sync --dev reboot
+rye add --dev reboot --absolute --path=$REBOOT_WHL_FILE
 
 # Create and activate a virtual environment.
 rye sync --no-lock

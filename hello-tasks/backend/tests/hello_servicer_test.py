@@ -1,27 +1,27 @@
 import hello_servicer
 import unittest
 from hello_servicer import HelloServicer
-from hello_tasks.v1.hello_rsm import Hello
-from resemble.aio.tests import Resemble
+from hello_tasks.v1.hello_rbt import Hello
+from reboot.aio.tests import Reboot
 
 
 class TestHello(unittest.IsolatedAsyncioTestCase):
 
     async def asyncSetUp(self) -> None:
-        self.rsm = Resemble()
-        await self.rsm.start()
+        self.rbt = Reboot()
+        await self.rbt.start()
 
     async def asyncTearDown(self) -> None:
-        await self.rsm.stop()
+        await self.rbt.stop()
 
     async def test_hello_tasks(self) -> None:
         # To make our test run quickly, remove delays before erasing the
         # message.
         hello_servicer.SECS_UNTIL_WARNING = 0
         hello_servicer.ADDITIONAL_SECS_UNTIL_ERASE = 0
-        await self.rsm.up(
+        await self.rbt.up(
             servicers=[HelloServicer],
-            # Normally, `rsm.up()` runs the servicers in a separate process, to
+            # Normally, `rbt.up()` runs the servicers in a separate process, to
             # ensure that accidental use of blocking functions (an easy mistake
             # to make) doesn't cause the test to lock up. However, in this test
             # we're updating constants used in a servicer, and the servicer must
@@ -31,7 +31,7 @@ class TestHello(unittest.IsolatedAsyncioTestCase):
             in_process=True,
         )
 
-        context = self.rsm.create_external_context(name=f"test-{self.id()}")
+        context = self.rbt.create_external_context(name=f"test-{self.id()}")
 
         hello = Hello.lookup("testing-hello")
 

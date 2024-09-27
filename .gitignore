@@ -1,5 +1,5 @@
-# Directories created from using the 'rsm' CLI tool in project directories.
-.rsm/
+# Directories created from using the 'rbt' CLI tool in project directories.
+.rbt/
 
 # The recommended virtualenv directory.
 /.venv/

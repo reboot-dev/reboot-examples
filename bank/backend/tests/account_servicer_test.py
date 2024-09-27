@@ -1,8 +1,8 @@
 import unittest
 from account_servicer import AccountServicer
-from bank.v1.account_rsm import Account, BalanceResponse
+from bank.v1.account_rbt import Account, BalanceResponse
 from bank.v1.errors_pb2 import OverdraftError
-from resemble.aio.tests import Resemble
+from reboot.aio.tests import Reboot
 from unittest import mock
 
 
@@ -14,16 +14,16 @@ def report_error_to_user(error_message: str) -> None:
 class TestAccount(unittest.IsolatedAsyncioTestCase):
 
     async def asyncSetUp(self) -> None:
-        self.rsm = Resemble()
-        await self.rsm.start()
+        self.rbt = Reboot()
+        await self.rbt.start()
 
     async def asyncTearDown(self) -> None:
-        await self.rsm.stop()
+        await self.rbt.stop()
 
     async def test_basics(self) -> None:
-        context = self.rsm.create_external_context(name=f"test-{self.id()}")
+        context = self.rbt.create_external_context(name=f"test-{self.id()}")
 
-        await self.rsm.up(servicers=[AccountServicer])
+        await self.rbt.up(servicers=[AccountServicer])
 
         # Create the state machine by calling its constructor. The fact that the
         # state machine _has_ a constructor means that this step is required
@@ -74,9 +74,9 @@ class TestAccount(unittest.IsolatedAsyncioTestCase):
 
     @mock.patch("account_servicer.send_email")
     async def test_send_welcome_email(self, mock_send_email) -> None:
-        await self.rsm.up(
+        await self.rbt.up(
             servicers=[AccountServicer],
-            # Normally, `rsm.up()` runs the servicers in a separate process, to
+            # Normally, `rbt.up()` runs the servicers in a separate process, to
             # ensure that accidental use of blocking functions (an easy mistake
             # to make) don't cause the test to lock up. However, in this test
             # we're using a mock, which must be in the same process as the test
@@ -85,7 +85,7 @@ class TestAccount(unittest.IsolatedAsyncioTestCase):
             # We MUST therefore pass `in_process=True` for `@patch` to work.
             in_process=True,
         )
-        context = self.rsm.create_external_context(name=f"test-{self.id()}")
+        context = self.rbt.create_external_context(name=f"test-{self.id()}")
 
         # When we open an account, we expect the user to receive a welcome
         # email.
@@ -99,7 +99,7 @@ class TestAccount(unittest.IsolatedAsyncioTestCase):
             context,
             task_id=open_response.welcome_email_task_id,
         )
-        # We can expect two attempts to send the email, because Resemble always
+        # We can expect two attempts to send the email, because Reboot always
         # re-runs methods twice in development mode in order to validate that
         # calls are idempotent.
         self.assertEquals(mock_send_email.call_count, 2)
