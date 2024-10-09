@@ -13,6 +13,7 @@ from reboot.aio.contexts import (
     WorkflowContext,
     WriterContext,
 )
+from reboot.aio.memoize import at_most_once
 
 logging.basicConfig(level=logging.INFO)
 
@@ -78,22 +79,21 @@ class RebootGreeterServicer(RebootGreeter.Interface):
         context: WorkflowContext,
         request: Empty,
     ):
-        # Call the ProxyGreeter service for a few greetings.
-        #
-        # NOTE: we don't currently have a way to call legacy gRPC
-        # _idempotently_ (that's one of the reasons for Reboot!), so
-        # for now we assume/hope that this workflow won't get retried
-        # due to a failure but it's totally possible and if it happens
-        # we might perform extra greets!
-        async with context.legacy_grpc_channel() as channel:
-            proxy_greeter_stub = greeter_pb2_grpc.ProxyGreeterStub(channel)
 
-            for i in range(10):
-                greet_response = await proxy_greeter_stub.Greet(
-                    greeter_pb2.GreetRequest(name="legacy gRPC")
-                )
-                logging.info(
-                    f"Received a greeting: '{greet_response.message}'"
-                )
+        async def make_greetings():
+            """Calls the ProxyGreeter service for a few greetings."""
+            async with context.legacy_grpc_channel() as channel:
+                proxy_greeter_stub = greeter_pb2_grpc.ProxyGreeterStub(channel)
+
+                for i in range(10):
+                    greet_response = await proxy_greeter_stub.Greet(
+                        greeter_pb2.GreetRequest(name="legacy gRPC")
+                    )
+                    logging.info(
+                        f"Received a greeting: '{greet_response.message}'"
+                    )
+
+        # We only want to make the greetings at-most-once.
+        await at_most_once("make greetings", context, make_greetings)
 
         return Empty()

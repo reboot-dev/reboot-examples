@@ -35,4 +35,4 @@ dev run --watch=backend/**/*.py
 dev run --python
 
 # Run the application!
-dev run backend/src/main.py
+dev run --application=backend/src/main.py

@@ -42,7 +42,7 @@ message Message {
 }
 
 message Hello {
-  option (.rbt.v1alpha1.state) = {
+  option (rbt.v1alpha1.state) = {
   };
   repeated Message messages = 1;
   int32 num_erased_messages = 2;
