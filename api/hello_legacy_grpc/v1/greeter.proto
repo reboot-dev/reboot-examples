@@ -41,7 +41,7 @@ service ProxyGreeter {
 }
 
 message RebootGreeter {
-  option (.rbt.v1alpha1.state) = {
+  option (rbt.v1alpha1.state) = {
   };
   int32 num_greetings = 1;
 }

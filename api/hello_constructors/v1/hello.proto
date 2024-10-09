@@ -28,7 +28,7 @@ service HelloInterface {
 }
 
 message Hello {
-  option (.rbt.v1alpha1.state) = {
+  option (rbt.v1alpha1.state) = {
   };
   repeated string messages = 2;
 }
