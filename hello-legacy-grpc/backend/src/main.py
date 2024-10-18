@@ -10,8 +10,7 @@ from reboot_greeter_servicer import RebootGreeterServicer
 
 async def initialize(context: ExternalContext):
     # Schedule initialize on `RebootGreeter` so that it only happens
-    # once via idempotency (but see caveats in
-    # `RebootGreeterServicer.Initialize`).
+    # once via idempotency.
     #
     # NOTE: we use `schedule()` because `Initialize()` is a `workflow`
     # method and those are not (yet) synchronously callable from a
