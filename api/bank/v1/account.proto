@@ -17,7 +17,7 @@ message Account {
   uint64 balance = 2;
 }
 
-service AccountInterface {
+service AccountMethods {
   rpc Open(OpenRequest) returns (OpenResponse) {
     option (rbt.v1alpha1.method).writer = {
       constructor: {},

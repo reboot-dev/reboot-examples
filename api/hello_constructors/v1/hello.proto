@@ -6,7 +6,7 @@ import "rbt/v1alpha1/options.proto";
 
 ////////////////////////////////////////////////////////////////////////
 
-service HelloInterface {
+service HelloMethods {
   // Creates a Hello instance.
   rpc Create(CreateRequest) returns (CreateResponse) {
     option (rbt.v1alpha1.method).writer = {

@@ -18,7 +18,7 @@ from reboot.aio.contexts import ReaderContext, WriterContext
 logging.basicConfig(level=logging.INFO)
 
 
-class AccountServicer(Account.Interface):
+class AccountServicer(Account.Servicer):
 
     async def Open(
         self,

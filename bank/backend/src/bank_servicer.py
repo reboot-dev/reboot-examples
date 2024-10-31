@@ -13,7 +13,7 @@ from reboot.aio.contexts import TransactionContext
 logging.basicConfig(level=logging.INFO)
 
 
-class BankServicer(Bank.Interface):
+class BankServicer(Bank.Servicer):
 
     async def SignUp(
         self,
