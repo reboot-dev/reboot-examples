@@ -14,7 +14,7 @@ import "google/protobuf/empty.proto";
 // (ProxyGreeter) routes incoming requests to one of the two services, allowing
 // a gradual migration from one to the other.
 
-service RebootGreeterInterface {
+service RebootGreeterMethods {
   rpc Initialize(google.protobuf.Empty) returns (google.protobuf.Empty) {
     option (rbt.v1alpha1.method).workflow = {
     };

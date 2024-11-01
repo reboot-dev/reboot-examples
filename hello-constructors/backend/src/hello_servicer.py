@@ -10,7 +10,7 @@ from hello_constructors.v1.hello_rbt import (
 from reboot.aio.contexts import ReaderContext, WriterContext
 
 
-class HelloServicer(Hello.Interface):
+class HelloServicer(Hello.Servicer):
 
     async def Create(
         self,

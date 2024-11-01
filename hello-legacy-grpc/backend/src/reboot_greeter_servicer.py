@@ -18,7 +18,7 @@ from reboot.aio.memoize import at_most_once
 logging.basicConfig(level=logging.INFO)
 
 
-class RebootGreeterServicer(RebootGreeter.Interface):
+class RebootGreeterServicer(RebootGreeter.Servicer):
 
     async def _get_deprecated_salutation(self, context: Context) -> str:
         """Fetch a salutation from the deprecated Greeter service written in

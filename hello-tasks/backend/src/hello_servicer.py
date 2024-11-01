@@ -19,7 +19,7 @@ SECS_UNTIL_WARNING = 7
 ADDITIONAL_SECS_UNTIL_ERASE = 3
 
 
-class HelloServicer(Hello.Interface):
+class HelloServicer(Hello.Servicer):
 
     async def Messages(
         self,

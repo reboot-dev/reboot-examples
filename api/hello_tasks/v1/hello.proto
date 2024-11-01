@@ -7,7 +7,7 @@ import "rbt/v1alpha1/tasks.proto";
 
 ////////////////////////////////////////////////////////////////////////
 
-service HelloInterface {
+service HelloMethods {
   // Returns the current list of recorded messages.
   rpc Messages(MessagesRequest) returns (MessagesResponse) {
     option (rbt.v1alpha1.method).reader = {
