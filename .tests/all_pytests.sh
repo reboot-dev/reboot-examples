@@ -8,20 +8,9 @@ all_application_folders=(
   "hello-tasks"
 )
 
-# In case of any errors, this test has failed. Fail immediately.
-set -e
-# In case of undefined variables, there must be a bug. Fail immediately.
-set -u
-# Show us the commands we're executing, to aid in debugging.
-set -x
-
-# Check that this script has been invoked with the right working directory, by
-# checking that the expected subdirectories exist.
-ls -l api/ hello-constructors/backend/src/ 2> /dev/null > /dev/null || {
-  echo "ERROR: this script must be invoked from the root of the 'reboot-examples' repository."
-  echo "Current working directory is '$(pwd)'."
-  exit 1
-}
+set -e # Exit if a command exits with an error.
+set -u # In case of undefined variables, there must be a bug. Fail immediately.
+set -x # Echo executed commands to help debug failures.
 
 # Require `REBOOT_WHL_FILE` to have been passed; all tests calling this
 # file should be explicit about a specific Reboot wheel file they've built.
@@ -45,18 +34,11 @@ function runPyTest () {
   popd
 }
 
-# Convert symlinks to files that we need to mutate into copies.
-for file in "requirements.lock" "requirements-dev.lock" "pyproject.toml"; do
-  cp "$file" "${file}.tmp"
-  rm "$file"
-  mv "${file}.tmp" "$file"
-done
-
 # Install the `reboot` package from the specified path explicitly, over-
 # writing the version from `pyproject.toml`.
 rye remove --no-sync reboot
 rye remove --no-sync --dev reboot
-rye add --dev reboot --absolute --path=$REBOOT_WHL_FILE
+rye add --dev reboot --absolute --path=${SANDBOX_ROOT}$REBOOT_WHL_FILE
 
 # Create and activate a virtual environment.
 rye sync --no-lock

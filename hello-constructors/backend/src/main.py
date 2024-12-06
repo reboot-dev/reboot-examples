@@ -12,8 +12,9 @@ EXAMPLE_STATE_MACHINE_ID = 'reboot-hello'
 
 async def initialize(context: ExternalContext):
     # Explicitly create the state machine.
-    hello, _ = await Hello.construct().idempotently().Create(
-        EXAMPLE_STATE_MACHINE_ID,
+    hello, _ = await Hello.construct(
+        id=EXAMPLE_STATE_MACHINE_ID
+    ).idempotently().Create(
         context,
         initial_message="Welcome! This message was sent by a constructor.",
     )
