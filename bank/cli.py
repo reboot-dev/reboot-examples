@@ -17,9 +17,9 @@ from reboot.aio.external import ExternalContext
 def configure_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "--gateway_address",
+        "--application_api_url",
         type=str,
-        default="localhost:9991",
+        default="http://localhost:9991",
     )
     parser.add_argument(
         "--bank_id",
@@ -91,10 +91,10 @@ def configure_parser() -> argparse.ArgumentParser:
     return parser
 
 
-async def run_action(args: argparse.Namespace) -> int:
+async def run_action(args: argparse.Namespace) -> None:
     context = ExternalContext(
         name=f"bank-cli-action-{str(uuid.uuid4())}",
-        gateway=args.gateway_address,
+        url=args.application_api_url,
     )
 
     bank = Bank.lookup(args.bank_id)
