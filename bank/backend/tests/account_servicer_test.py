@@ -102,4 +102,4 @@ class TestAccount(unittest.IsolatedAsyncioTestCase):
         # We can expect two attempts to send the email, because Reboot always
         # re-runs methods twice in development mode in order to validate that
         # calls are idempotent.
-        self.assertEquals(mock_send_email.call_count, 2)
+        self.assertEqual(mock_send_email.call_count, 2)
