@@ -26,7 +26,7 @@ class TestGreeter(unittest.IsolatedAsyncioTestCase):
         context = self.rbt.create_external_context(name=f"test-{self.id()}")
 
         # Call the Reboot greeter.
-        reboot_greeter = RebootGreeter.lookup("my-greeter")
+        reboot_greeter = RebootGreeter.ref("my-greeter")
         greet_response = await reboot_greeter.Greet(
             context, name="legacy gRPC"
         )

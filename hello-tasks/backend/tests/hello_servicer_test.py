@@ -33,17 +33,17 @@ class TestHello(unittest.IsolatedAsyncioTestCase):
 
         context = self.rbt.create_external_context(name=f"test-{self.id()}")
 
-        hello = Hello.lookup("testing-hello")
+        hello = Hello.ref("testing-hello")
 
         # Send a message.
         send_response = await hello.Send(context, message="Hello, World!")
 
         # Wait for the message to be erased.
-        warning_response = await Hello.WarningTaskFuture(
+        warning_response = await Hello.WarningTask.retrieve(
             context,
             task_id=send_response.task_id,
         )
-        await Hello.EraseTaskFuture(
+        await Hello.EraseTask.retrieve(
             context,
             task_id=warning_response.task_id,
         )
