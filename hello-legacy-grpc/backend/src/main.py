@@ -9,17 +9,13 @@ from reboot_greeter_servicer import RebootGreeterServicer
 
 
 async def initialize(context: ExternalContext):
-    # Schedule initialize on `RebootGreeter` so that it only happens
-    # once via idempotency.
+    # Run `Initialize` on `RebootGreeter` idempotently so that it only
+    # happens once.
     #
-    # NOTE: we use `schedule()` because `Initialize()` is a `workflow`
-    # method and those are not (yet) synchronously callable from a
-    # `ExternalContext`. Because `initialize()` (this function) gets called
-    # asynchronously with respect to other calls being made that fact
-    # that we schedule here is semantically no different.
-    await RebootGreeter.lookup(
-        "my-greeter",
-    ).idempotently().schedule().Initialize(context)
+    # NOTE: we don't need to `spawn()` because we want to immediately
+    # wait for it to complete (this is syntactic sugar for spawning
+    # and then awaiting the returned task).
+    await RebootGreeter.ref("my-greeter").idempotently().Initialize(context)
 
 
 async def main():

@@ -28,8 +28,9 @@ class BankServicer(Bank.Servicer):
         new_account_id = str(uuid.uuid4())
 
         # Let's go create the account.
-        account, _ = await Account.construct(id=new_account_id).Open(
+        account, _ = await Account.Open(
             context,
+            new_account_id,
             customer_name=request.customer_name,
         )
 
@@ -44,8 +45,8 @@ class BankServicer(Bank.Servicer):
         state: Bank.State,
         request: TransferRequest,
     ) -> TransferResponse:
-        from_account = Account.lookup(request.from_account_id)
-        to_account = Account.lookup(request.to_account_id)
+        from_account = Account.ref(request.from_account_id)
+        to_account = Account.ref(request.to_account_id)
 
         await from_account.Withdraw(context, amount=request.amount)
         await to_account.Deposit(context, amount=request.amount)

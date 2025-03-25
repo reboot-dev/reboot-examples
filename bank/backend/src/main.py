@@ -12,7 +12,7 @@ SINGLETON_BANK_ID = 'reboot-bank'
 
 
 async def initialize(context: ExternalContext):
-    bank = Bank.lookup(SINGLETON_BANK_ID)
+    bank = Bank.ref(SINGLETON_BANK_ID)
 
     await bank.idempotently().SignUp(
         context,

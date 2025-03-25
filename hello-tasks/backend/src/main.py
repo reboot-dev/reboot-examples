@@ -11,7 +11,7 @@ EXAMPLE_STATE_MACHINE_ID = 'reboot-hello'
 
 
 async def initialize(context: ExternalContext):
-    hello = Hello.lookup(EXAMPLE_STATE_MACHINE_ID)
+    hello = Hello.ref(EXAMPLE_STATE_MACHINE_ID)
 
     logging.info("📬 Sending initial message if it isn't already...")
 
@@ -22,14 +22,14 @@ async def initialize(context: ExternalContext):
 
     logging.info("💌 Ensuring initial message was sent!")
 
-    warning_response = await Hello.WarningTaskFuture(
+    warning_response = await Hello.WarningTask.retrieve(
         context,
         task_id=send_response.task_id,
     )
 
     logging.info("⏱ Ensuring initial message was erased...")
 
-    await Hello.EraseTaskFuture(
+    await Hello.EraseTask.retrieve(
         context,
         task_id=warning_response.task_id,
     )

@@ -28,10 +28,7 @@ class TestAccount(unittest.IsolatedAsyncioTestCase):
         # Create the state machine by calling its constructor. The fact that the
         # state machine _has_ a constructor means that this step is required
         # before other methods can be called on it.
-        account, _ = await Account.construct().Open(
-            context,
-            customer_name="Alice",
-        )
+        account, _ = await Account.Open(context, customer_name="Alice")
 
         # We can now call methods on the state machine. It should have a balance
         # of 0.
@@ -89,16 +86,21 @@ class TestAccount(unittest.IsolatedAsyncioTestCase):
 
         # When we open an account, we expect the user to receive a welcome
         # email.
-        account, open_response = await Account.construct().Open(
+        account, open_response = await Account.Open(
             context,
             customer_name="Alice",
         )
 
+        welcome_email_task_id = open_response.welcome_email_task_id
+
         # Wait for the email task to run.
-        await Account.WelcomeEmailTaskFuture(
+        response = await Account.WelcomeEmailTask.retrieve(
             context,
-            task_id=open_response.welcome_email_task_id,
+            task_id=welcome_email_task_id,
         )
+        # We are only capturing the response for docs purposes, and
+        # need to explicitly delete it to avoid linting errors.
+        del response
         # We can expect two attempts to send the email, because Reboot always
         # re-runs methods twice in development mode in order to validate that
         # calls are idempotent.

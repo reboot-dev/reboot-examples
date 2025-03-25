@@ -18,7 +18,7 @@ class ProxyGreeterServicer(greeter_pb2_grpc.ProxyGreeterServicer):
         context = legacy_context.external_context(name=self.Greet.__name__)
         if random.random() < 0.5:
             # Route to RebootGreeter.
-            reboot_greeter = RebootGreeter.lookup("my-greeter")
+            reboot_greeter = RebootGreeter.ref("my-greeter")
             return await reboot_greeter.Greet(context, name=request.name)
         else:
             # Route to DeprecatedGreeter.

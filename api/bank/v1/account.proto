@@ -41,9 +41,8 @@ service AccountMethods {
     };
   }
 
-  // An async task to send a welcome email to the customer.
-  rpc WelcomeEmailTask(WelcomeEmailTaskRequest)
-      returns (WelcomeEmailTaskResponse) {
+  // Sends a welcome email to the customer, scheduled as a task.
+  rpc WelcomeEmail(WelcomeEmailRequest) returns (WelcomeEmailResponse) {
     option (rbt.v1alpha1.method) = {
       writer: {},
     };
@@ -83,6 +82,6 @@ message WithdrawResponse {
   uint64 updated_balance = 1;
 }
 
-message WelcomeEmailTaskRequest {}
+message WelcomeEmailRequest {}
 
-message WelcomeEmailTaskResponse {}
+message WelcomeEmailResponse {}

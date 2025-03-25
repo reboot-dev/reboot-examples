@@ -97,7 +97,7 @@ async def run_action(args: argparse.Namespace) -> None:
         url=args.application_api_url,
     )
 
-    bank = Bank.lookup(args.bank_id)
+    bank = Bank.ref(args.bank_id)
     if args.subcommand == "signup":
         response = await bank.SignUp(context, customer_name=args.customer_name)
         print(
@@ -124,7 +124,7 @@ async def run_action(args: argparse.Namespace) -> None:
                     print(f"Unexpected error during transfer: {aborted}")
     else:
         # These commands talk directly to the Account state machine.
-        account = Account.lookup(args.account_id)
+        account = Account.ref(args.account_id)
         if args.subcommand == "deposit":
             response = await account.Deposit(context, amount=args.amount)
             print(

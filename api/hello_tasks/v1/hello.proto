@@ -21,15 +21,14 @@ service HelloMethods {
   }
 
   // Adds a "Disappearing soon!" alert to a message.
-  rpc WarningTask(WarningTaskRequest)
-      returns (WarningTaskResponse) {
+  rpc Warning(WarningRequest) returns (WarningResponse) {
     option (rbt.v1alpha1.method) = {
       writer: {},
     };
   }
 
   // Removes a message from the history.
-  rpc EraseTask(EraseTaskRequest) returns (EraseTaskResponse) {
+  rpc Erase(EraseRequest) returns (EraseResponse) {
     option (rbt.v1alpha1.method) = {
       writer: {},
     };
@@ -63,17 +62,17 @@ message SendResponse {
   rbt.v1alpha1.TaskId task_id = 1;
 }
 
-message WarningTaskRequest {
+message WarningRequest {
   string message_id = 1;
 }
 
-message WarningTaskResponse {
+message WarningResponse {
   // The ID of the task scheduled to erase the message.
   rbt.v1alpha1.TaskId task_id = 1;
 }
 
-message EraseTaskRequest {
+message EraseRequest {
   string message_id = 1;
 }
 
-message EraseTaskResponse {}
+message EraseResponse {}

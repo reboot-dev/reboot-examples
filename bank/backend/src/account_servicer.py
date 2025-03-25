@@ -7,8 +7,8 @@ from bank.v1.account_rbt import (
     DepositResponse,
     OpenRequest,
     OpenResponse,
-    WelcomeEmailTaskRequest,
-    WelcomeEmailTaskResponse,
+    WelcomeEmailRequest,
+    WelcomeEmailResponse,
     WithdrawRequest,
     WithdrawResponse,
 )
@@ -32,9 +32,9 @@ class AccountServicer(Account.Servicer):
 
         # We'd like to send the new customer a welcome email, but that can be
         # done asynchronously, so we schedule it as a task.
-        task = await self.lookup().schedule().WelcomeEmailTask(context)
+        task_id = await self.ref().schedule().WelcomeEmail(context)
 
-        return OpenResponse(welcome_email_task_id=task.task_id)
+        return OpenResponse(welcome_email_task_id=task_id)
 
     async def Balance(
         self,
@@ -67,12 +67,12 @@ class AccountServicer(Account.Servicer):
         state.balance = updated_balance
         return WithdrawResponse(updated_balance=updated_balance)
 
-    async def WelcomeEmailTask(
+    async def WelcomeEmail(
         self,
         context: WriterContext,
         state: Account.State,
-        request: WelcomeEmailTaskRequest,
-    ) -> WelcomeEmailTaskResponse:
+        request: WelcomeEmailRequest,
+    ) -> WelcomeEmailResponse:
         message_body = (
             f"Hello {state.customer_name},\n"
             "\n"
@@ -85,7 +85,7 @@ class AccountServicer(Account.Servicer):
 
         await send_email(message_body)
 
-        return WelcomeEmailTaskResponse()
+        return WelcomeEmailResponse()
 
 
 async def send_email(message_body: str):
