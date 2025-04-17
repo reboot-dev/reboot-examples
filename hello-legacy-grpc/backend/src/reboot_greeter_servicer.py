@@ -7,6 +7,7 @@ from hello_legacy_grpc.v1.greeter_rbt import (
     GreetResponse,
     RebootGreeter,
 )
+from reboot.aio.auth.authorizers import allow
 from reboot.aio.contexts import (
     Context,
     ReaderContext,
@@ -19,6 +20,9 @@ logging.basicConfig(level=logging.INFO)
 
 
 class RebootGreeterServicer(RebootGreeter.Servicer):
+
+    def authorizer(self):
+        return allow()
 
     async def _get_deprecated_salutation(self, context: Context) -> str:
         """Fetch a salutation from the deprecated Greeter service written in

@@ -2,9 +2,13 @@ import grpc.aio
 import random
 from google.protobuf.empty_pb2 import Empty
 from hello_legacy_grpc.v1 import greeter_pb2, greeter_pb2_grpc
+from reboot.aio.auth.authorizers import allow
 
 
 class DeprecatedGreeterServicer(greeter_pb2_grpc.DeprecatedGreeterServicer):
+
+    def authorizer(self):
+        return allow()
 
     async def Greet(
         self,

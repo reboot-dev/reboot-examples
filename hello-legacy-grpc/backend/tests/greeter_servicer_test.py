@@ -4,6 +4,7 @@ from deprecated_greeter_servicer import DeprecatedGreeterServicer
 from hello_legacy_grpc.v1 import greeter_pb2, greeter_pb2_grpc
 from hello_legacy_grpc.v1.greeter_rbt import RebootGreeter
 from proxy_greeter_servicer import ProxyGreeterServicer
+from reboot.aio.applications import Application
 from reboot.aio.tests import Reboot
 from reboot_greeter_servicer import RebootGreeterServicer
 
@@ -19,8 +20,10 @@ class TestGreeter(unittest.IsolatedAsyncioTestCase):
 
     async def test_reboot_greeter(self) -> None:
         await self.rbt.up(
-            servicers=[RebootGreeterServicer],
-            legacy_grpc_servicers=[DeprecatedGreeterServicer],
+            Application(
+                servicers=[RebootGreeterServicer],
+                legacy_grpc_servicers=[DeprecatedGreeterServicer],
+            ),
         )
 
         context = self.rbt.create_external_context(name=f"test-{self.id()}")
@@ -46,7 +49,9 @@ class TestGreeter(unittest.IsolatedAsyncioTestCase):
         )
 
     async def test_deprecated_greeter(self) -> None:
-        await self.rbt.up(legacy_grpc_servicers=[DeprecatedGreeterServicer])
+        await self.rbt.up(
+            Application(legacy_grpc_servicers=[DeprecatedGreeterServicer])
+        )
 
         context = self.rbt.create_external_context(name=f"test-{self.id()}")
 
@@ -66,10 +71,13 @@ class TestGreeter(unittest.IsolatedAsyncioTestCase):
     )
     async def test_proxy_greeter(self) -> None:
         await self.rbt.up(
-            servicers=[RebootGreeterServicer],
-            legacy_grpc_servicers=[
-                DeprecatedGreeterServicer, ProxyGreeterServicer
-            ],
+            Application(
+                servicers=[RebootGreeterServicer],
+                legacy_grpc_servicers=[
+                    DeprecatedGreeterServicer,
+                    ProxyGreeterServicer,
+                ],
+            ),
             local_envoy=True,
         )
 

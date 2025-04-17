@@ -15,7 +15,9 @@ class ProxyGreeterServicer(greeter_pb2_grpc.ProxyGreeterServicer):
         # new Reboot service. This proxy servicer will forward traffic to
         # either the RebootGreeter or the DeprecatedGreeter with a 50/50
         # ratio.
-        context = legacy_context.external_context(name=self.Greet.__name__)
+        context = legacy_context.external_context(
+            name="Call into `RebootGreeter`"
+        )
         if random.random() < 0.5:
             # Route to RebootGreeter.
             reboot_greeter = RebootGreeter.ref("my-greeter")

@@ -2,6 +2,7 @@ import unittest
 from account_servicer import AccountServicer
 from bank.v1.account_rbt import Account, BalanceResponse
 from bank.v1.errors_pb2 import OverdraftError
+from reboot.aio.applications import Application
 from reboot.aio.tests import Reboot
 from unittest import mock
 
@@ -23,7 +24,7 @@ class TestAccount(unittest.IsolatedAsyncioTestCase):
     async def test_basics(self) -> None:
         context = self.rbt.create_external_context(name=f"test-{self.id()}")
 
-        await self.rbt.up(servicers=[AccountServicer])
+        await self.rbt.up(Application(servicers=[AccountServicer]))
 
         # Create the state machine by calling its constructor. The fact that the
         # state machine _has_ a constructor means that this step is required
@@ -72,7 +73,7 @@ class TestAccount(unittest.IsolatedAsyncioTestCase):
     @mock.patch("account_servicer.send_email")
     async def test_send_welcome_email(self, mock_send_email) -> None:
         await self.rbt.up(
-            servicers=[AccountServicer],
+            Application(servicers=[AccountServicer]),
             # Normally, `rbt.up()` runs the servicers in a separate process, to
             # ensure that accidental use of blocking functions (an easy mistake
             # to make) don't cause the test to lock up. However, in this test
