@@ -2,6 +2,7 @@ import hello_servicer
 import unittest
 from hello_servicer import HelloServicer
 from hello_tasks.v1.hello_rbt import Hello
+from reboot.aio.applications import Application
 from reboot.aio.tests import Reboot
 
 
@@ -20,7 +21,7 @@ class TestHello(unittest.IsolatedAsyncioTestCase):
         hello_servicer.SECS_UNTIL_WARNING = 0
         hello_servicer.ADDITIONAL_SECS_UNTIL_ERASE = 0
         await self.rbt.up(
-            servicers=[HelloServicer],
+            Application(servicers=[HelloServicer]),
             # Normally, `rbt.up()` runs the servicers in a separate process, to
             # ensure that accidental use of blocking functions (an easy mistake
             # to make) doesn't cause the test to lock up. However, in this test

@@ -4,6 +4,7 @@ from bank.v1.account_rbt import Account, BalanceResponse
 from bank.v1.bank_rbt import Bank, SignUpResponse
 from bank.v1.errors_pb2 import OverdraftError
 from bank_servicer import BankServicer
+from reboot.aio.applications import Application
 from reboot.aio.tests import Reboot
 
 
@@ -17,7 +18,9 @@ class TestAccount(unittest.IsolatedAsyncioTestCase):
         await self.rbt.stop()
 
     async def test_signup(self) -> None:
-        await self.rbt.up(servicers=[BankServicer, AccountServicer])
+        await self.rbt.up(
+            Application(servicers=[BankServicer, AccountServicer])
+        )
         context = self.rbt.create_external_context(name=f"test-{self.id()}")
         bank = Bank.ref("my-bank")
 
@@ -34,7 +37,9 @@ class TestAccount(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(response.balance, 0)
 
     async def test_transfer(self):
-        await self.rbt.up(servicers=[BankServicer, AccountServicer])
+        await self.rbt.up(
+            Application(servicers=[BankServicer, AccountServicer])
+        )
         context = self.rbt.create_external_context(name=f"test-{self.id()}")
         bank = Bank.ref("my-bank")
 

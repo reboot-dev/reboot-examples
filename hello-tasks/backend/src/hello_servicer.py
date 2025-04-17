@@ -12,6 +12,7 @@ from hello_tasks.v1.hello_rbt import (
     WarningRequest,
     WarningResponse,
 )
+from reboot.aio.auth.authorizers import allow
 from reboot.aio.contexts import ReaderContext, WriterContext
 
 SECS_UNTIL_WARNING = 7
@@ -19,6 +20,9 @@ ADDITIONAL_SECS_UNTIL_ERASE = 3
 
 
 class HelloServicer(Hello.Servicer):
+
+    def authorizer(self):
+        return allow()
 
     async def Messages(
         self,

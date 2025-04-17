@@ -8,12 +8,16 @@ from bank.v1.bank_rbt import (
     TransferRequest,
     TransferResponse,
 )
+from reboot.aio.auth.authorizers import allow
 from reboot.aio.contexts import TransactionContext
 
 logging.basicConfig(level=logging.INFO)
 
 
 class BankServicer(Bank.Servicer):
+
+    def authorizer(self):
+        return allow()
 
     async def SignUp(
         self,

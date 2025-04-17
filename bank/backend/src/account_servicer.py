@@ -13,12 +13,16 @@ from bank.v1.account_rbt import (
     WithdrawResponse,
 )
 from bank.v1.errors_pb2 import OverdraftError
+from reboot.aio.auth.authorizers import allow
 from reboot.aio.contexts import ReaderContext, WriterContext
 
 logging.basicConfig(level=logging.INFO)
 
 
 class AccountServicer(Account.Servicer):
+
+    def authorizer(self):
+        return allow()
 
     async def Open(
         self,
