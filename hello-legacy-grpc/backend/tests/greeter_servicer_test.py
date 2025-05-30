@@ -78,7 +78,6 @@ class TestGreeter(unittest.IsolatedAsyncioTestCase):
                     ProxyGreeterServicer,
                 ],
             ),
-            local_envoy=True,
         )
 
         context = self.rbt.create_external_context(name=f"test-{self.id()}")
