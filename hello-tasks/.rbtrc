@@ -22,11 +22,11 @@
 ########################################################################
 
 # Generated code will be used by our backend.
-protoc --python=backend/api
+generate --python=backend/api
 
 # Since this repository is a monorepo, the `.proto` files are shared between all
 # applications in a single, top-level `api` directory.
-protoc ../api/
+generate ../api/
 
 # Watch if any of our source files are modified.
 dev run --watch=backend/**/*.py
