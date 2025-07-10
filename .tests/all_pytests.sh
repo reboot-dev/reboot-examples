@@ -26,7 +26,7 @@ function runPyTest () {
 
   # Compile protocol buffers.
   # TODO: how do we ensure that we're working with a clean slate here?
-  rbt protoc
+  rbt generate
 
   # Test.
   pytest backend/
