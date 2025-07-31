@@ -1,5 +1,4 @@
 import asyncio
-import reboot.aio.memoize
 from deprecated_greeter_servicer import DeprecatedGreeterServicer
 from hello_legacy_grpc.v1.greeter_rbt import RebootGreeter
 from proxy_greeter_servicer import ProxyGreeterServicer
@@ -20,7 +19,7 @@ async def initialize(context: ExternalContext):
 
 async def main():
     await Application(
-        servicers=[RebootGreeterServicer] + reboot.aio.memoize.servicers(),
+        servicers=[RebootGreeterServicer],
         legacy_grpc_servicers=[
             DeprecatedGreeterServicer, ProxyGreeterServicer
         ],
