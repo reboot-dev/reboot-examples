@@ -14,7 +14,7 @@ from reboot.aio.contexts import (
     WorkflowContext,
     WriterContext,
 )
-from reboot.aio.memoize import at_most_once
+from reboot.aio.workflows import at_most_once
 
 logging.basicConfig(level=logging.INFO)
 
