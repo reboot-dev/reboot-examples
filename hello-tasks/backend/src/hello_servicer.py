@@ -27,29 +27,28 @@ class HelloServicer(Hello.Servicer):
     async def Messages(
         self,
         context: ReaderContext,
-        state: Hello.State,
         request: MessagesRequest,
     ) -> MessagesResponse:
         # Prepend a message saying how many other messages have been erased so
         # far.
         erased_messages_summary = (
             f"Number of messages erased so far: "
-            f"{state.num_erased_messages}"
+            f"{self.state.num_erased_messages}"
         )
-        message_strings = [erased_messages_summary
-                          ] + [message.text for message in state.messages]
+        message_strings = [erased_messages_summary] + [
+            message.text for message in self.state.messages
+        ]
 
         return MessagesResponse(messages=message_strings)
 
     async def Send(
         self,
         context: WriterContext,
-        state: Hello.State,
         request: SendRequest,
     ) -> SendResponse:
         # Create an ID and store the new message.
         message = Message(id=str(uuid.uuid4()), text=request.message)
-        state.messages.append(message)
+        self.state.messages.append(message)
 
         # Schedule the message to get a warning message added.
         # The warning task will then schedule a follow-up task to erase the
@@ -66,13 +65,12 @@ class HelloServicer(Hello.Servicer):
     async def Warning(
         self,
         context: WriterContext,
-        state: Hello.State,
         request: WarningRequest,
     ) -> WarningResponse:
         # Find the message in question and update its text with a warning.
         warn_index = -1
-        for i in range(len(state.messages)):
-            message = state.messages[i]
+        for i in range(len(self.state.messages)):
+            message = self.state.messages[i]
             if message.id == request.message_id:
                 warn_index = i
                 break
@@ -90,7 +88,7 @@ class HelloServicer(Hello.Servicer):
             # so that a developer will come and debug.
             raise ValueError(f"ID {request.message_id} not found")
 
-        state.messages[warn_index].text += " (Disappearing soon!)"
+        self.state.messages[warn_index].text += " (Disappearing soon!)"
 
         # Schedule the task to be fully erased.
         erase_task_id = await self.ref().schedule(
@@ -105,13 +103,12 @@ class HelloServicer(Hello.Servicer):
     async def Erase(
         self,
         context: WriterContext,
-        state: Hello.State,
         request: EraseRequest,
     ) -> EraseResponse:
         # Find the message in question and remove it.
         delete_index = -1
-        for i in range(len(state.messages)):
-            message = state.messages[i]
+        for i in range(len(self.state.messages)):
+            message = self.state.messages[i]
             if message.id == request.message_id:
                 delete_index = i
                 break
@@ -129,7 +126,7 @@ class HelloServicer(Hello.Servicer):
             # so that a developer will come and debug.
             raise ValueError(f"ID {request.message_id} not found")
 
-        state.messages.pop(delete_index)
-        state.num_erased_messages += 1
+        self.state.messages.pop(delete_index)
+        self.state.num_erased_messages += 1
 
         return EraseResponse()

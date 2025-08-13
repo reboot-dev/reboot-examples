@@ -4,20 +4,17 @@ from account_servicer import AccountServicer
 from bank.v1.bank_rbt import Bank
 from bank_servicer import BankServicer
 from reboot.aio.applications import Application
-from reboot.aio.external import ExternalContext
+from reboot.aio.external import InitializeContext
 
 logging.basicConfig(level=logging.INFO)
 
 SINGLETON_BANK_ID = 'reboot-bank'
 
 
-async def initialize(context: ExternalContext):
+async def initialize(context: InitializeContext):
     bank = Bank.ref(SINGLETON_BANK_ID)
 
-    await bank.idempotently().SignUp(
-        context,
-        customer_name="Initial User",
-    )
+    await bank.SignUp(context, customer_name="Initial User")
 
 
 async def main():

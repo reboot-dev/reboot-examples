@@ -22,7 +22,6 @@ class BankServicer(Bank.Servicer):
     async def SignUp(
         self,
         context: TransactionContext,
-        state: Bank.State,
         request: SignUpRequest,
     ) -> SignUpResponse:
         # Generating an account ID so that we can demonstrate setting
@@ -39,14 +38,13 @@ class BankServicer(Bank.Servicer):
         )
 
         # Transactions like writers can alter state directly.
-        state.account_ids.append(account.state_id)
+        self.state.account_ids.append(account.state_id)
 
         return SignUpResponse(account_id=account.state_id)
 
     async def Transfer(
         self,
         context: TransactionContext,
-        state: Bank.State,
         request: TransferRequest,
     ) -> TransferResponse:
         from_account = Account.ref(request.from_account_id)

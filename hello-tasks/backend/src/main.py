@@ -3,19 +3,19 @@ import logging
 from hello_servicer import HelloServicer
 from hello_tasks.v1.hello_rbt import Hello
 from reboot.aio.applications import Application
-from reboot.aio.external import ExternalContext
+from reboot.aio.external import InitializeContext
 
 logging.basicConfig(level=logging.INFO)
 
 EXAMPLE_STATE_MACHINE_ID = 'reboot-hello'
 
 
-async def initialize(context: ExternalContext):
+async def initialize(context: InitializeContext):
     hello = Hello.ref(EXAMPLE_STATE_MACHINE_ID)
 
     logging.info("📬 Sending initial message if it isn't already...")
 
-    send_response = await hello.idempotently().Send(
+    send_response = await hello.Send(
         context,
         message="Hello, World!",
     )

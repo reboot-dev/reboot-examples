@@ -3,23 +3,23 @@ import logging
 from hello_constructors.v1.hello_rbt import Hello
 from hello_servicer import HelloServicer
 from reboot.aio.applications import Application
-from reboot.aio.external import ExternalContext
+from reboot.aio.external import InitializeContext
 
 logging.basicConfig(level=logging.INFO)
 
 EXAMPLE_STATE_MACHINE_ID = 'reboot-hello'
 
 
-async def initialize(context: ExternalContext):
+async def initialize(context: InitializeContext):
     # Explicitly create the state machine.
-    hello, _ = await Hello.idempotently().Create(
+    hello, _ = await Hello.Create(
         context,
         EXAMPLE_STATE_MACHINE_ID,
         initial_message="Welcome! This message was sent by a constructor.",
     )
 
     # Send a message.
-    await hello.idempotently().Send(
+    await hello.Send(
         context,
         message="This message was sent after construction!",
     )
