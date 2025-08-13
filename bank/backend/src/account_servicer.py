@@ -27,12 +27,11 @@ class AccountServicer(Account.Servicer):
     async def Open(
         self,
         context: WriterContext,
-        state: Account.State,
         request: OpenRequest,
     ) -> OpenResponse:
         # Since this is a constructor, we are setting the initial state of the
         # state machine.
-        state.customer_name = request.customer_name
+        self.state.customer_name = request.customer_name
 
         # We'd like to send the new customer a welcome email, but that can be
         # done asynchronously, so we schedule it as a task.
@@ -43,42 +42,38 @@ class AccountServicer(Account.Servicer):
     async def Balance(
         self,
         context: ReaderContext,
-        state: Account.State,
         request: BalanceRequest,
     ) -> BalanceResponse:
-        return BalanceResponse(balance=state.balance)
+        return BalanceResponse(balance=self.state.balance)
 
     async def Deposit(
         self,
         context: WriterContext,
-        state: Account.State,
         request: DepositRequest,
     ) -> DepositResponse:
-        state.balance += request.amount
-        return DepositResponse(updated_balance=state.balance)
+        self.state.balance += request.amount
+        return DepositResponse(updated_balance=self.state.balance)
 
     async def Withdraw(
         self,
         context: WriterContext,
-        state: Account.State,
         request: WithdrawRequest,
     ) -> WithdrawResponse:
-        updated_balance = state.balance - request.amount
+        updated_balance = self.state.balance - request.amount
         if updated_balance < 0:
             raise Account.WithdrawAborted(
                 OverdraftError(amount=-updated_balance)
             )
-        state.balance = updated_balance
+        self.state.balance = updated_balance
         return WithdrawResponse(updated_balance=updated_balance)
 
     async def WelcomeEmail(
         self,
         context: WriterContext,
-        state: Account.State,
         request: WelcomeEmailRequest,
     ) -> WelcomeEmailResponse:
         message_body = (
-            f"Hello {state.customer_name},\n"
+            f"Hello {self.state.customer_name},\n"
             "\n"
             "We are delighted to welcome you as a customer.\n"
             f"Your new account has been opened, and has ID '{context.state_id}'.\n"

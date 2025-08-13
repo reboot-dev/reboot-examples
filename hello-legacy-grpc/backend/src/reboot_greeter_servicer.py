@@ -52,25 +52,23 @@ class RebootGreeterServicer(RebootGreeter.Servicer):
     async def Greet(
         self,
         context: WriterContext,
-        state: RebootGreeter.State,
         request: GreetRequest,
     ) -> GreetResponse:
         salutation = await self._get_deprecated_salutation(context)
-        state.num_greetings += 1
+        self.state.num_greetings += 1
 
         pluralized_phrase = (
-            "person has" if state.num_greetings == 1 else "people have"
+            "person has" if self.state.num_greetings == 1 else "people have"
         )
         return GreetResponse(
             message=f"{salutation}, {request.name}! "
-            f"{state.num_greetings} {pluralized_phrase} been greeted today "
+            f"{self.state.num_greetings} {pluralized_phrase} been greeted today "
             f"by the Reboot service."
         )
 
     async def GetSalutation(
         self,
         context: ReaderContext,
-        state: RebootGreeter.State,
         request: Empty,
     ) -> GetSalutationResponse:
         # Imagine that this method is not yet implemented in this servicer!
