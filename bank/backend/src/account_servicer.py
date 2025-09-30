@@ -24,7 +24,7 @@ class AccountServicer(Account.Servicer):
     def authorizer(self):
         return allow()
 
-    async def Open(
+    async def open(
         self,
         context: WriterContext,
         request: OpenRequest,
@@ -35,18 +35,18 @@ class AccountServicer(Account.Servicer):
 
         # We'd like to send the new customer a welcome email, but that can be
         # done asynchronously, so we schedule it as a task.
-        task_id = await self.ref().schedule().WelcomeEmail(context)
+        task_id = await self.ref().schedule().welcome_email(context)
 
         return OpenResponse(welcome_email_task_id=task_id)
 
-    async def Balance(
+    async def balance(
         self,
         context: ReaderContext,
         request: BalanceRequest,
     ) -> BalanceResponse:
         return BalanceResponse(balance=self.state.balance)
 
-    async def Deposit(
+    async def deposit(
         self,
         context: WriterContext,
         request: DepositRequest,
@@ -54,7 +54,7 @@ class AccountServicer(Account.Servicer):
         self.state.balance += request.amount
         return DepositResponse(updated_balance=self.state.balance)
 
-    async def Withdraw(
+    async def withdraw(
         self,
         context: WriterContext,
         request: WithdrawRequest,
@@ -67,7 +67,7 @@ class AccountServicer(Account.Servicer):
         self.state.balance = updated_balance
         return WithdrawResponse(updated_balance=updated_balance)
 
-    async def WelcomeEmail(
+    async def welcome_email(
         self,
         context: WriterContext,
         request: WelcomeEmailRequest,

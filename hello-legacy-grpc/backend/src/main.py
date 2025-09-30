@@ -14,7 +14,7 @@ async def initialize(context: InitializeContext):
     # NOTE: we don't need to `spawn()` because we want to immediately
     # wait for it to complete (this is syntactic sugar for spawning
     # and then awaiting the returned task).
-    await RebootGreeter.ref("my-greeter").Initialize(context)
+    await RebootGreeter.ref("my-greeter").initialize(context)
 
 
 async def main():

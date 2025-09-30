@@ -26,14 +26,14 @@ class TestAccount(unittest.IsolatedAsyncioTestCase):
 
         # The Bank state machine doesn't have a constructor, so we can simply
         # start calling methods on it.
-        response: SignUpResponse = await bank.SignUp(
+        response: SignUpResponse = await bank.sign_up(
             context,
             customer_name="Alice",
         )
 
         # SignUp will have created an Account we can call.
         account = Account.ref(response.account_id)
-        response = await account.Balance(context)
+        response = await account.balance(context)
         self.assertEqual(response.balance, 0)
 
     async def test_transfer(self):
@@ -43,37 +43,37 @@ class TestAccount(unittest.IsolatedAsyncioTestCase):
         context = self.rbt.create_external_context(name=f"test-{self.id()}")
         bank = Bank.ref("my-bank")
 
-        alice: SignUpResponse = await bank.SignUp(
+        alice: SignUpResponse = await bank.sign_up(
             context,
             customer_name="Alice",
         )
         alice_account = Account.ref(alice.account_id)
-        bob: SignUpResponse = await bank.SignUp(
+        bob: SignUpResponse = await bank.sign_up(
             context,
             customer_name="Bob",
         )
         bob_account = Account.ref(bob.account_id)
 
         # Alice deposits some money.
-        await alice_account.Deposit(context, amount=100)
-        response: BalanceResponse = await alice_account.Balance(context)
+        await alice_account.deposit(context, amount=100)
+        response: BalanceResponse = await alice_account.balance(context)
         self.assertEqual(response.balance, 100)
 
         # Alice transfers some money to Bob.
-        await bank.Transfer(
+        await bank.transfer(
             context,
             from_account_id=alice.account_id,
             to_account_id=bob.account_id,
             amount=40,
         )
-        response = await alice_account.Balance(context)
+        response = await alice_account.balance(context)
         self.assertEqual(response.balance, 60)
-        response = await bob_account.Balance(context)
+        response = await bob_account.balance(context)
         self.assertEqual(response.balance, 40)
 
         # Bob tries to transfer too much money back to Alice.
         with self.assertRaises(Bank.TransferAborted) as aborted:
-            await bank.Transfer(
+            await bank.transfer(
                 context,
                 from_account_id=bob.account_id,
                 to_account_id=alice.account_id,
