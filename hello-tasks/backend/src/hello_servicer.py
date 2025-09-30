@@ -24,7 +24,7 @@ class HelloServicer(Hello.Servicer):
     def authorizer(self):
         return allow()
 
-    async def Messages(
+    async def messages(
         self,
         context: ReaderContext,
         request: MessagesRequest,
@@ -41,7 +41,7 @@ class HelloServicer(Hello.Servicer):
 
         return MessagesResponse(messages=message_strings)
 
-    async def Send(
+    async def send(
         self,
         context: WriterContext,
         request: SendRequest,
@@ -55,14 +55,14 @@ class HelloServicer(Hello.Servicer):
         # message.
         warning_task_id = await self.ref().schedule(
             when=timedelta(seconds=SECS_UNTIL_WARNING)
-        ).Warning(
+        ).warning(
             context,
             message_id=message.id,
         )
 
         return SendResponse(task_id=warning_task_id)
 
-    async def Warning(
+    async def warning(
         self,
         context: WriterContext,
         request: WarningRequest,
@@ -93,14 +93,14 @@ class HelloServicer(Hello.Servicer):
         # Schedule the task to be fully erased.
         erase_task_id = await self.ref().schedule(
             when=timedelta(seconds=ADDITIONAL_SECS_UNTIL_ERASE),
-        ).Erase(
+        ).erase(
             context,
             message_id=request.message_id,
         )
 
         return WarningResponse(task_id=erase_task_id)
 
-    async def Erase(
+    async def erase(
         self,
         context: WriterContext,
         request: EraseRequest,

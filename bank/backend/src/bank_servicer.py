@@ -19,7 +19,7 @@ class BankServicer(Bank.Servicer):
     def authorizer(self):
         return allow()
 
-    async def SignUp(
+    async def sign_up(
         self,
         context: TransactionContext,
         request: SignUpRequest,
@@ -31,7 +31,7 @@ class BankServicer(Bank.Servicer):
         new_account_id = str(uuid.uuid4())
 
         # Let's go create the account.
-        account, _ = await Account.Open(
+        account, _ = await Account.open(
             context,
             new_account_id,
             customer_name=request.customer_name,
@@ -42,7 +42,7 @@ class BankServicer(Bank.Servicer):
 
         return SignUpResponse(account_id=account.state_id)
 
-    async def Transfer(
+    async def transfer(
         self,
         context: TransactionContext,
         request: TransferRequest,
@@ -50,7 +50,7 @@ class BankServicer(Bank.Servicer):
         from_account = Account.ref(request.from_account_id)
         to_account = Account.ref(request.to_account_id)
 
-        await from_account.Withdraw(context, amount=request.amount)
-        await to_account.Deposit(context, amount=request.amount)
+        await from_account.withdraw(context, amount=request.amount)
+        await to_account.deposit(context, amount=request.amount)
 
         return TransferResponse()

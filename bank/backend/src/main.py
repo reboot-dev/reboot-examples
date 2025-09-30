@@ -14,7 +14,7 @@ SINGLETON_BANK_ID = 'reboot-bank'
 async def initialize(context: InitializeContext):
     bank = Bank.ref(SINGLETON_BANK_ID)
 
-    await bank.SignUp(context, customer_name="Initial User")
+    await bank.sign_up(context, customer_name="Initial User")
 
 
 async def main():

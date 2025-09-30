@@ -49,7 +49,7 @@ class RebootGreeterServicer(RebootGreeter.Servicer):
             )
             return salutation_response.salutation
 
-    async def Greet(
+    async def greet(
         self,
         context: WriterContext,
         request: GreetRequest,
@@ -66,7 +66,7 @@ class RebootGreeterServicer(RebootGreeter.Servicer):
             f"by the Reboot service."
         )
 
-    async def GetSalutation(
+    async def get_salutation(
         self,
         context: ReaderContext,
         request: Empty,
@@ -76,7 +76,7 @@ class RebootGreeterServicer(RebootGreeter.Servicer):
         salutation = await self._get_deprecated_salutation(context)
         return GetSalutationResponse(salutation=salutation)
 
-    async def Initialize(
+    async def initialize(
         self,
         context: WorkflowContext,
         request: Empty,

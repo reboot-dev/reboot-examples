@@ -29,28 +29,28 @@ class TestAccount(unittest.IsolatedAsyncioTestCase):
         # Create the state machine by calling its constructor. The fact that the
         # state machine _has_ a constructor means that this step is required
         # before other methods can be called on it.
-        account, _ = await Account.Open(context, customer_name="Alice")
+        account, _ = await Account.open(context, customer_name="Alice")
 
         # We can now call methods on the state machine. It should have a balance
         # of 0.
-        response: BalanceResponse = await account.Balance(context)
+        response: BalanceResponse = await account.balance(context)
         self.assertEqual(response.balance, 0)
 
         # When we deposit money, the balance should go up.
-        await account.Deposit(context, amount=100)
-        response = await account.Balance(context)
+        await account.deposit(context, amount=100)
+        response = await account.balance(context)
         self.assertEqual(response.balance, 100)
 
         # When we withdraw money, the balance should go down.
-        await account.Withdraw(context, amount=60)
-        response = await account.Balance(context)
+        await account.withdraw(context, amount=60)
+        response = await account.balance(context)
         self.assertEqual(response.balance, 40)
 
         # When we withdraw too much money, we should get an error.
         # Use a helper function here to get a code snippet for use in docs.
         async def withdraw():
             try:
-                await account.Withdraw(context, amount=65)
+                await account.withdraw(context, amount=65)
             except Account.WithdrawAborted as aborted:
                 match aborted.error:
                     case OverdraftError(amount=amount):
@@ -67,7 +67,7 @@ class TestAccount(unittest.IsolatedAsyncioTestCase):
         self.assertTrue(isinstance(aborted.exception.error, OverdraftError))
         self.assertEqual(aborted.exception.error.amount, 25)
         # ... and the balance shouldn't have changed.
-        response = await account.Balance(context)
+        response = await account.balance(context)
         self.assertEqual(response.balance, 40)
 
     @mock.patch("account_servicer.send_email")
@@ -87,7 +87,7 @@ class TestAccount(unittest.IsolatedAsyncioTestCase):
 
         # When we open an account, we expect the user to receive a welcome
         # email.
-        account, open_response = await Account.Open(
+        account, open_response = await Account.open(
             context,
             customer_name="Alice",
         )

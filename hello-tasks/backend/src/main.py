@@ -15,7 +15,7 @@ async def initialize(context: InitializeContext):
 
     logging.info("📬 Sending initial message if it isn't already...")
 
-    send_response = await hello.Send(
+    send_response = await hello.send(
         context,
         message="Hello, World!",
     )

@@ -37,7 +37,7 @@ class TestHello(unittest.IsolatedAsyncioTestCase):
         hello = Hello.ref("testing-hello")
 
         # Send a message.
-        send_response = await hello.Send(context, message="Hello, World!")
+        send_response = await hello.send(context, message="Hello, World!")
 
         # Wait for the message to be erased.
         warning_response = await Hello.WarningTask.retrieve(
@@ -50,7 +50,7 @@ class TestHello(unittest.IsolatedAsyncioTestCase):
         )
 
         # Check that the current list of messages reflects the erasure.
-        messages_response = await hello.Messages(context)
+        messages_response = await hello.messages(context)
         self.assertEqual(len(messages_response.messages), 1)
         self.assertEqual(
             messages_response.messages[0],

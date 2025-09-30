@@ -16,7 +16,7 @@ class HelloServicer(Hello.Servicer):
     def authorizer(self):
         return allow()
 
-    async def Create(
+    async def create(
         self,
         context: WriterContext,
         request: CreateRequest,
@@ -24,14 +24,14 @@ class HelloServicer(Hello.Servicer):
         self.state.messages.extend([request.initial_message])
         return CreateResponse()
 
-    async def Messages(
+    async def messages(
         self,
         context: ReaderContext,
         request: MessagesRequest,
     ) -> MessagesResponse:
         return MessagesResponse(messages=self.state.messages)
 
-    async def Send(
+    async def send(
         self,
         context: WriterContext,
         request: SendRequest,

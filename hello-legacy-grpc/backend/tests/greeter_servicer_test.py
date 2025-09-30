@@ -30,7 +30,7 @@ class TestGreeter(unittest.IsolatedAsyncioTestCase):
 
         # Call the Reboot greeter.
         reboot_greeter = RebootGreeter.ref("my-greeter")
-        greet_response = await reboot_greeter.Greet(
+        greet_response = await reboot_greeter.greet(
             context, name="legacy gRPC"
         )
         self.assertIn(", legacy gRPC", greet_response.message)
@@ -40,7 +40,7 @@ class TestGreeter(unittest.IsolatedAsyncioTestCase):
 
         # Call the Reboot greeter again to check that the count of greetings
         # issued has gone up.
-        greet_response = await reboot_greeter.Greet(
+        greet_response = await reboot_greeter.greet(
             context, name="someone else"
         )
         self.assertIn(", someone else", greet_response.message)
