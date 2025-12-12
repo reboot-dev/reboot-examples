@@ -76,8 +76,9 @@ class RebootGreeterServicer(RebootGreeter.Servicer):
         salutation = await self._get_deprecated_salutation(context)
         return GetSalutationResponse(salutation=salutation)
 
+    @classmethod
     async def initialize(
-        self,
+        cls,
         context: WorkflowContext,
         request: Empty,
     ):
