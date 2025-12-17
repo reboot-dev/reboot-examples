@@ -29,15 +29,12 @@ service RebootGreeterMethods {
   }
 }
 service DeprecatedGreeter {
-  rpc Greet(GreetRequest) returns (GreetResponse) {
-  }
-  rpc GetSalutation(google.protobuf.Empty) returns (GetSalutationResponse) {
-  }
+  rpc Greet(GreetRequest) returns (GreetResponse) {}
+  rpc GetSalutation(google.protobuf.Empty) returns (GetSalutationResponse) {}
 }
 
 service ProxyGreeter {
-  rpc Greet(GreetRequest) returns (GreetResponse) {
-  }
+  rpc Greet(GreetRequest) returns (GreetResponse) {}
 }
 
 message RebootGreeter {

@@ -49,5 +49,4 @@ message SendRequest {
   string message = 1;  // E.g. "Hello, World".
 }
 
-message SendResponse {
-}
+message SendResponse {}
