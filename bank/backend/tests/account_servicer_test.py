@@ -22,9 +22,8 @@ class TestAccount(unittest.IsolatedAsyncioTestCase):
         await self.rbt.stop()
 
     async def test_basics(self) -> None:
-        context = self.rbt.create_external_context(name=f"test-{self.id()}")
-
         await self.rbt.up(Application(servicers=[AccountServicer]))
+        context = self.rbt.create_external_context(name=f"test-{self.id()}")
 
         # Create the state machine by calling its constructor. The fact that the
         # state machine _has_ a constructor means that this step is required
