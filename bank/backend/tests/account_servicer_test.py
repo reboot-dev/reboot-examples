@@ -73,14 +73,6 @@ class TestAccount(unittest.IsolatedAsyncioTestCase):
     async def test_send_welcome_email(self, mock_send_email) -> None:
         await self.rbt.up(
             Application(servicers=[AccountServicer]),
-            # Normally, `rbt.up()` runs the servicers in a separate process, to
-            # ensure that accidental use of blocking functions (an easy mistake
-            # to make) don't cause the test to lock up. However, in this test
-            # we're using a mock, which must be in the same process as the test
-            # or it won't work.
-            #
-            # We MUST therefore pass `in_process=True` for `@patch` to work.
-            in_process=True,
         )
         context = self.rbt.create_external_context(name=f"test-{self.id()}")
 
