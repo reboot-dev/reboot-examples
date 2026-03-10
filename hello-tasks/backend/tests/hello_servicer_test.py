@@ -22,14 +22,6 @@ class TestHello(unittest.IsolatedAsyncioTestCase):
         hello_servicer.ADDITIONAL_SECS_UNTIL_ERASE = 0
         await self.rbt.up(
             Application(servicers=[HelloServicer]),
-            # Normally, `rbt.up()` runs the servicers in a separate process, to
-            # ensure that accidental use of blocking functions (an easy mistake
-            # to make) doesn't cause the test to lock up. However, in this test
-            # we're updating constants used in a servicer, and the servicer must
-            # run in the same process as the test or that won't work.
-            #
-            # We MUST therefore pass `in_process=True`.
-            in_process=True,
         )
 
         context = self.rbt.create_external_context(name=f"test-{self.id()}")

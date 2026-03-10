@@ -79,9 +79,11 @@ selecting an application directory you select the `.rbtrc` that will be used:
 
 <!-- MARKDOWN-AUTO-DOCS:START (CODE:src=./.tests/readme_test.sh&lines=24-24) -->
 <!-- The below code snippet is automatically added from ./.tests/readme_test.sh -->
+
 ```sh
 cd hello-constructors
 ```
+
 <!-- MARKDOWN-AUTO-DOCS:END -->
 
 #### Run the backend
